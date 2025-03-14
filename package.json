@@ -1,0 +1,31 @@
+{
+    "private": true,
+    "scripts": {
+        "dev": "npm run development",
+        "development": "mix",
+        "watch": "mix watch",
+        "watch-poll": "mix watch -- --watch-options-poll=1000",
+        "hot": "mix watch --hot",
+        "prod": "npm run production",
+        "production": "mix --production",
+        "concat:css": "concat -o public/front_styles/css/style.concat.css public/front_styles/css/bootstrap.min.css public/front_styles/css/owl.theme.default.min.css public/front_styles/css/owl.carousel.min.css public/front_styles/css/main.css public/front_styles/css/slick.css public/front_styles/css/fontawesome.min.css public/front_styles/css/jquery.fancybox.css public/front_styles/css/magnific-popup.css",
+        "concat:js": "concat -o public/front_styles/js/js.concat.js public/front_styles/js/jquery-3.4.1.min.js public/front_styles/js/main.js public/front_styles/js/bootstrap.min.js public/front_styles/js/slick.min.js public/front_styles/js/jquery.fancybox.pack.js public/front_styles/js/jquery.magnific-popup.min.js public/front_styles/js/waypoints.min.js public/front_styles/js/jquery.counterup.min.js public/front_styles/js/owl.carousel.min.js public/front_styles/js/typed.min.js public/front_styles/js/cursor.js",
+        "compress:css": "node-sass public/front_styles/css/style.concat.css public/front_styles/css/style.min.css --output-style compressed",
+        "compress:js": "uglifyjs public/front_styles/js/js.concat.js -o public/front_styles/js/js.min.js",
+        "build:assets": "npm-run-all concat:css compress:css concat:js compress:js"
+    },
+    "devDependencies": {
+        "@popperjs/core": "^2.10.2",
+        "concat": "^1.0.3",
+        "node-sass": "^7.0.1",
+        "npm-run-all": "^4.1.5",
+        "postcss-cli": "^9.1.0"
+    },
+    "dependencies": {
+        "@uppy/aws-s3-multipart": "^2.0.2",
+        "@uppy/core": "^2.0.2",
+        "@uppy/drag-drop": "^2.0.1",
+        "@uppy/status-bar": "^2.0.1",
+        "uglify-js": "^3.15.2"
+    }
+}
