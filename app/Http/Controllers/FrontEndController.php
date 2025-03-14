@@ -173,12 +173,17 @@ class FrontEndController extends Controller
             $appointments->future();
         } elseif (!empty($request->open) && $request->open == 1) {
             $appointments->open();
+        } elseif (!empty($request->all) && $request->all == 1) {
+            $appointments->all();
+        } else {
+            $appointments->open();
         }
         $appointments = $appointments->paginate(10);
 
 
         return view('front.dashboard', compact('customer', 'page', 'appointments'));
     }
+
 
     public function startTrainingView(Appointment $object)
     {

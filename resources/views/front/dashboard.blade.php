@@ -79,22 +79,29 @@
                         <div class="nav-wrapper tabHeader d-flex align-items-center justify-content-between">
 
                           <ul class="nav nav-pills d-md-flex" id="pills-tab" role="tablist">
+                              <ul class="nav nav-pills d-md-flex" id="pills-tab" role="tablist">
+                                  @php
+                                      $isFuture = request('future') == 1;
+                                      $isDone = request('done') == 1;
+                                      $isAll = request('all') == 1;
+                                      $isOpen = request('open') == 1 || (empty(request('future')) && empty(request('done')) && empty(request('all')));
+                                  @endphp
 
-                                <li class="nav-item" role="presentation">
-                                    <a class="nav-link tabItem {{ request('future') == 1 ? 'active' : '' }}" href="{{ Request::url() }}?future=1#events">მომავალი</a>
-                                </li>
+                                  <li class="nav-item" role="presentation">
+                                      <a class="nav-link tabItem {{ $isFuture ? 'active' : '' }}" href="{{ Request::url() }}?future=1#events">მომავალი</a>
+                                  </li>
 
-                                <li class="nav-item" role="presentation">
-                                    <a class="nav-link tabItem {{ request('open') == 1 ? 'active' : '' }}" href="{{ Request::url() }}?open=1#events">მიმდინარე</a>
-                                </li>
+                                  <li class="nav-item" role="presentation">
+                                      <a class="nav-link tabItem {{ $isDone ? 'active' : '' }}" href="{{ Request::url() }}?done=1#events">დასრულებული</a>
+                                  </li>
 
-                                <li class="nav-item" role="presentation">
-                                    <a class="nav-link tabItem {{ request('done') == 1 ? 'active' : '' }}" href="{{ Request::url() }}?done=1#events">დასრულებული</a>
-                                </li>
+                                  <li class="nav-item" role="presentation">
+                                      <a class="nav-link tabItem {{ $isAll ? 'active' : '' }}" href="{{ Request::url() }}?all=1#events">ყველა</a>
+                                  </li>
 
-                                <li class="nav-item " role="presentation">
-                                    <a href="{{ Request::url() }}#events" class="nav-link tabItem @if(empty(request('future')) && empty(request('open')) && empty(request('done'))) active @endif" >ყველა</a>
-                                </li>
+                                  <li class="nav-item" role="presentation">
+                                      <a class="nav-link tabItem {{ $isOpen ? 'active' : '' }}" href="{{ Request::url() }}?open=1#events">მიმდინარე</a>
+                                  </li>
                           </ul>
                         </div>
                     </div>

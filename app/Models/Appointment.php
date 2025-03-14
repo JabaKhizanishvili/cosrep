@@ -68,6 +68,10 @@ class Appointment extends Model
         return $query->where('start_date', '<=', $current)->where('end_date', '>', $current);
     }
 
+    public function scopeAll($query)
+    {
+        return $query;
+    }
 
     public function scopeFuture($query)
     {
