@@ -15,12 +15,13 @@
     @yield('title')
     </title>
     <!-- Favicon -->
-  
+
     <link rel="apple-touch-icon" sizes="180x180" href="{{ front_styles('favicon/apple-touch-icon.png') }}?v=1">
     <link rel="icon" type="image/png" sizes="32x32" href="{{ front_styles('favicon/favicon-32x32.png') }}?v=1">
     <link rel="icon" type="image/png" sizes="16x16" href="{{ front_styles('favicon/favicon-16x16.png') }}?v=1">
     <link rel="manifest" href="{{ front_styles('favicon/site.webmanifest') }}?v=1">
     <link rel="mask-icon" href="{{ front_styles('favicon/safari-pinned-tab.svg') }}?v=1" color="#5bbad5">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
     <meta name="msapplication-TileColor" content="#da532c">
     <meta name="theme-color" content="#ffffff">
     {{-- <link rel="shortcut icon" href="{{ front_styles('images/favicon.png') }}" type="image/x-icon">
@@ -45,11 +46,11 @@
 
 	<style>
       #footer i::before{
-       color: #fff !important; 
+       color: #fff !important;
       }
-      
+
       .f-widget-title h4:before{
-           background-color: #fff !important; 
+           background-color: #fff !important;
       }
   	</style>
 

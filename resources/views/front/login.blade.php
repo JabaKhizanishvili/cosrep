@@ -9,6 +9,7 @@
 @section('css')
 
     <!-- END PAGE LEVEL PLUGINS/CUSTOM STYLES -->
+    <link rel="stylesheet" href="{{ front_styles('css/showpassword.css') }}?v=2">
 @endsection
 
 @section('content')
@@ -69,9 +70,12 @@
                             @enderror
                         </div>
 
-                        <div class="mt-2 mb-1">
+                        <div class="mt-2 mb-1 password-wrapper">
                             <input class="input-text required-field" type="password" name="password" id="password"
                                 placeholder="Password" title="password" value="{{ old('password') }}"/>
+                            <span class="toggle-password" id="eye-icon" onclick="togglePassword(this)" data-target="password">
+                                <i class="bi bi-eye-fill"></i>
+                            </span>
                             @error('password')
                                 <div class="error-msg">
                                     {{ $message }}
@@ -93,4 +97,8 @@
 
     </main>
 
+@endsection
+
+@section('js')
+    <script src='{{ front_styles("js/tab.js") }}'></script>
 @endsection

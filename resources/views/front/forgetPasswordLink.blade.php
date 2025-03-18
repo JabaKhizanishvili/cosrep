@@ -9,6 +9,8 @@
 @section('css')
 
     <!-- END PAGE LEVEL PLUGINS/CUSTOM STYLES -->
+    <
+    <link rel="stylesheet" href="{{ front_styles('css/showpassword.css') }}?v=2">
 @endsection
 
 @section('content')
@@ -58,9 +60,12 @@
                             @enderror
                         </div>
 
-                        <div class="mt-1">
+                        <div class="mt-1 password-wrapper">
                             <input class="input-text required-field email-field" type="password" name="password"
-                                id="contactEmail" placeholder="პაროლი" title="ელ-ფოსტა" value=""/>
+                                id="password" placeholder="პაროლი" title="ელ-ფოსტა" value=""/>
+                            <span class="toggle-password" id="eye-icon" onclick="togglePassword(this)" data-target="password">
+                                <i class="bi bi-eye-fill"></i>
+                            </span>
                             @error('password')
                                 <div class="error-msg">
                                     {{ $message }}
@@ -68,9 +73,12 @@
                             @enderror
                         </div>
 
-                        <div class="mt-1">
+                        <div class="mt-1 password-wrapper">
                             <input class="input-text required-field email-field" type="password" name="password_confirmation"
-                                id="contactEmail" placeholder="გაიმეორეთ პაროლი" title="ელ-ფოსტა" value=""/>
+                                id="repeatpassword" placeholder="გაიმეორეთ პაროლი" title="ელ-ფოსტა" value=""/>
+                            <span class="toggle-password" id="eye-icon" onclick="togglePassword(this)" data-target="repeatpassword">
+                                <i class="bi bi-eye-fill"></i>
+                            </span>
                             @error('password_confirmation')
                                 <div class="error-msg">
                                     {{ $message }}
@@ -89,4 +97,9 @@
 
     </main>
 
+@endsection
+
+
+@section('js')
+    <script src='{{ front_styles("js/tab.js") }}'></script>
 @endsection
