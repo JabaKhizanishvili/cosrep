@@ -100,7 +100,7 @@
                                   <ul class="nav nav-pills d-md-flex" id="pills-tab" role="tablist">
                                     @foreach ($appointment->training->media as $key => $media)
                                         <li class="nav-item" role="presentation">
-                                            <a class="nav-link {{ $key == 0 ? 'active' : '' }} tabItem fileItem @if($key > 0)unseen @endif" data-toggle="pill" href="#tab_{{ $media->id }}" role="tab" aria-controls="pills-company" aria-selected="true" data-name="{{ $media->name }}">თემა {{ $key + 1 }}</a>
+                                            <a class="nav-link {{ $key == 0 ? 'active bg-success text-white' : '' }} tabItem fileItem @if($key > 0)unseen @endif" data-toggle="pill" href="#tab_{{ $media->id }}" role="tab" aria-controls="pills-company" aria-selected="true" data-id='{{ $media->id }}' data-name="{{ $media->name }}">თემა {{ $key + 1 }}</a>
                                         </li>
                                     @endforeach
 
@@ -227,19 +227,44 @@ function disableContextMenu()
 
 
   document.addEventListener("DOMContentLoaded", function() {
+      var userId = "{{ $customer->getAuthIdentifier() }}";
     var unseen = document.querySelectorAll('.unseen').length;
+      var unseenElements = document.querySelectorAll('.unseen');
     var tabItem = document.querySelectorAll('tabItem');
   var startTestBtn = document.getElementById('start-test');
   var testWarning = document.getElementById('test-warning');
+      // var seenItems = JSON.parse(localStorage.getItem('seenItems')) || [];
+
+      var localStorageKey = 'seenItems_' + userId;
+      var seenItems = JSON.parse(localStorage.getItem(localStorageKey)) || [];
+      unseenElements.forEach(function(e) {
+          let itemId = e.getAttribute('data-id'); // მივიღოთ data-id
+          if (itemId && seenItems.includes(itemId)) {
+              e.classList.remove('unseen');
+              e.classList.add("text-white", "bg-success");
+          }
+      });
 
     if(unseen > 0){
         startTestBtn.classList.add('disabled-link')
         testWarning.style.display = 'block';
     }
+
+      var unseenLenght = document.querySelectorAll('.unseen').length;
+      if(unseenLenght  == 0){
+          startTestBtn.classList.remove('disabled-link')
+          testWarning.style.display = 'none';
+      }
+
     //unset unseen
     window.addEventListener('click', function(e){
         if(e.target.classList.contains('unseen')){
-            e.target.classList.remove('unseen')
+            e.target.classList.remove('unseen');
+            e.target.classList.add("text-white", "bg-success");
+            let itemId = e.target.getAttribute('data-id');
+            seenItems.push(itemId);
+            // localStorage.setItem('seenItems', JSON.stringify(seenItems));
+            localStorage.setItem(localStorageKey, JSON.stringify(seenItems));
         }
         var unseenLenght = document.querySelectorAll('.unseen').length;
         if(unseenLenght  == 0){
