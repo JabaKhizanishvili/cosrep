@@ -45,7 +45,8 @@ class AppServiceProvider extends ServiceProvider
             'front.inactive',
             'front.services',
             'front.forgetPassword',
-            'front.forgetPasswordLink'
+            'front.forgetPasswordLink',
+            'front.changePasswordView',
 
         ], function ($view) {
 

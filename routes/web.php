@@ -274,6 +274,8 @@ Route::middleware(['auth:customer'])->group(function () {
     Route::post('/trainer-message/{object}', [FrontEndController::class, 'sendTrainerMessage'])->name(('front.sendTrainerMessage'));
 
     Route::get('dashboard', [FrontEndController::class, 'dashboard'])->name('front.dashboard');
+    Route::get('change_password', [FrontEndController::class, 'changePasswordView'])->name('front.changePasswordView');
+    Route::post('change_password', [FrontEndController::class, 'changePassword'])->name('front.changePassword');
     Route::get('test-details/{object}', [FrontEndController::class, 'testDetails'])->name('front.testDetails');
     Route::post('/logout', function () {
         Auth::guard('customer')->logout();

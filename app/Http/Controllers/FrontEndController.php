@@ -26,6 +26,7 @@ use App\Http\Requests\EndTestRequest;
 use App\Providers\RouteServiceProvider;
 use App\Http\Requests\ContactEmailRequest;
 use App\Http\Requests\sendTrainerMessageRequest;
+use Illuminate\Support\Facades\Hash;
 
 class FrontEndController extends Controller
 {
@@ -159,6 +160,38 @@ class FrontEndController extends Controller
 
         return redirect()->back()->with('error', 'Username ან Password არასწორია');
     }
+
+//    change password
+   public function changePasswordView(Request $request){
+       $page = Page::where('slug', '/login')->firstOrFail();
+       $customer = auth()->guard(AuthTYpe::TYPE_CUSTOMER)->user();
+       return view('front.changePasswordView', compact('customer','page'));
+   }
+
+   public function changePassword(Request $request)
+   {
+
+       $request->validate([
+           'old_password' => ['required'],
+           'new_password' => ['required', 'min:8', 'confirmed'],
+       ], [
+           'old_password.required' => 'გთხოვთ შეიყვანოთ ძველი პაროლი.',
+           'new_password.required' => 'გთხოვთ შეიყვანოთ ახალი პაროლი.',
+           'new_password.min' => 'პაროლი უნდა შეიცავდეს მინიმუმ 8 სიმბოლოს.',
+           'new_password.confirmed' => 'ახალი პაროლი და მისი დადასტურება არ ემთხვევა.',
+       ]);
+
+       $customer = auth()->guard(AuthTYpe::TYPE_CUSTOMER)->user();
+
+       if (!Hash::check($request->old_password, $customer->password)) {
+           return back()->with('error', __('auth.incorrect_password'));
+       }
+
+       $customer->password = Hash::make($request->new_password);
+       $customer->save();
+
+       return back()->with('success', __('auth.password_updated'));
+   }
 
     public function dashboard(Request $request)
     {

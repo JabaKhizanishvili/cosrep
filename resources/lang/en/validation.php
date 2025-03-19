@@ -157,6 +157,10 @@ return [
     |
     */
 
-    'attributes' => [],
+    'attributes' => [
+        'old_password' => 'ძველი პაროლი',
+        'new_password' => 'ახალი პაროლი',
+        'password_confirmation' => 'პაროლის დადასტურება',
+    ],
 
 ];

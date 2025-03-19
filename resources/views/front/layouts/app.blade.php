@@ -77,7 +77,7 @@
                 <div class="col-lg-5 text-right">
                     <div class="custom-page-top">
                         @if(auth()->guard(\App\Services\AuthType::TYPE_CUSTOMER)->check())
-                        <a>მოგესალმებით, {{ auth()->guard(\App\Services\AuthType::TYPE_CUSTOMER)->user()->name }}</a>
+                        <a href="{{route('front.changePasswordView')}}">მოგესალმებით, {{ auth()->guard(\App\Services\AuthType::TYPE_CUSTOMER)->user()->name }}</a>
                         {{-- <a href="{{ route('front.dashboard') }}" class="{{ $page->slug == '/dashboard' ? 'active' : '' }}">დეშბორდი</a> --}}
                         <form action="{{ route('front.logout') }}" method="POST" style="display: inline-block">
                             @csrf
