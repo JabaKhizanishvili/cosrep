@@ -7,7 +7,7 @@
 
 
 @section('css')
-<link rel="stylesheet" href="{{ front_styles('css/tab.css') }}?v=2">
+<link rel="stylesheet" href="{{ front_styles('css/tab.css') }}?v=22">
 @endsection
 
 @section('content')
