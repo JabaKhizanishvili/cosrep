@@ -9,7 +9,7 @@
 @section('css')
 
     <!-- END PAGE LEVEL PLUGINS/CUSTOM STYLES -->
-    <link rel="stylesheet" href="{{ front_styles('css/showpassword.css') }}?v=2">
+    <link rel="stylesheet" href="{{ front_styles('css/showpassword.css') }}?v=124">
 
 @endsection
 
@@ -101,6 +101,6 @@
 @endsection
 
 @section('js')
-    <script src='{{ front_styles("js/tab.js") }}'></script>
-    
+    <script src="{{ front_styles("js/tab.js") }}?v=1256"></script>
+
 @endsection
