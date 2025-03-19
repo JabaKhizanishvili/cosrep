@@ -11,5 +11,6 @@ function togglePassword(element) {
         passwordField.type = "password"; // პაროლის დამალვა
         eyeIcon.classList.remove("bi-eye-slash-fill");
         eyeIcon.classList.add("bi-eye-fill");
+
     }
 }
