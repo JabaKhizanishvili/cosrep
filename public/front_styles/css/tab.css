@@ -9,6 +9,19 @@
       background-color: #F7ED36;
   }
 
+  .password-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+  }
+  .toggle-password {
+      position: absolute;
+      right: 10px;
+      cursor: pointer;
+      user-select: none;
+
+  }
+
 
   .tabs-to-dropdown .nav-wrapper {
     padding: 15px;
