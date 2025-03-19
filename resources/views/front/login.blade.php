@@ -7,7 +7,21 @@
 
 
 @section('css')
-<link rel="stylesheet" href="{{ front_styles('css/tab.css') }}?v=21">
+<style>
+    .password-wrapper {
+        position: relative;
+        display: flex;
+        align-items: center;
+    }
+
+    .toggle-password {
+        position: absolute;
+        right: 10px;
+        cursor: pointer;
+        user-select: none;
+
+    }
+</style>
 @endsection
 
 @section('content')
