@@ -17,6 +17,7 @@ return [
     'wrong_password' => 'პაროლი არასწორია.',
     'throttle' => 'ძალიან ბევრი ავტორიზაციის მცდელობა, გთხოვთ თავიდან ცადოთ :seconds წამში.',
     'reset_password' => 'პაროლის აღდგენა',
+    'change_password' => 'პაროლის შეცვლა',
     'username' => 'მომხმარებლის სახელი',
     'password' => 'პაროლი',
     'repeat_password' => 'გაიმეორეთ პაროლი',

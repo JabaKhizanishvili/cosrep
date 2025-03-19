@@ -33,7 +33,7 @@
             <div class="container">
                 <div class="row">
                     <div class="lernen_banner_title">
-                        <h1>{{ __('auth.reset_password') }}</h1>
+                        <h1>{{ __('auth.change_password') }}</h1>
                         <div class="lernen_breadcrumb">
                         </div>
                     </div>
@@ -121,7 +121,7 @@
                             @enderror
 
                             <input class="color-two button" type="submit"
-                                   value="პაროლის აღდგენა"/>
+                                   value="{{ __('auth.change_password') }}"/>
                         </form>
                         @if(session('success'))
                             <div class=" mt-2 text-success" role="alert">
