@@ -6,6 +6,7 @@ use Throwable;
 use App\Models\Appointment;
 use Illuminate\Console\Command;
 use App\Models\AppointmentCustomer;
+use Illuminate\Support\Facades\Hash;
 use App\Mail\SecondNotificationMail;
 use Illuminate\Support\Facades\Mail;
 
@@ -42,8 +43,8 @@ class SendSecondNotificationCommand extends Command
      */
     public function handle()
     {
-        $to = date("Y-m-d H:i:s", strtotime("+ 3 Hour"));
-        $from = date("Y-m-d H:i:s", strtotime("+ 1 Hour"));
+        $to = date("Y-m-d H:i:s", strtotime("+ 1 Hour"));
+        $from = date("Y-m-d H:i:s", strtotime("+ 0 Hour"));
 
         $appointments = Appointment::future()
             ->whereDate('start_date', date("Y-m-d"))
@@ -51,17 +52,23 @@ class SendSecondNotificationCommand extends Command
             ->with(['customers', 'customers.customer'])->get();
 
         foreach ($appointments as $appointment) {
-
-            $customers = $appointment->customers()->notifyTwo()->skip(0)->take(20)->get();
+            $customers = $appointment->customers()->notifyOne()->skip(0)->take(20)->get();
 
             foreach ($customers as $customer) {
                 sleep(5);
                 try {
-
-                    //send mail to consultant
-                    Mail::to($customer->customer->email)->send(new SecondNotificationMail($appointment, $customer->customer));
-
-                    $customer->notified = AppointmentCustomer::NOTIFIED_TWO;
+                    $chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%&*_";
+                    $pwd = substr(str_shuffle($chars), 0, 8);
+                    if(empty($customer->customer->password)){
+                        $password = Hash::make($pwd);
+                        $customer->customer->password = $password;
+                        $customer->customer->save();
+                    }else{
+                        $pwd = '';
+                    }
+                    Mail::to($customer->customer->email)->send(new SecondNotificationMail($appointment, $customer->customer, $pwd));
+                    $customer->notified = AppointmentCustomer::NOTIFIED_ONE;
+//                    $customer->notified = AppointmentCustomer::NOTIFIED_TWO;
                     $customer->save();
                 } catch (Throwable $e) {
                     report($e);

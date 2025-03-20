@@ -20,7 +20,6 @@
     <!-- CONTENT AREA -->
 
 
-
     <div class="row analytics layout-top-spacing">
         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 layout-spacing">
             <div class="row widget-statistic">
@@ -59,6 +58,25 @@
                     </div>
                 </div>
             </div>
+        </div>
+        <div class="mt-2">
+
+            <div class="container">
+                <h2>Email Settings</h2>
+                @if(session('success'))
+                    <p style="color: green;">{{ session('success') }}</p>
+                @endif
+                <form action="{{ route('admin.dashboard.update') }}" method="POST">
+                    @csrf
+                    <label for="email_language">Email Language:</label>
+                    <select name="email_language" id="email_language">
+                        <option value="en" {{ $email_language == 'en' ? 'selected' : '' }}>English</option>
+                        <option value="ge" {{ $email_language == 'ge' ? 'selected' : '' }}>ქართული</option>
+                    </select>
+                    <button type="submit">Save</button>
+                </form>
+            </div>
+
         </div>
     </div>
 

@@ -64,6 +64,8 @@ Route::prefix('admin')->middleware(['auth:web', 'verified'])->group(function () 
 
     //dashboard
     Route::get('dashboard', [DashboardController::class, 'index'])->name('admin.dashboard.index');
+    Route::post('dashboard/settings/update', [DashboardController::class, 'update'])->name('admin.dashboard.update');
+
 
     //Pages Routes
     Route::get('pages', [PageController::class, 'index'])->name('admin.pages.index');

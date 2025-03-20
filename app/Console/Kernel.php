@@ -19,10 +19,10 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command(SendFirstNotificationCommand::class)->everyTenMinutes()->withoutOverlapping();
+//         $schedule->command(SendFirstNotificationCommand::class)->everyTenMinutes()->withoutOverlapping();
 //        $schedule->command(SendFirstNotificationCommand::class)->everyTenMinutes()->timezone('Asia/Tbilisi')->between('08:00', '23:00')->withoutOverlapping();
         $schedule->command(SendSecondNotificationCommand::class)->everyFiveMinutes()->timezone('Asia/Tbilisi')->withoutOverlapping();
-        $schedule->command(SendPdfFIleToOrganizationCommand::class)->everyFifteenMinutes()->timezone('Asia/Tbilisi')->between('01:00', '07:00')->withoutOverlapping();
+        $schedule->command(SendPdfFIleToOrganizationCommand::class)->everyFifteenMinutes()->timezone('Asia/Tbilisi')->between('08:00', '23:00')->withoutOverlapping();
         // $schedule->command(TestCommand::class)->everyMinute()->withoutOverlapping();
 
     }
