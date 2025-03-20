@@ -100,6 +100,7 @@ class PageController extends Controller
 
 
         $object->save();
+        Page::clearCache();
 
         return redirect(route('admin.pages.index'))->with('success', 'Record Updated successfully');
     }
@@ -123,5 +124,6 @@ class PageController extends Controller
             Page::where('id', $v)->update(['position' => $i]);
             ++$i;
         }
+        Page::clearCache();
     }
 }

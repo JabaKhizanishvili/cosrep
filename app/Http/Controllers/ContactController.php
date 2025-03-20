@@ -89,6 +89,7 @@ class ContactController extends Controller
             $object->image = $image;
         }
         $object->save();
+        Contact::clearCache();
 
         return redirect()->back()->with('success', 'Record Updated SuccessFully');
     }

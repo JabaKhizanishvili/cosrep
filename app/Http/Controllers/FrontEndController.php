@@ -32,9 +32,11 @@ class FrontEndController extends Controller
 {
     public function index()
     {
-        $page = Page::where('slug', '/')->firstOrFail();
+//        $page = Page::where('slug', '/')->firstOrFail();
+        $page = Page::getCachedPageBySlug('/');
         $sliders = Slider::active()->orderBy('position', 'asc')->get();
-        $partners = Partner::orderBy('id', 'desc')->get();
+//        $partners = Partner::orderBy('id', 'desc')->get();
+        $partners = Partner::getCachedPartners();
         $section_one = Section::where('id', 1)->active()->first();
         $section_two = Section::where('id', 2)->active()->first();
 
@@ -44,7 +46,8 @@ class FrontEndController extends Controller
 
     public function contact()
     {
-        $page = Page::where('slug', '/contact')->firstOrFail();
+//        $page = Page::where('slug', '/contact')->firstOrFail();
+        $page = Page::getCachedPageBySlug('/contact');
 
         return view('front.contact', compact('page'));
     }
@@ -86,7 +89,9 @@ class FrontEndController extends Controller
 
     public function about()
     {
-        $page = Page::where('slug', '/about-us')->firstOrFail();
+//        $page = Page::where('slug', '/about-us')->firstOrFail();
+        $page = Page::getCachedPageBySlug('/about-us');
+
         $about = About::firstOrFail();
         $trainers = Trainer::OrderBy('id', 'desc')->get();
         $section_one = Section::where('id', 1)->active()->first();
@@ -97,7 +102,8 @@ class FrontEndController extends Controller
 
     public function trainings()
     {
-        $page = Page::where('slug', '/trainings')->firstOrFail();
+//        $page = Page::where('slug', '/trainings')->firstOrFail();
+        $page = Page::getCachedPageBySlug('/trainings');
         $categories = Category::withCount('frontTrainings')->orderBy('position', 'asc')->paginate(6);
 
 
@@ -116,7 +122,8 @@ class FrontEndController extends Controller
 
     public function blogs()
     {
-        $page = Page::where('slug', '/blogs')->firstOrFail();
+//        $page = Page::where('slug', '/blogs')->firstOrFail();
+        $page = Page::getCachedPageBySlug('/blogs');
         $blogs = Blog::orderBy('id', 'desc')->paginate(6);
 
 
@@ -126,7 +133,8 @@ class FrontEndController extends Controller
     public function singleBlog($name)
     {
 
-        $page = Page::where('slug', '/blogs')->firstOrFail();
+//        $page = Page::where('slug', '/blogs')->firstOrFail();
+        $page = Page::getCachedPageBySlug('/blogs');
         $name = urldecode($name);
         $blog = Blog::where('name', $name)->firstOrFail();
         $blogs = Blog::where('id', '!=', $blog->id)->limit(5)->get();
@@ -164,7 +172,7 @@ class FrontEndController extends Controller
 //    change password
    public function changePasswordView(Request $request){
        $page = Page::where('slug', '/login')->firstOrFail();
-       $customer = auth()->guard(AuthTYpe::TYPE_CUSTOMER)->user();
+       $customer = auth()->guard(AuthType::TYPE_CUSTOMER)->user();
        return view('front.changePasswordView', compact('customer','page'));
    }
 
@@ -181,7 +189,7 @@ class FrontEndController extends Controller
            'new_password.confirmed' => 'ახალი პაროლი და მისი დადასტურება არ ემთხვევა.',
        ]);
 
-       $customer = auth()->guard(AuthTYpe::TYPE_CUSTOMER)->user();
+       $customer = auth()->guard(AuthType::TYPE_CUSTOMER)->user();
 
        if (!Hash::check($request->old_password, $customer->password)) {
            return back()->with('error', __('auth.incorrect_password'));
@@ -195,9 +203,10 @@ class FrontEndController extends Controller
 
     public function dashboard(Request $request)
     {
-        $page = Page::where('slug', '/dashboard')->firstOrFail();
+//        $page = Page::where('slug', '/dashboard')->firstOrFail();
+        $page = Page::getCachedPageBySlug('/dashboard');
 
-        $customer = auth()->guard(AuthTYpe::TYPE_CUSTOMER)->user();
+        $customer = auth()->guard(AuthType::TYPE_CUSTOMER)->user();
         $appointments = $customer->appointments();
 
         if (!empty($request->done) && $request->done == 1) {
@@ -222,7 +231,7 @@ class FrontEndController extends Controller
     {
         $page = Page::where('slug', '/dashboard')->firstOrFail();
 
-        $customer = auth()->guard(AuthTYpe::TYPE_CUSTOMER)->user();
+        $customer = auth()->guard(AuthType::TYPE_CUSTOMER)->user();
         //check if customer can process current appointment
         $appointmentCustomer = AppointmentCustomer::where('appointment_id', $object->id)->where('customer_id', $customer->id)->first();
 
@@ -266,7 +275,7 @@ class FrontEndController extends Controller
     {
         $page = Page::where('slug', '/dashboard')->firstOrFail();
 
-        $customer = auth()->guard(AuthTYpe::TYPE_CUSTOMER)->user();
+        $customer = auth()->guard(AuthType::TYPE_CUSTOMER)->user();
         //check if customer can process current appointment
         $appointmentCustomer = AppointmentCustomer::where('appointment_id', $object->id)->where('customer_id', $customer->id)->first();
 
@@ -309,7 +318,7 @@ class FrontEndController extends Controller
     public function endTest(EndTestRequest $request, Appointment $object)
     {
         $page = Page::where('slug', '/dashboard')->firstOrFail();
-        $customer = auth()->guard(AuthTYpe::TYPE_CUSTOMER)->user();
+        $customer = auth()->guard(AuthType::TYPE_CUSTOMER)->user();
         //check if customer can process current appointment
         $appointmentCustomer = AppointmentCustomer::where('appointment_id', $object->id)->where('customer_id', $customer->id)->first();
 
@@ -388,7 +397,7 @@ class FrontEndController extends Controller
 
     public function testDetails(Appointment $object)
     {
-        $customer = auth()->guard(AuthTYpe::TYPE_CUSTOMER)->user();
+        $customer = auth()->guard(AuthType::TYPE_CUSTOMER)->user();
         //check if customer can process current appointment
         $appointmentCustomer = AppointmentCustomer::where('appointment_id', $object->id)->where('customer_id', $customer->id)->firstOrFail();
         $page = Page::where('slug', '/dashboard')->firstOrFail();
@@ -428,7 +437,8 @@ class FrontEndController extends Controller
 
     public function services()
     {
-        $page = Page::where('slug', '/services')->firstOrFail();
+//        $page = Page::where('slug', '/services')->firstOrFail();
+        $page = Page::getCachedPageBySlug('/services');
         $services = Service::orderBy('id', 'asc')->get();
 
         return view('front.services', compact('page', 'services'));

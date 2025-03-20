@@ -55,6 +55,7 @@ class PartnerController extends Controller
 
 
         $object->save();
+        Partner::clearCache();
 
         return redirect(route('admin.partners.index'))->with('success', 'Record added successfully');
     }
@@ -103,6 +104,7 @@ class PartnerController extends Controller
 
         $object->save();
 
+        Partner::clearCache();
         return redirect(route('admin.partners.index', ['page' => $request->page]))->with('success', 'Record Updated successfully');
     }
 

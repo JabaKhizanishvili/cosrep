@@ -50,11 +50,13 @@ class AppServiceProvider extends ServiceProvider
 
         ], function ($view) {
 
-            $pages = Page::active()->display()->orderBy('position', 'asc')->get();
+//            $pages = Page::active()->display()->orderBy('position', 'asc')->get();
+            $pages = Page::getCachedMenuPages();
             $policies = Page::policies()->get();
             $cookie = Policy::findOrFail(3);
 
-            $contact = Contact::first();
+//            $contact = Contact::first();
+            $contact = Contact::getCachedContact();
             $view->with(['pages' => $pages, 'contact' => $contact, 'cookie' => $cookie, 'policies' => $policies]);
         });
     }
