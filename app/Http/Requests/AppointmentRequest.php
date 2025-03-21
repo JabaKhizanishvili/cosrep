@@ -29,7 +29,9 @@ class AppointmentRequest extends FormRequest
             'name' => 'required|max:255',
 //            'start_date' => 'required|date_format:Y-m-d H:i|after:' . $after_date,
             'start_date' => 'required|date_format:Y-m-d H:i',
-            'duration' => 'required|integer|min:1|max:23',
+            'end_date' => 'required|date_format:Y-m-d H:i',
+//            'duration' => 'required|integer|min:1',
+
             'repeat' => 'nullable|integer|min:1|max:24',
         ];
     }

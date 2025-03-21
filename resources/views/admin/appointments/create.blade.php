@@ -75,10 +75,20 @@ Add Appointment
                         </div>
 
                         <div class="form-row mb-4">
+{{--                            <div class="form-group col-md-6">--}}
+{{--                                <label for="inputEmail4">Duration (In Hour)</label>--}}
+{{--                                <input type="number" min="1" class="form-control @error('duration') invalideInput @enderror" id="duration" placeholder="Duration" name="duration" value="{{old('duration')}}" required>--}}
+{{--                                @error('duration')--}}
+{{--                                <div class="customValidate">--}}
+{{--                                    {{ $message }}--}}
+{{--                                </div>--}}
+{{--                                @enderror--}}
+{{--                            </div>--}}
+
                             <div class="form-group col-md-6">
-                                <label for="inputEmail4">Duration (In Hour)</label>
-                                <input type="number" min="1" class="form-control @error('duration') invalideInput @enderror" id="duration" placeholder="Duration" name="duration" value="{{old('duration')}}" required>
-                                @error('duration')
+                                <label for="inputEmail4">End Date</label>
+                                <input id="dateTimeFlatpickr1" value="{{old('end_date')}}" class="form-control flatpickr flatpickr-input active" type="text" placeholder="Select Date.." name="end_date">
+                                @error('end_date')
                                 <div class="customValidate">
                                     {{ $message }}
                                 </div>
@@ -122,6 +132,14 @@ Add Appointment
             enableTime: true,
             dateFormat: "Y-m-d H:i",
             minDate: "today",
+            defaultDate: new Date(new Date().getTime() + 60 * 60 * 1300),
+            time_24hr: true
+        });
+        var f2 = flatpickr(document.getElementById('dateTimeFlatpickr1'), {
+            enableTime: true,
+            dateFormat: "Y-m-d H:i",
+            minDate: "today",
+            defaultDate: new Date(new Date().getTime() + 60 * 60 * 1400),
             time_24hr: true
         });
         $(".basic").select2({

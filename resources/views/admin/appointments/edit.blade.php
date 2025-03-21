@@ -76,10 +76,19 @@ Edit Appointment
                         </div>
 
                         <div class="form-row mb-4">
+{{--                            <div class="form-group col-md-6">--}}
+{{--                                <label for="inputEmail4">Duration</label>--}}
+{{--                                <input type="number" min="1" class="form-control @error('duration') invalideInput @enderror" id="duration" placeholder="Duration" name="duration" value="{{$object->getDuration()}}" required>--}}
+{{--                                @error('duration')--}}
+{{--                                <div class="customValidate">--}}
+{{--                                    {{ $message }}--}}
+{{--                                </div>--}}
+{{--                                @enderror--}}
+{{--                            </div>--}}
                             <div class="form-group col-md-6">
-                                <label for="inputEmail4">Duration</label>
-                                <input type="number" min="1" class="form-control @error('duration') invalideInput @enderror" id="duration" placeholder="Duration" name="duration" value="{{$object->getDuration()}}" required>
-                                @error('duration')
+                                <label for="inputEmail4">End Date</label>
+                                <input id="dateTimeFlatpickr1" value="{{$object->end_date}}" class="form-control flatpickr flatpickr-input active" type="text" placeholder="Select Date.." name="end_date">
+                                @error('end_date')
                                 <div class="customValidate">
                                     {{ $message }}
                                 </div>
@@ -125,6 +134,14 @@ Edit Appointment
             minDate: "today",
             time_24hr: true
         });
+
+        var f3 = flatpickr(document.getElementById('dateTimeFlatpickr1'), {
+            enableTime: true,
+            dateFormat: "Y-m-d H:i",
+            minDate: "today",
+            time_24hr: true
+        });
+
         $(".basic").select2({
         tags: true,
         });

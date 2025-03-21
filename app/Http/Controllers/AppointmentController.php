@@ -85,12 +85,16 @@ class AppointmentController extends Controller
     {
         //check if appointment on same time already exists
         $start_date = $request->start_date;
-        $end_date = date("Y-m-d H:i", strtotime("$start_date + $request->duration Hour"));
-
-        //check if start and end dates are different
-        if (date("Y-m-d", strtotime($start_date)) != date("Y-m-d", strtotime($end_date))) {
-            return redirect()->back()->withInput()->with("error", "Appointment start and end date needs to be same");
+//        $end_date = date("Y-m-d H:i", strtotime("$start_date + $request->duration Hour"));
+        $end_date = $request->end_date;
+        if (strtotime($end_date) <= strtotime($start_date)) {
+            return redirect()->back()->withInput()->with("error", "End date must be after start date.");
         }
+
+//        check if start and end dates are different
+//        if (date("Y-m-d", strtotime($start_date)) != date("Y-m-d", strtotime($end_date))) {
+//            return redirect()->back()->withInput()->with("error", "Appointment start and end date needs to be same");
+//        }
 
         //check if record exists on same date
 
@@ -191,13 +195,18 @@ class AppointmentController extends Controller
             return redirect()->back()->withInput()->with("error", "Appointment can't be updated Anymore");
         }
         $start_date = $request->start_date;
-        $end_date = date("Y-m-d H:i", strtotime("$start_date + $request->duration Hour"));
+        $end_date = $request->end_date;
+        if (strtotime($end_date) <= strtotime($start_date)) {
+            return redirect()->back()->withInput()->with("error", "End date must be after start date.");
+        }
+
+//        $end_date = date("Y-m-d H:i", strtotime("$start_date + $request->duration Hour"));
 
 
         //check if start and end dates are different
-        if (date("Y-m-d", strtotime($start_date)) != date("Y-m-d", strtotime($end_date))) {
-            return redirect()->back()->withInput()->with("error", "Appointment start and end date needs to be same");
-        }
+//        if (date("Y-m-d", strtotime($start_date)) != date("Y-m-d", strtotime($end_date))) {
+//            return redirect()->back()->withInput()->with("error", "Appointment start and end date needs to be same");
+//        }
 
         $appointment = Appointment::inFuture()->where('id', '!=', $object->id)->where(function ($q) use ($start_date, $end_date) {
             $q->whereDate('start_date', date("Y-m-d", strtotime($start_date)))
