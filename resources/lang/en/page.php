@@ -39,4 +39,6 @@ return [
     'phone' => 'Phone Number',
     'email_sent_success' => 'Email was sent successfully',
     'email_send_error' => 'An error occurred, please try again later',
+    'our_services' => 'Our Services',
+    'our_partners' => 'Our Partners',
 ];

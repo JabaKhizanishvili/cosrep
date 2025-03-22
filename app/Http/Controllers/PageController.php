@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\PageRequst;
 use App\Http\Requests\PageRequest;
 use Illuminate\Support\Facades\Storage;
+use Spatie\Translatable\HasTranslations;
 
 class PageController extends Controller
 {
@@ -36,7 +37,7 @@ class PageController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -47,7 +48,7 @@ class PageController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Page  $object
+     * @param \App\Models\Page $object
      * @return \Illuminate\Http\Response
      */
     public function show(Page $object)
@@ -58,7 +59,7 @@ class PageController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Page  $object
+     * @param \App\Models\Page $object
      * @return \Illuminate\Http\Response
      */
     public function edit(Page $object)
@@ -69,16 +70,16 @@ class PageController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Page  $object
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Models\Page $object
      * @return \Illuminate\Http\Response
      */
     public function update(PageRequest $request, Page $object)
     {
         $object = Page::findOrFail($object->id);
-
         // $request->validated();
-        $object->name = $request->name;
+//        $object->name = $request->name;
+        $object->setTranslations('name', $request->input('name'));
         $object->keyword = $request->keyword;
         $object->description = $request->description;
 
@@ -108,7 +109,7 @@ class PageController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Page  $object
+     * @param \App\Models\Page $object
      * @return \Illuminate\Http\Response
      */
     public function destroy(Page $object)

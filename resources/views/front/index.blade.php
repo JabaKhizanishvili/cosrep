@@ -121,7 +121,7 @@
                     <div class="row justify-content-center text-center">
                         <div class="col-lg-8">
                             <div class="section-title with-p">
-                                <h2>ჩვენი პარტნიორები</h2>
+                                <h2>{{__('page.our_partners')}}</h2>
                                 <div class="bar"></div>
                                 {{-- <p>We can help you create positive and permanent changes in your life. Let’s Create Something new and awesome Togeather. --}}
                                 </p>

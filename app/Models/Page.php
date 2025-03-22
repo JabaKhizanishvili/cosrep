@@ -5,10 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
+use Spatie\Translatable\HasTranslations;
 
 class Page extends Model
 {
     use HasFactory;
+
+    use HasTranslations;
+
+    public $translatable = ['name'];
+    protected $fillable = ['name'];
 
     public function scopeActive($query)
     {
@@ -70,9 +76,19 @@ class Page extends Model
         });
     }
 
-    public static function clearCache()
+    public static function clearCache($page = null)
     {
+        Cache::forget('pages');
         Cache::forget("pages.all"); // მთლიანი მენიუს ქეშის წაშლა
+        if ($page) {
+            Cache::forget("page.{$page->slug}"); // კონკრეტული გვერდის ქეშის წაშლა
+        } else {
+            // ყველა slug-იანი ქეშის გასუფთავება
+            $pages = self::all(['slug']); // ვიღებთ ყველა გვერდის slug-ს
+            foreach ($pages as $p) {
+                Cache::forget("page.{$p->slug}");
+            }
+        }
     }
 
 }
