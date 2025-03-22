@@ -79,13 +79,14 @@
 <header id="header" class="sticky transparent-header">
     <div class="topheader top_header_light hidemobile">
         <div class="container">
-            <div class="row">
-                <div class="col-lg-7">
+            <div class="row align-items-center justify-content-between">
+                {{--                <div class="col-lg-7 bg-danger">--}}
+                <div class="col-auto">
                     @if($contact->phone)
                         <div class="address-icon">{{__('page.contactus')}}: <a
                                 href="tel:{{ $contact->phone }}">{{ $contact->phone }}</a></div></div>
                 @endif
-                <div class="col-lg-5 text-right">
+                <div class="col-lg-7 text-right">
                     <div class="custom-page-top">
                         @if(auth()->guard(\App\Services\AuthType::TYPE_CUSTOMER)->check())
                             <a href="{{route('front.changePasswordView')}}">{{__('page.hello')}}
@@ -112,7 +113,6 @@
                         <a href="{{ url($newUrl) }}">
                             {{ $newLocale === 'en' ? '🇬🇧' : '🇬🇪' }}
                         </a>
-
                     </div>
 
                     <div class="social_top_header">
