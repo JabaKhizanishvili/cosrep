@@ -57,22 +57,23 @@
                                 <!-- uses solid style -->
                                 <h4><a href="#">{{ $appointment->training->name }}</a></h4>
                                 <ul>
-                                    <li>ტრენინგის დაწყების
-                                        დრო: {{ date('Y-m-d H:i:s', strtotime($appointment->start_date)) }}</li>
-                                    <li>ტრენინგის დასრულების
-                                        დრო: {{ date('Y-m-d H:i:s', strtotime($appointment->end_date)) }}</li>
-                                    <li>ტესტი
-                                        დაასრულეთ: {{ date('Y-m-d H:i:s', strtotime($appointmentCustomer->finished_at)) }}</li>
-                                    <li>კითხვების რაოდენობა: {{ count(json_decode($appointmentCustomer->test)) }}</li>
-                                    <li>გამსვლელი ქულა: {{ $appointmentCustomer->point_to_pass }}</li>
-                                    <li>თქვენ მიერ აღებული ქულა: {{ $appointmentCustomer->final_point }}</li>
+                                    <li>{{ __('page.training_start_time') }}
+                                        : {{ date('Y-m-d H:i:s', strtotime($appointment->start_date)) }}</li>
+                                    <li>{{ __('page.training_end_time') }}
+                                        : {{ date('Y-m-d H:i:s', strtotime($appointment->end_date)) }}</li>
+                                    <li>{{ __('page.test_completed_at') }}
+                                        : {{ date('Y-m-d H:i:s', strtotime($appointmentCustomer->finished_at)) }}</li>
+                                    <li>{{ __('page.questions_count') }}
+                                        : {{ count(json_decode($appointmentCustomer->test)) }}</li>
+                                    <li>{{ __('page.passing_score') }}: {{ $appointmentCustomer->point_to_pass }}</li>
+                                    <li>{{ __('page.your_score') }}: {{ $appointmentCustomer->final_point }}</li>
                                     <br>
                                     <li>
-                                        ტესტის სტატუსი:
+                                        {{ __('page.test_status') }}:
                                         @if($appointmentCustomer->passed())
-                                            <span class="btn btn-success text-white">წარმატებული</span>
+                                            <span class="btn btn-success text-white">{{ __('page.successful') }}</span>
                                         @else
-                                            <span class="btn btn-danger text-white">წარუმატებელი</span>
+                                            <span class="btn btn-danger text-white">{{ __('page.unsuccessful') }}</span>
                                         @endif
                                     </li>
                                 </ul>
@@ -100,7 +101,7 @@
                                         @foreach ($test_answers as $k => $answer)
                                             @if($k == $test->correct)
                                                 <li class="{{ $k == $test->correct ? 'correct_answer' : ''  }}">
-                                                    {{ $answer }} (სწორი პასუხი)
+                                                    {{ $answer }} ({{__('page.correct_answer')}})
                                                 </li>
                                             @else
                                                 <li class="">
@@ -134,8 +135,7 @@
                 <div class="row justify-content-center text-center">
                     <div class="col-lg-8">
                         <div class="section-title with-p">
-                            <h5>თუ გსურს დამატებითი კონსულტაციის ან შეხვედრის ჩანიშვნა შრომის უსაფრთხოების სპეციალისტთან
-                                მოგვწერე</h5>
+                            <h5>{{ __('page.consultation_message') }}</h5>
                         </div>
                     </div>
                 </div>
@@ -156,7 +156,7 @@
                             <!-- Change Placeholder and Title -->
                             <div>
                                 <input class="input-text required-field email-field" type="email" name="email"
-                                       id="contactEmail" placeholder="ელ-ფოსტა" title="ელ-ფოსტა"
+                                       id="contactEmail" placeholder="{{__('auth.email')}}" title="ელ-ფოსტა"
                                        value="{{ old('email') }}" required/>
                                 @error('email')
                                 <div class="error-msg">
@@ -166,7 +166,7 @@
                             </div>
                             <div>
                                 <input class="input-text required-field" type="text" name="phone" id="contactPhone"
-                                       placeholder="ტელეფონის ნომერი" title="ტელეფონის ნომერი"
+                                       placeholder="{{__('page.phone')}}" title="ტელეფონის ნომერი"
                                        value="{{ old('phone') }}" required/>
                                 @error('phone')
                                 <div class="error-msg">
@@ -176,7 +176,8 @@
                             </div>
                             <div>
                                 <textarea class="input-text required-field" name="text" id="contactMessage"
-                                          placeholder="ტექსტი" title="ტექსტი" required>{{ old('text') }}</textarea>
+                                          placeholder="{{__('page.text')}}" title="ტექსტი"
+                                          required>{{ old('text') }}</textarea>
                                 @error('text')
                                 <div class="error-msg">
                                     {{ $message }}
@@ -184,7 +185,7 @@
                                 @enderror
                             </div>
                             <input class="color-two button" type="submit"
-                                   value="წერილის გაგზავნა"/>
+                                   value="{{__('page.send_message')}}"/>
                         </form>
                     </div>
                 </div>

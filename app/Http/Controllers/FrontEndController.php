@@ -59,10 +59,10 @@ class FrontEndController extends Controller
         } catch (Throwable $e) {
             report($e);
 
-            return redirect()->back()->with('error', 'დაფიქსირდა შეცდომა, გთხოვთ სცადოთ მოგვიანებით');
+            return redirect()->back()->with('error', __('page.email_send_error'));
         }
 
-        return redirect()->back()->with('success', 'მეილი წარმატებით გაიგზავნა');
+        return redirect()->back()->with('success', __('page.email_sent_success'));
     }
 
     public function sendTrainerMessage($locale, sendTrainerMessageRequest $request, Training $object)
@@ -79,12 +79,11 @@ class FrontEndController extends Controller
         } catch (Throwable $e) {
             report($e);
 
-            return redirect($url)->with('error', 'დაფიქსირდა შეცდომა, გთხოვთ სცადოთ მოგვიანებით');
+            return redirect($url)->with('error', __('page.email_send_error'));
         }
 
 
-
-        return redirect($url)->with('success', 'მეილი წარმატებით გაიგზავნა', '#contact');
+        return redirect($url)->with('success', __('page.email_sent_success'), '#contact');
     }
 
     public function about()
@@ -110,7 +109,7 @@ class FrontEndController extends Controller
         return view('front.categories', compact('categories', 'page'));
     }
 
-    public function categoryTrainings($locale,$name)
+    public function categoryTrainings($locale, $name)
     {
         $name = urldecode($name);
         $category = Category::where('name', $name)->firstOrFail();
@@ -130,7 +129,7 @@ class FrontEndController extends Controller
         return view('front.blogs', compact('blogs', 'page'));
     }
 
-    public function singleBlog($locale,$name)
+    public function singleBlog($locale, $name)
     {
 
 //        $page = Page::where('slug', '/blogs')->firstOrFail();
@@ -142,7 +141,7 @@ class FrontEndController extends Controller
         return view('front.singleBlog', compact('blog', 'blogs', 'page'));
     }
 
-    public function singleTraining($locale,$name)
+    public function singleTraining($locale, $name)
     {
         $page = Page::where('slug', '/trainings')->firstOrFail();
         $name = urldecode($name);
@@ -171,36 +170,42 @@ class FrontEndController extends Controller
     }
 
 //    change password
-   public function changePasswordView(Request $request){
-       $page = Page::where('slug', '/login')->firstOrFail();
-       $customer = auth()->guard(AuthType::TYPE_CUSTOMER)->user();
-       return view('front.changePasswordView', compact('customer','page'));
-   }
+    public function changePasswordView(Request $request)
+    {
+        $page = Page::where('slug', '/login')->firstOrFail();
+        $customer = auth()->guard(AuthType::TYPE_CUSTOMER)->user();
+        return view('front.changePasswordView', compact('customer', 'page'));
+    }
 
-   public function changePassword(Request $request)
-   {
+    public function changePassword(Request $request)
+    {
 
-       $request->validate([
-           'old_password' => ['required'],
-           'new_password' => ['required', 'min:8', 'confirmed'],
-       ], [
-           'old_password.required' => 'გთხოვთ შეიყვანოთ ძველი პაროლი.',
-           'new_password.required' => 'გთხოვთ შეიყვანოთ ახალი პაროლი.',
-           'new_password.min' => 'პაროლი უნდა შეიცავდეს მინიმუმ 8 სიმბოლოს.',
-           'new_password.confirmed' => 'ახალი პაროლი და მისი დადასტურება არ ემთხვევა.',
-       ]);
+//       $request->validate([
+//           'old_password' => ['required'],
+//           'new_password' => ['required', 'min:8', 'confirmed'],
+//       ], [
+//           'old_password.required' => 'გთხოვთ შეიყვანოთ ძველი პაროლი.',
+//           'new_password.required' => 'გთხოვთ შეიყვანოთ ახალი პაროლი.',
+//           'new_password.min' => 'პაროლი უნდა შეიცავდეს მინიმუმ 8 სიმბოლოს.',
+//           'new_password.confirmed' => 'ახალი პაროლი და მისი დადასტურება არ ემთხვევა.',
+//       ]);
 
-       $customer = auth()->guard(AuthType::TYPE_CUSTOMER)->user();
+        $request->validate([
+            'old_password' => ['required'],
+            'new_password' => ['required', 'min:8', 'confirmed'],
+        ]);
 
-       if (!Hash::check($request->old_password, $customer->password)) {
-           return back()->with('error', __('auth.incorrect_password'));
-       }
+        $customer = auth()->guard(AuthType::TYPE_CUSTOMER)->user();
 
-       $customer->password = Hash::make($request->new_password);
-       $customer->save();
+        if (!Hash::check($request->old_password, $customer->password)) {
+            return back()->with('error', __('auth.incorrect_password'));
+        }
 
-       return back()->with('success', __('auth.password_updated'));
-   }
+        $customer->password = Hash::make($request->new_password);
+        $customer->save();
+
+        return back()->with('success', __('auth.password_updated'));
+    }
 
     public function dashboard(Request $request)
     {
@@ -228,7 +233,7 @@ class FrontEndController extends Controller
     }
 
 
-    public function startTrainingView($locale,Appointment $object)
+    public function startTrainingView($locale, Appointment $object)
     {
         $page = Page::where('slug', '/dashboard')->firstOrFail();
 
@@ -272,7 +277,7 @@ class FrontEndController extends Controller
         return view('front.startTraining', compact('customer', 'page', 'appointment'));
     }
 
-    public function startTestView($locale,Appointment $object)
+    public function startTestView($locale, Appointment $object)
     {
         $page = Page::where('slug', '/dashboard')->firstOrFail();
 
@@ -312,11 +317,10 @@ class FrontEndController extends Controller
         $appointment = $object;
 
 
-
         return view('front.startTest', compact('customer', 'page', 'appointment'));
     }
 
-    public function endTest($locale,EndTestRequest $request, Appointment $object)
+    public function endTest($locale, EndTestRequest $request, Appointment $object)
     {
         $page = Page::where('slug', '/dashboard')->firstOrFail();
         $customer = auth()->guard(AuthType::TYPE_CUSTOMER)->user();
@@ -414,7 +418,6 @@ class FrontEndController extends Controller
         }
 
         $appointment = $object;
-
 
 
         return view('front.testDetails', compact('customer', 'page', 'appointment', 'appointmentCustomer'));
