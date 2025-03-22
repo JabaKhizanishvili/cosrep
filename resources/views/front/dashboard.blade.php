@@ -205,7 +205,7 @@
                                 <div class="blog-content">
 
                                     <h5 class="title"><a href="services-detail.html"
-                                                         class="float-left">{{ $customer->name }}</a>
+                                                         class="float-left">{{ transliterateEn($customer->name) }}</a>
                                         <br>
                                     </h5>
                                     <p>{{__('page.email')}}: {{ $customer->email }}</p>

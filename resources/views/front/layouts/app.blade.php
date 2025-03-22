@@ -90,7 +90,7 @@
                     <div class="custom-page-top">
                         @if(auth()->guard(\App\Services\AuthType::TYPE_CUSTOMER)->check())
                             <a href="{{route('front.changePasswordView')}}">{{__('page.hello')}}
-                                , {{ auth()->guard(\App\Services\AuthType::TYPE_CUSTOMER)->user()->name }}</a>
+                                , {{ transliterateEn(auth()->guard(\App\Services\AuthType::TYPE_CUSTOMER)->user()->name) }}</a>
                             {{-- <a href="{{ route('front.dashboard') }}" class="{{ $page->slug == '/dashboard' ? 'active' : '' }}">დეშბორდი</a> --}}
                             <form action="{{ route('front.logout') }}" method="POST" style="display: inline-block">
                                 @csrf
