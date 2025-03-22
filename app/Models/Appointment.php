@@ -5,6 +5,7 @@ namespace App\Models;
 use DateTime;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Support\Facades\Lang;
 
 class Appointment extends Model
 {
@@ -14,6 +15,19 @@ class Appointment extends Model
     public const STATUS_CLOSED = 'დასრულებული';
     public const STATUS_OPEN = 'მიმდინარე';
 
+    public static function getStatusUpcoming($status)
+    {
+        switch ($status) {
+            case self::STATUS_UPCOMING:
+                return Lang::get('page.future');
+            case self::STATUS_CLOSED:
+                return Lang::get('page.finished');
+            case self::STATUS_OPEN:
+                return Lang::get('page.current');
+            default:
+                return false;
+        }
+    }
 
 
     public const SORT_ARRAY = [
@@ -90,17 +104,19 @@ class Appointment extends Model
 
         if ($start_date > $current) {
             $status = self::STATUS_UPCOMING;
-            $result =   $result = "<span class='btn btn-warning text-white pt-1 pb-1'>$status</span>";
+            $translatedStatus = $this->getStatusUpcoming($status);
+            $result = $result = "<span class='btn btn-warning text-white pt-1 pb-1'>$translatedStatus</span>";
         } elseif ($start_date <= $current && $end_date > $current) {
             $status = self::STATUS_OPEN;
-            $result =   $result = "<span class='btn btn-success text-white pt-1 pb-1'>$status</span>";
+            $translatedStatus = $this->getStatusUpcoming($status);
+            $result = $result = "<span class='btn btn-success text-white pt-1 pb-1'>$translatedStatus</span>";
         } elseif ($end_date < $current) {
             $status = self::STATUS_CLOSED;
-            $result =   $result = "<span class='btn btn-danger text-white pt-1 pb-1'>$status</span>";
+            $translatedStatus = $this->getStatusUpcoming($status);
+            $result = $result = "<span class='btn btn-danger text-white pt-1 pb-1'>$translatedStatus</span>";
         }
         return $result;
     }
-
 
 
     public const REPEAT_STATUS_REPEATED = 1;

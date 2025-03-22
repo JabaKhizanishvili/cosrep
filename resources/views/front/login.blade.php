@@ -7,28 +7,29 @@
 
 
 @section('css')
-<style>
-    .password-wrapper {
-        position: relative;
-        display: flex;
-        align-items: center;
-    }
+    <style>
+        .password-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
 
-    .toggle-password {
-        position: absolute;
-        right: 10px;
-        cursor: pointer;
-        user-select: none;
+        .toggle-password {
+            position: absolute;
+            right: 10px;
+            cursor: pointer;
+            user-select: none;
 
-    }
-</style>
+        }
+    </style>
 @endsection
 
 @section('content')
 
     <main>
         <!-- breadcrumb banner content area start -->
-        <div class="lernen_banner large" style="background: linear-gradient(rgba(0, 0, 0, .3), rgba(0, 0, 0, .1)), url({{ pageImage($page->image) }});">
+        <div class="lernen_banner large"
+             style="background: linear-gradient(rgba(0, 0, 0, .3), rgba(0, 0, 0, .1)), url({{ pageImage($page->image) }});">
             <div class="container">
                 <div class="row">
                     <div class="lernen_banner_title">
@@ -56,53 +57,57 @@
                             <img src="{{ front_styles('images/login.jpeg') }}" alt="Buy this Course">
                         </div>
                     </div>
-                <div class="col-md-12 col-lg-6">
-                    @if(session('error'))
-                        <div class="text-danger" role="alert">
-                            {{ session('error') }}
-                        </div>
-                    @endif
+                    <div class="col-md-12 col-lg-6">
+                        @if(session('error'))
+                            <div class="text-danger" role="alert">
+                                {{ session('error') }}
+                            </div>
+                        @endif
 
-                    @if(session('success'))
-                        <div class="text-success" role="alert">
-                            {{ session('success') }}
-                        </div>
-                    @endif
-                    <form class="themeioan-form-contact form" method="post" action="{{ route('front.login') }}">
-                        @csrf
-                        <!-- Change Placeholder and Title -->
+                        @if(session('success'))
+                            <div class="text-success" role="alert">
+                                {{ session('success') }}
+                            </div>
+                        @endif
+                        <form class="themeioan-form-contact form" method="post" action="{{ route('front.login') }}">
+                            @csrf
+                            <!-- Change Placeholder and Title -->
 
-                        <div class="mt-5">
-                            <input class="input-text required-field email-field" type="text" name="username"
-                                id="contactEmail" placeholder="Username" title="Username" value="{{ old('username') }}"/>
-                            @error('username')
+                            <div class="mt-5">
+                                <input class="input-text required-field email-field" type="text" name="username"
+                                       id="contactEmail" placeholder="Username" title="Username"
+                                       value="{{ old('username') }}"/>
+                                @error('username')
                                 <div class="error-msg">
                                     {{ $message }}
                                 </div>
-                            @enderror
-                        </div>
+                                @enderror
+                            </div>
 
-                        <div class="mt-2 mb-1 password-wrapper">
-                            <input class="input-text required-field" type="password" name="password" id="password"
-                                placeholder="Password" title="password" value="{{ old('password') }}"/>
-                            <span class="toggle-password" id="eye-icon" onclick="togglePassword(this)" data-target="password">
+                            <div class="mt-2 mb-1 password-wrapper">
+                                <input class="input-text required-field" type="password" name="password" id="password"
+                                       placeholder="{{__('auth.password')}}" title="password"
+                                       value="{{ old('password') }}"/>
+                                <span class="toggle-password" id="eye-icon" onclick="togglePassword(this)"
+                                      data-target="password">
                                 <i class="bi bi-eye-fill"></i>
                             </span>
-                            @error('password')
+                                @error('password')
                                 <div class="error-msg">
                                     {{ $message }}
                                 </div>
-                            @enderror
-                        </div>
+                                @enderror
+                            </div>
 
-                        <div class="mt-1 mb-5 ">
-                            <a  style="float: right; text-decoration:underline" href="{{ route('forget.password.get') }}">პაროლის აღდგენა</a>
-                        </div>
-                        <input class="color-two button" type="submit"
-                            value="ავტორიზაცია"/>
-                    </form>
+                            <div class="mt-1 mb-5 ">
+                                <a style="float: right; text-decoration:underline"
+                                   href="{{ route('forget.password.get') }}">{{__('auth.reset_password')}}</a>
+                            </div>
+                            <input class="color-two button" type="submit"
+                                   value="{{__('auth.login')}}"/>
+                        </form>
+                    </div>
                 </div>
-            </div>
             </div>
         </div>
         <!-- contact area end -->
@@ -112,7 +117,7 @@
 @endsection
 
 @section('js')
-{{--    <script src="{{ front_styles("js/tab.js") }}?v=1256"></script>--}}
+    {{--    <script src="{{ front_styles("js/tab.js") }}?v=1256"></script>--}}
     <script>
 
         function togglePassword(element) {

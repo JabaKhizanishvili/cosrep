@@ -242,6 +242,11 @@ Route::prefix('admin')->middleware(['auth:web', 'verified'])->group(function () 
 });
 
 //FrontEnd Routes
+
+Route::redirect('', config('app.fallback_locale'));
+Route::prefix('{locale?}')
+    ->middleware(['setlocale'])
+    ->group(function () {
 Route::get('/', [FrontEndController::class, 'index'])->name(('front.index'));
 Route::get('/contact', [FrontEndController::class, 'contact'])->name(('front.contact'));
 Route::post('/send', [FrontEndController::class, 'sendEmail'])->name(('front.sendEmail'));
@@ -260,16 +265,17 @@ Route::get('/services', [FrontEndController::class, 'services'])->name(('front.s
 
 //forgot password routes
 Route::get('forget-password', [ForgotPasswordController::class, 'showForgetPasswordForm'])->name('forget.password.get');
-Route::post('forget-password', [ForgotPasswordController::class, 'submitForgetPasswordForm'])->name('forget.password.post');
 Route::get('reset-password/{token}', [ForgotPasswordController::class, 'showResetPasswordForm'])->name('reset.password.get');
+Route::post('forget-password', [ForgotPasswordController::class, 'submitForgetPasswordForm'])->name('forget.password.post');
 Route::post('reset-password', [ForgotPasswordController::class, 'submitResetPasswordForm'])->name('reset.password.post');
-
-
 
 
 Route::middleware(['auth:customer'])->group(function () {
 
-    Route::get('start-training/{object}', [FrontEndController::class, 'startTrainingView'])->name('front.startTrainingView');
+    Route::get('start-training/{object}', [FrontEndController::class, 'startTrainingView'])
+        ->whereNumber('object')
+        ->name('front.startTrainingView');
+
     Route::get('start-test/{object}', [FrontEndController::class, 'startTestView'])->name('front.startTestView');
     Route::post('end-test/{object}', [FrontEndController::class, 'endTest'])->name('front.EndTest');
 
@@ -284,3 +290,7 @@ Route::middleware(['auth:customer'])->group(function () {
         return redirect()->route('front.login');
     })->name('front.logout');
 });
+
+
+        });
+

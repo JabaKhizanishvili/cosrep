@@ -15,7 +15,8 @@
 
     <main>
         <!-- breadcrumb banner content area start -->
-        <div class="lernen_banner large bg-blog-detail" style="background: linear-gradient(rgba(0, 0, 0, .3), rgba(0, 0, 0, .1)), url({{ pageImage($page->image) }});">
+        <div class="lernen_banner large bg-blog-detail"
+             style="background: linear-gradient(rgba(0, 0, 0, .3), rgba(0, 0, 0, .1)), url({{ pageImage($page->image) }});">
             <div class="container">
                 <div class="row">
                     <div class="lernen_banner_title">
@@ -23,7 +24,7 @@
                         <div class="lernen_breadcrumb">
                             <div class="breadcrumbs">
                                         <span class="first-item">
-                                        <a href="{{ route('front.index') }}">მთავარი</a></span>
+                                        <a href="{{ route('front.index') }}">{{__('page.main')}}</a></span>
                                 <span class="separator">&gt;</span>
                                 <span class="last-item">{{ $page->name }}</span>
                             </div>
@@ -46,15 +47,19 @@
                             <div class="themeioan_blog">
                                 <article><!-- single blog articles -->
                                     <div class="blog-photo">
-                                        <a href="{{ route('front.singleBlog', urlencode($blog->name)) }}"><img src="{{ blogImage($blog->image) }}" alt="Blog"></a>
+                                        <a href="{{ route('front.singleBlog', urlencode($blog->name)) }}"><img
+                                                src="{{ blogImage($blog->image) }}" alt="Blog"></a>
                                     </div>
                                     <div class="blog-content">
-                                        <h5 class="title" style="min-height: 95px"><a href="{{ route('front.singleBlog', urlencode($blog->name)) }}">{{ limit_words($blog->name, 50) }}</a>
+                                        <h5 class="title" style="min-height: 95px"><a
+                                                href="{{ route('front.singleBlog', urlencode($blog->name)) }}">{{ limit_words($blog->name, 50) }}</a>
                                         </h5>
                                         <p>
                                             {{ limit_words(strip_tags($blog->text), 100) }}
                                         </p>
-                                        <a href="{{ route('front.singleBlog', urlencode($blog->name)) }}" class="button-light"><i class="fas fa-arrow-right"></i> ვრცლად</a>
+                                        <a href="{{ route('front.singleBlog', urlencode($blog->name)) }}"
+                                           class="button-light"><i class="fas fa-arrow-right"></i> {{__('page.see')}}
+                                        </a>
                                     </div>
                                 </article><!-- end single blog articles -->
                             </div>

@@ -67,6 +67,7 @@ class ForgotPasswordController extends Controller
 
         return back()->with('success', 'პაროლის აღსადგენი ლინკი გამოგზავნილია ელექტრონულ ფოსტაზე.');
     }
+
     /**
      * Write code on Method
      *
@@ -115,6 +116,6 @@ class ForgotPasswordController extends Controller
 
         DB::table('customers_reset_passwords')->where(['username' => $request->username])->delete();
 
-        return redirect('/login')->with('success', 'პაროლი წარმატებით შეიცვალა, გთხოვთ გაიაროთ ავტორიზაცია');
+        return redirect(route('front.login'))->with('success', 'პაროლი წარმატებით შეიცვალა, გთხოვთ გაიაროთ ავტორიზაცია');
     }
 }

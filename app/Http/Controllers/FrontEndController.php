@@ -65,7 +65,7 @@ class FrontEndController extends Controller
         return redirect()->back()->with('success', 'მეილი წარმატებით გაიგზავნა');
     }
 
-    public function sendTrainerMessage(sendTrainerMessageRequest $request, Training $object)
+    public function sendTrainerMessage($locale, sendTrainerMessageRequest $request, Training $object)
     {
         $customer = Auth::guard('customer')->user();
         $request->request->add(['training_name' => $object->name, 'name' => $customer->name, 'personal_number' => $customer->username, 'trainer_email' => true]);
@@ -110,7 +110,7 @@ class FrontEndController extends Controller
         return view('front.categories', compact('categories', 'page'));
     }
 
-    public function categoryTrainings($name)
+    public function categoryTrainings($locale,$name)
     {
         $name = urldecode($name);
         $category = Category::where('name', $name)->firstOrFail();
@@ -130,7 +130,7 @@ class FrontEndController extends Controller
         return view('front.blogs', compact('blogs', 'page'));
     }
 
-    public function singleBlog($name)
+    public function singleBlog($locale,$name)
     {
 
 //        $page = Page::where('slug', '/blogs')->firstOrFail();
@@ -142,7 +142,7 @@ class FrontEndController extends Controller
         return view('front.singleBlog', compact('blog', 'blogs', 'page'));
     }
 
-    public function singleTraining($name)
+    public function singleTraining($locale,$name)
     {
         $page = Page::where('slug', '/trainings')->firstOrFail();
         $name = urldecode($name);
@@ -163,7 +163,8 @@ class FrontEndController extends Controller
 
         $credentials = $request->only('username', 'password');
         if (Auth::guard(AuthType::TYPE_CUSTOMER)->attempt($credentials)) {
-            return redirect(RouteServiceProvider::CUSTOMER_HOME);
+//            return redirect(RouteServiceProvider::CUSTOMER_HOME);
+            return redirect(route('front.dashboard'));
         }
 
         return redirect()->back()->with('error', 'Username ან Password არასწორია');
@@ -227,7 +228,7 @@ class FrontEndController extends Controller
     }
 
 
-    public function startTrainingView(Appointment $object)
+    public function startTrainingView($locale,Appointment $object)
     {
         $page = Page::where('slug', '/dashboard')->firstOrFail();
 
@@ -271,7 +272,7 @@ class FrontEndController extends Controller
         return view('front.startTraining', compact('customer', 'page', 'appointment'));
     }
 
-    public function startTestView(Appointment $object)
+    public function startTestView($locale,Appointment $object)
     {
         $page = Page::where('slug', '/dashboard')->firstOrFail();
 
@@ -315,7 +316,7 @@ class FrontEndController extends Controller
         return view('front.startTest', compact('customer', 'page', 'appointment'));
     }
 
-    public function endTest(EndTestRequest $request, Appointment $object)
+    public function endTest($locale,EndTestRequest $request, Appointment $object)
     {
         $page = Page::where('slug', '/dashboard')->firstOrFail();
         $customer = auth()->guard(AuthType::TYPE_CUSTOMER)->user();
@@ -395,7 +396,7 @@ class FrontEndController extends Controller
         // return $answers_count;
     }
 
-    public function testDetails(Appointment $object)
+    public function testDetails($locale, Appointment $object)
     {
         $customer = auth()->guard(AuthType::TYPE_CUSTOMER)->user();
         //check if customer can process current appointment

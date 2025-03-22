@@ -24,7 +24,7 @@
                         <div class="lernen_breadcrumb">
                             <div class="breadcrumbs">
                                         <span class="first-item">
-                                        <a href="{{ route('front.index') }}">მთავარი</a></span>
+                                        <a href="{{ route('front.index') }}">{{__('page.main')}}</a></span>
                                 <span class="separator">&gt;</span>
                                 <span class="first-item">
                                     <a href="{{ route('front.trainings') }}">{{ $page->name }}</a></span>

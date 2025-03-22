@@ -1,0 +1,28 @@
+<?php
+
+return [
+    'contactus' => 'Contact us',
+    'login' => 'Login',
+    'hello' => 'Hello',
+    'exit' => 'Exit',
+    'main' => 'Home',
+    'mytraining' => 'My Trainings',
+    'current' => 'Current',
+    'future' => 'Future',
+    'finished' => 'Finished',
+    'all' => 'All',
+    'see' => 'details',
+    'allservice' => 'All Services',
+    'start_training' => 'Start Training',
+    'test_details' => 'Test Details',
+    'email' => 'Email',
+    'register_date' => 'Register Date',
+    'menu' => 'Menu',
+    'privacy_policy' => 'Privacy Policy',
+    'subject' => 'Subject',
+    'text' => 'Text',
+    'name_surname' => 'Full Name',
+    'send_message' => 'Send Message',
+    'details' => 'Details',
+    'see_more' => 'More Details',
+];

@@ -28,5 +28,6 @@ return [
     'repeat_new_password' => 'გაიმეორეთ ახალი პაროლი',
     'password_updated' => 'პაროლი წარმატებით განახლდა!',
     'incorrect_password' => 'მიმდინარე პაროლი არასწორია.',
+    'login' => 'ავტორიზაცია',
 
 ];

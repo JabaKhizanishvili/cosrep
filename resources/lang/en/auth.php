@@ -28,5 +28,6 @@ return [
     'repeat_new_password' => 'Repeat New Password',
     'password_updated' => 'Password Updated!',
     'incorrect_password' => 'Incorrect Password.',
+    'login' => 'Login',
 
 ];

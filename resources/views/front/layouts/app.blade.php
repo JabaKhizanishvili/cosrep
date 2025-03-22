@@ -12,7 +12,7 @@
     <title>
         {{ config('app.name') }}
 
-    @yield('title')
+        @yield('title')
     </title>
     <!-- Favicon -->
 
@@ -43,27 +43,37 @@
     <link rel="stylesheet" href="{{ front_styles('css/magnific-popup.css') }}"> --}}
 
     <link rel="stylesheet" href="{{ front_styles('css/style.min.css') }}?v=7">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
 
-	<style>
-      #footer i::before{
-       color: #fff !important;
-      }
+    @if(app()->getLocale() == 'en')
+        <style>
+            body {
+                font-family: 'Inter', sans-serif;
+            }
+        </style>
+    @endif
 
-      .f-widget-title h4:before{
-           background-color: #fff !important;
-      }
-  	</style>
+    <style>
+        #footer i::before {
+            color: #fff !important;
+        }
+
+        .f-widget-title h4:before {
+            background-color: #fff !important;
+        }
+    </style>
 
     @yield('css')
 </head>
 <body>
 
-        <div class="dashboardMenu {{ $page->slug == '/dashboard' ? 'dashboardMenuActive' : '' }}">
-            <a href="{{ route('front.dashboard') }}">
-                <i class="fas fa-home" aria-hidden="true"></i>
+<div class="dashboardMenu {{ $page->slug == '/dashboard' ? 'dashboardMenuActive' : '' }}">
+    <a href="{{ route('front.dashboard') }}">
+        <i class="fas fa-home" aria-hidden="true"></i>
 
-            </a>
-        </div>
+    </a>
+</div>
 
 <!-- header area start -->
 <header id="header" class="sticky transparent-header">
@@ -71,34 +81,54 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-7">
-                      @if($contact->phone)
-                        <div class="address-icon">დაგვიკავშირდით: <a href="tel:{{ $contact->phone }}">{{ $contact->phone }}</a></div> </div>
-                      @endif
+                    @if($contact->phone)
+                        <div class="address-icon">{{__('page.contactus')}}: <a
+                                href="tel:{{ $contact->phone }}">{{ $contact->phone }}</a></div></div>
+                @endif
                 <div class="col-lg-5 text-right">
                     <div class="custom-page-top">
                         @if(auth()->guard(\App\Services\AuthType::TYPE_CUSTOMER)->check())
-                        <a href="{{route('front.changePasswordView')}}">მოგესალმებით, {{ auth()->guard(\App\Services\AuthType::TYPE_CUSTOMER)->user()->name }}</a>
-                        {{-- <a href="{{ route('front.dashboard') }}" class="{{ $page->slug == '/dashboard' ? 'active' : '' }}">დეშბორდი</a> --}}
-                        <form action="{{ route('front.logout') }}" method="POST" style="display: inline-block">
-                            @csrf
-                            <button class="unsetStyles" style="color: #fff">გასვლა</button>
-                        </form>
+                            <a href="{{route('front.changePasswordView')}}">{{__('page.hello')}}
+                                , {{ auth()->guard(\App\Services\AuthType::TYPE_CUSTOMER)->user()->name }}</a>
+                            {{-- <a href="{{ route('front.dashboard') }}" class="{{ $page->slug == '/dashboard' ? 'active' : '' }}">დეშბორდი</a> --}}
+                            <form action="{{ route('front.logout') }}" method="POST" style="display: inline-block">
+                                @csrf
+                                <button class="unsetStyles" style="color: #fff">{{__('page.exit')}}</button>
+                            </form>
                         @else
-                        <a style="color: #fff" href="{{ route('front.loginView') }}" class="{{ $page->slug == '/login' ? 'active' : '' }}">ავტორიზაცია</a>
+                            <a style="color: #fff" href="{{  route('front.loginView') }}"
+                               class="{{ $page->slug == '/login' ? 'active' : '' }}">{{__('page.login')}}</a>
                         @endif
+                    </div>
+
+                    @php
+                        $currentLocale = app()->getLocale();
+                        $newLocale = $currentLocale === 'en' ? 'ge' : 'en';
+                        $currentUrl = request()->getPathInfo();
+                        $newUrl = '/' . $newLocale . substr($currentUrl, 3); // ლოკალის შეცვლა URL-ში
+                    @endphp
+
+                    <div class="social_top_header pl-2">
+                        <a href="{{ url($newUrl) }}">
+                            {{ $newLocale === 'en' ? '🇬🇧' : '🇬🇪' }}
+                        </a>
+
                     </div>
 
                     <div class="social_top_header">
                         @if($contact->facebook)
-                            <a href="{{ $contact->facebook }}" target="_blank"><i class="fab fa-facebook" aria-hidden="true"></i></a>
+                            <a href="{{ $contact->facebook }}" target="_blank"><i class="fab fa-facebook"
+                                                                                  aria-hidden="true"></i></a>
                         @endif
 
                         @if($contact->linkedin)
-                            <a href="{{ $contact->linkedin }}" target="_blank"><i class="fab fa-linkedin" aria-hidden="true"></i></a>
+                            <a href="{{ $contact->linkedin }}" target="_blank"><i class="fab fa-linkedin"
+                                                                                  aria-hidden="true"></i></a>
                         @endif
 
                         @if($contact->youtube)
-                            <a href="{{ $contact->youtube }}" target="_blank"><i class="fab fa-youtube" aria-hidden="true"></i></a>
+                            <a href="{{ $contact->youtube }}" target="_blank"><i class="fab fa-youtube"
+                                                                                 aria-hidden="true"></i></a>
                         @endif
                     </div>
                 </div>
@@ -111,22 +141,38 @@
         <div class="container">
             <!-- Logo and Menu -->
             <div class="navbar-header">
-                <div class="navbar-brand"><a href="{{ route('front.index') }}"><img src="{{ front_styles('images/logo.png') }}?v=4" alt="Logo"/></a></div>
+                <div class="navbar-brand"><a href="{{ route('front.index') }}"><img
+                            src="{{ front_styles('images/logo.png') }}?v=4" alt="Logo"/></a></div>
                 <!-- site logo -->
             </div>
             <!-- Menu Toogle -->
-                <div class="burger-icon">
-                    <div class="bar1"></div>
-                    <div class="bar2"></div>
-                    <div class="bar3"></div>
-                </div>
+            <div class="burger-icon">
+                <div class="bar1"></div>
+                <div class="bar2"></div>
+                <div class="bar3"></div>
+            </div>
             <div class="collapse navbar-collapse " id="navbarCollapse">
                 <ul class="nav navbar-nav ml-auto">
 
                     @foreach ($pages as $p)
-                        <?php $slug  = Request::segment(1); if (strpos($slug, 'training') !== false){ $slug = 'trainings'; }; ?>
+                            <?php
+                            $slug = Request::segment(1) ?? '/';
+                            $currentPath = request()->path();
+                            $pageSlug = ltrim($p->slug, '/');
+                            ?>
+                            <?php $slug = Request::segment(1); if (strpos($slug, 'training') !== false) {
+                            $slug = 'trainings';
+                        }; ?>
 
-                        <li><a href="{{ $p->slug }}" class="{{ $p->slug == '/'.$slug ? 'active' : '' }}">{{ $p->name }}</a></li>
+                        <li>
+                            <a href="{{ url(app()->getLocale() . '/' . ltrim($p->slug, '/')) }}"
+                               {{--                               class="{{ $p->slug == '/'.$slug ? 'active' : '' }}">--}}
+                               {{--                                   class="{{ request()->is(app()->getLocale() . '/' . ltrim($p->slug, '/')) ? 'active' : '' }}">--}}
+                               class="{{ ($p->slug == '/' && $currentPath == app()->getLocale()) || request()->is(app()->getLocale() . '/' . $pageSlug) ? 'active' : '' }}">
+
+                                {{ $p->name }}
+                            </a>
+                        </li>
                     @endforeach
                 </ul>
                 @if($contact->website)
@@ -134,10 +180,11 @@
                 @endif
 
                 @if(auth()->guard(\App\Services\AuthType::TYPE_CUSTOMER)->check())
-                <div class="header-cta">
-                    <a href="{{ route('front.dashboard') }}" class="btn btn-1c {{ $page->slug == '/dashboard' ? 'btn-1c-active' : '' }}">ჩემი ტრენინგები</a>
-                </div>
-            @endif
+                    <div class="header-cta">
+                        <a href="{{ route('front.dashboard') }}"
+                           class="btn btn-1c {{ $page->slug == '/dashboard' ? 'btn-1c-active' : '' }}">{{__('page.mytraining')}}</a>
+                    </div>
+                @endif
             </div>
             <!-- Menu Toogle end -->
         </div>
@@ -164,7 +211,7 @@
                             <div class="address-icon">
                                 <i class="fas fa-home"></i>
                             </div>
-                                <p>{{ $contact->address }}</p>
+                            <p>{{ $contact->address }}</p>
                         </div>
                     @endif
 
@@ -188,7 +235,7 @@
                 </div><!-- footer widget -->
                 <div class="col-xl-3 offset-xl-1 col-lg-2 col-sm-6"><!-- footer widget -->
                     <div class="f-widget-title">
-                        <h4>მენიუ</h4>
+                        <h4>{{__('page.menu')}}</h4>
                     </div>
                     <div class="f-widget-link">
                         <ul>
@@ -200,12 +247,12 @@
                 </div><!-- footer widget -->
                 <div class="col-xl-3 offset-xl-1 col-lg-3 col-sm-6"><!-- footer widget -->
                     <div class="f-widget-title">
-                        <h4>უსაფრთხოების პოლიტიკა</h4>
+                        <h4>{{__('page.privacy_policy')}}</h4>
                     </div>
                     <div class="f-widget-link">
                         <ul>
                             @foreach ($policies as $policy)
-                            <li><a href="{{ $policy->slug }}">{{ $policy->name }}</a></li>
+                                <li><a href="{{ $policy->slug }}">{{ $policy->name }}</a></li>
                             @endforeach
                         </ul>
                     </div>
@@ -223,7 +270,7 @@
             <div class="col-sm-6">
                 <div class="copyright">
                     <p>
-                        © 2022   COS  -   All rights reserved
+                        © 2022 COS - All rights reserved
                     </p>
                 </div>
             </div>
@@ -231,15 +278,18 @@
 
                 <div class="text-right icon-round-white footer-social mt-25 mb-25">
                     @if($contact->facebook)
-                        <a href="{{ $contact->facebook }}" target="_blank"><i class="fab fa-facebook" aria-hidden="true"></i></a>
+                        <a href="{{ $contact->facebook }}" target="_blank"><i class="fab fa-facebook"
+                                                                              aria-hidden="true"></i></a>
                     @endif
 
                     @if($contact->linkedin)
-                        <a href="{{ $contact->linkedin }}" target="_blank"><i class="fab fa-linkedin" aria-hidden="true"></i></a>
+                        <a href="{{ $contact->linkedin }}" target="_blank"><i class="fab fa-linkedin"
+                                                                              aria-hidden="true"></i></a>
                     @endif
 
                     @if($contact->youtube)
-                        <a href="{{ $contact->youtube }}" target="_blank"><i class="fab fa-youtube" aria-hidden="true"></i></a>
+                        <a href="{{ $contact->youtube }}" target="_blank"><i class="fab fa-youtube"
+                                                                             aria-hidden="true"></i></a>
                     @endif
                 </div>
             </div>
@@ -253,66 +303,66 @@
     <!-- #footer bottom end -->
 </footer>
 
-    {{-- cookie Popup --}}
-    <div class="col-md-4 col-sm-12 button-fixed">
-        <div class="p-3 pb-4 bg-custom text-white">
-          <div class="row">
+{{-- cookie Popup --}}
+<div class="col-md-4 col-sm-12 button-fixed">
+    <div class="p-3 pb-4 bg-custom text-white">
+        <div class="row">
             <div class="col-10">
-              <h2>{{ $cookie->name }}</h2>
+                <h2>{{ $cookie->name }}</h2>
             </div>
             <div class="col-2 text-center">
             </div>
-          </div>
-          <p>{{ $cookie->text }}
-          </p>
-          <button type="button" class="btn w-100 accept-cookies">ვეთანხმები</button>
         </div>
-      </div>
+        <p>{{ $cookie->text }}
+        </p>
+        <button type="button" class="btn w-100 accept-cookies">ვეთანხმები</button>
+    </div>
+</div>
 <!-- #footer area end -->
 
-    <!-- JavaScript File -->
-    <!-- jQuery -->
-    {{-- <script src='{{ front_styles("js/jquery-3.4.1.min.js") }}'></script>
-    <!-- Main -->
-    <script src='{{ front_styles("js/main.js") }}'></script>
-    <!-- Bootstrap -->
-    <script src='{{ front_styles("js/bootstrap.min.js") }}'></script>
-    <!-- Slick -->
-    <script src='{{ front_styles("js/slick.min.js") }}'></script>
-    <!-- Fancybox -->
-    <script src='{{ front_styles("js/jquery.fancybox.pack.js") }}'></script>
-    <!-- Magnific Popup core JS file -->
-    <script src="{{ front_styles("js/jquery.magnific-popup.min.js") }}"></script>
-    <!-- Waypoints -->
-    <script src='{{ front_styles("js/waypoints.min.js") }}'></script>
-    <!-- Counterup -->
-    <script src='{{ front_styles("js/jquery.counterup.min.js") }}'></script>
-    <!-- owl carousel -->
-    <script src='{{ front_styles("js/owl.carousel.min.js") }}'></script>
-    <!-- Typed Animation Library -->
-    <script src="{{ front_styles("js/typed.min.js") }}"></script>
-    <!-- Cursor Library -->
-    <script src="{{ front_styles("js/cursor.js") }}"></script> --}}
+<!-- JavaScript File -->
+<!-- jQuery -->
+{{-- <script src='{{ front_styles("js/jquery-3.4.1.min.js") }}'></script>
+<!-- Main -->
+<script src='{{ front_styles("js/main.js") }}'></script>
+<!-- Bootstrap -->
+<script src='{{ front_styles("js/bootstrap.min.js") }}'></script>
+<!-- Slick -->
+<script src='{{ front_styles("js/slick.min.js") }}'></script>
+<!-- Fancybox -->
+<script src='{{ front_styles("js/jquery.fancybox.pack.js") }}'></script>
+<!-- Magnific Popup core JS file -->
+<script src="{{ front_styles("js/jquery.magnific-popup.min.js") }}"></script>
+<!-- Waypoints -->
+<script src='{{ front_styles("js/waypoints.min.js") }}'></script>
+<!-- Counterup -->
+<script src='{{ front_styles("js/jquery.counterup.min.js") }}'></script>
+<!-- owl carousel -->
+<script src='{{ front_styles("js/owl.carousel.min.js") }}'></script>
+<!-- Typed Animation Library -->
+<script src="{{ front_styles("js/typed.min.js") }}"></script>
+<!-- Cursor Library -->
+<script src="{{ front_styles("js/cursor.js") }}"></script> --}}
 
-    <script src="{{ front_styles("js/js.min.js") }}"></script>
+<script src="{{ front_styles("js/js.min.js") }}"></script>
 
 
-    @yield('js')
+@yield('js')
 
-    <script>
+<script>
 
-        // cookie policy
-        $(document).ready(function(){
+    // cookie policy
+    $(document).ready(function () {
         if (document.cookie.indexOf("accepted_cookies=") < 0) {
             $('.button-fixed').css('display', 'block');
         }
 
-        $('.accept-cookies').on('click', function() {
+        $('.accept-cookies').on('click', function () {
             document.cookie = "accepted_cookies=yes;";
             $('.button-fixed').css('display', 'none');
         })
 
-        })
-    </script>
+    })
+</script>
 </body>
 </html>
