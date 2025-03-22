@@ -41,4 +41,8 @@ return [
     'email_send_error' => 'An error occurred, please try again later',
     'our_services' => 'Our Services',
     'our_partners' => 'Our Partners',
+    'finish_left' => 'left to finish',
+    'hours' => 'Hour',
+    'minutes' => 'Minute',
+    'seconds' => 'Second',
 ];

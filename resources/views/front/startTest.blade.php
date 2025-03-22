@@ -14,20 +14,21 @@
 @section('content')
 
     <div id="countDown-section">
-        <div id="countdownHeadline">დასრულებამდე დარჩა:</div>
+        <div id="countdownHeadline">{{__('page.finish_left')}}:</div>
 
         <div id="countdown">
-          <ul>
-            <li><span id="hours"></span>საათი</li>
-            <li><span id="minutes"></span>წუთი</li>
-            <li><span id="seconds"></span>წამი</li>
-          </ul>
+            <ul>
+                <li><span id="hours"></span>{{__('page.hours')}}</li>
+                <li><span id="minutes"></span>{{__('page.minutes')}}</li>
+                <li><span id="seconds"></span>{{__('page.seconds')}}</li>
+            </ul>
         </div>
     </div>
 
     <main>
         <!-- breadcrumb banner content area start -->
-        <div class="lernen_banner large" style="background: linear-gradient(rgba(0, 0, 0, .3), rgba(0, 0, 0, .1)), url({{ trainingImage($appointment->training->image) }});">
+        <div class="lernen_banner large"
+             style="background: linear-gradient(rgba(0, 0, 0, .3), rgba(0, 0, 0, .1)), url({{ trainingImage($appointment->training->image) }});">
             <div class="container">
                 <div class="row">
 
@@ -57,58 +58,58 @@
         <!-- end breadcrumb banner content area start -->
 
 
-
         <div id="features" class="wrap-bg wrap-bg-dark services">
-
 
 
             <form action="{{ route('front.EndTest', $appointment) }}" id="endTestForm" method="POST">
                 @csrf
-            <!-- .container -->
-            <div class="container">
-                <!-- .row start -->
-                <div class="row">
-                    @if(session('error'))
-                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 mb25">
-                            <div class="alert alert-danger" role="alert">
-                                {{session('error')}}
-                            </div>
-                        </div>
-                    @endif
-
-                    @foreach ($appointment->training->tests as $key => $test)
-                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 mb25 parent_div" id="scrollable_{{ $key }}">
-
-                            <!-- 1 -->
-                            <div class="single-features-light"><!-- single features -->
-                                <div class="move question_section">
-                                    <!-- uses solid style -->
-                                    <h4><a href="#">#{{ $key + 1 }} - {{ $test->question }}</a></h4>
-                                    <ul>
-                                        @foreach (json_decode($test->answers) as $k => $answer)
-                                        <li>
-                                            <input type="radio"  name="answer_{{ $test->id }}" class="answers"  value="{{ $k }}" {{ old("answer_$test->id") == $k && old("answer_$test->id") != null ? 'checked' : '' }}> {{ $answer }}
-                                        </li>
-                                        @endforeach
-                                    </ul>
-
-                                    <div class="questionError">სავარაუდო პასუხის არჩევა სავალდებულოა</div>
+                <!-- .container -->
+                <div class="container">
+                    <!-- .row start -->
+                    <div class="row">
+                        @if(session('error'))
+                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 mb25">
+                                <div class="alert alert-danger" role="alert">
+                                    {{session('error')}}
                                 </div>
-                            </div><!-- end single features -->
-                        </div>
-                    @endforeach
+                            </div>
+                        @endif
 
-                </div>
-                <!-- .row end -->
+                        @foreach ($appointment->training->tests as $key => $test)
+                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 mb25 parent_div"
+                                 id="scrollable_{{ $key }}">
 
-                <div class="row">
-                    <div class="col-md-12 col-lg-12 mt-5">
-                        <button class="btn btn-success text-white float-right" >ტესტის დასრულება</button>
+                                <!-- 1 -->
+                                <div class="single-features-light"><!-- single features -->
+                                    <div class="move question_section">
+                                        <!-- uses solid style -->
+                                        <h4><a href="#">#{{ $key + 1 }} - {{ $test->question }}</a></h4>
+                                        <ul>
+                                            @foreach (json_decode($test->answers) as $k => $answer)
+                                                <li>
+                                                    <input type="radio" name="answer_{{ $test->id }}" class="answers"
+                                                           value="{{ $k }}" {{ old("answer_$test->id") == $k && old("answer_$test->id") != null ? 'checked' : '' }}> {{ $answer }}
+                                                </li>
+                                            @endforeach
+                                        </ul>
+
+                                        <div class="questionError">სავარაუდო პასუხის არჩევა სავალდებულოა</div>
+                                    </div>
+                                </div><!-- end single features -->
+                            </div>
+                        @endforeach
 
                     </div>
+                    <!-- .row end -->
+
+                    <div class="row">
+                        <div class="col-md-12 col-lg-12 mt-5">
+                            <button class="btn btn-success text-white float-right">ტესტის დასრულება</button>
+
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </form>
+            </form>
             <!-- .container end -->
         </div>
 
@@ -117,85 +118,81 @@
 @endsection
 
 @section('js')
-<script>
-    (function () {
-  const second = 1000,
-        minute = second * 60,
-        hour = minute * 60,
-        day = hour * 24;
+    <script>
+        (function () {
+            const second = 1000,
+                minute = second * 60,
+                hour = minute * 60,
+                day = hour * 24;
 
 
-  const ddd = "{{ $appointment->end_date }}"
-  const countDown = new Date(ddd).getTime(),
-      x = setInterval(function() {
+            const ddd = "{{ $appointment->end_date }}"
+            const countDown = new Date(ddd).getTime(),
+                x = setInterval(function () {
 
-        const now = new Date().getTime(),
-              distance = countDown - now;
+                    const now = new Date().getTime(),
+                        distance = countDown - now;
 
-          document.getElementById("hours").innerText = Math.floor((distance % (day)) / (hour)),
-          document.getElementById("minutes").innerText = Math.floor((distance % (hour)) / (minute)),
-          document.getElementById("seconds").innerText = Math.floor((distance % (minute)) / second);
+                    document.getElementById("hours").innerText = Math.floor((distance % (day)) / (hour)),
+                        document.getElementById("minutes").innerText = Math.floor((distance % (hour)) / (minute)),
+                        document.getElementById("seconds").innerText = Math.floor((distance % (minute)) / second);
 
-        //do something later when date is reached
-        if (distance < 0) {
-          document.getElementById("countdownHeadline").innerText = "დრო ამიწურა!";
-          document.getElementById("countdown").style.display = "none";
-          clearInterval(x);
-        }
-        //seconds
-      }, 0)
-
-      //check if all questions are answered
-
-
-
-        $( "#endTestForm" ).submit(function( event ) {
-
-            var question_length =  $('.question_section').length;
-            var answered_length = 0;
-            var scrolled = false;
-
-            $('.question_section').each(function(i,obj){
-                all_answered = false;
-                var answers = $(obj).find('.answers');
-                var input_checked = false;
-                answers.each(function(num, input_radio){
-                    if($(input_radio).is(':checked')){
-                        input_checked = true;
+                    //do something later when date is reached
+                    if (distance < 0) {
+                        document.getElementById("countdownHeadline").innerText = "დრო ამიწურა!";
+                        document.getElementById("countdown").style.display = "none";
+                        clearInterval(x);
                     }
-                });
+                    //seconds
+                }, 0)
 
-                if(!input_checked){
-                    $('.questionError').eq(i).css('display', 'block')
-                    if(!scrolled){
-                        $('html, body').animate({
-                        scrollTop:   $(obj).offset().top - 200
-                    }, 2000);
-                    scrolled = true;
+            //check if all questions are answered
+
+
+            $("#endTestForm").submit(function (event) {
+
+                var question_length = $('.question_section').length;
+                var answered_length = 0;
+                var scrolled = false;
+
+                $('.question_section').each(function (i, obj) {
+                    all_answered = false;
+                    var answers = $(obj).find('.answers');
+                    var input_checked = false;
+                    answers.each(function (num, input_radio) {
+                        if ($(input_radio).is(':checked')) {
+                            input_checked = true;
+                        }
+                    });
+
+                    if (!input_checked) {
+                        $('.questionError').eq(i).css('display', 'block')
+                        if (!scrolled) {
+                            $('html, body').animate({
+                                scrollTop: $(obj).offset().top - 200
+                            }, 2000);
+                            scrolled = true;
+                        }
+
+
+                    } else {
+                        $('.questionError').eq(i).css('display', 'none')
+                        answered_length++;
                     }
+                })
 
-
-
-
-
-                }else{
-                    $('.questionError').eq(i).css('display', 'none')
-                    answered_length++;
-                }
-            })
-
-            if(answered_length == question_length){
+                if (answered_length == question_length) {
                     return true;
-                }else{
+                } else {
                     return false;
 
                 }
 
-        });
+            });
 
 
-  }());
-</script>
+        }());
+    </script>
 
 @endsection
 

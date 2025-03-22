@@ -13,13 +13,13 @@
 @section('content')
 
     <div id="countDown-section">
-        <div id="countdownHeadline">დასრულებამდე დარჩა:</div>
+        <div id="countdownHeadline">{{__('page.finish_left')}}:</div>
 
         <div id="countdown">
             <ul>
-                <li><span id="hours"></span>საათი</li>
-                <li><span id="minutes"></span>წუთი</li>
-                <li><span id="seconds"></span>წამი</li>
+                <li><span id="hours"></span>{{__('page.hours')}}</li>
+                <li><span id="minutes"></span>{{__('page.minutes')}}</li>
+                <li><span id="seconds"></span>{{__('page.seconds')}}</li>
             </ul>
         </div>
     </div>
