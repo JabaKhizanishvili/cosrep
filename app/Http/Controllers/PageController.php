@@ -76,6 +76,7 @@ class PageController extends Controller
      */
     public function update(PageRequest $request, Page $object)
     {
+        
         $object = Page::findOrFail($object->id);
         // $request->validated();
 //        $object->name = $request->name;

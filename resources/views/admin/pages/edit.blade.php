@@ -28,6 +28,7 @@
                                 <h4></h4>
                             </div>
                         </div>
+                        
                     </div>
                     <div class="widget-content widget-content-area">
                         <h4 class="">{{$object->slug}}</h4>

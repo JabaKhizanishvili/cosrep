@@ -132,6 +132,7 @@
                                                     <div>
 
                                                 <span class="">
+
                                                     <a href="{{route('admin.pages.edit', $object->id)}}" class=""><i
                                                             data-feather="edit" style="color: #8dbf42"></i></a>
                                                     <span>&nbsp; &nbsp;</span>
