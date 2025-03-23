@@ -18,7 +18,7 @@ class PartnerController extends Controller
      */
     public function index(Request $request)
     {
-        $objects = Partner::paginate(10);
+        $objects = Partner::orderBy('id', 'DESC')->paginate(10);
 
         return view('admin.partners.index', compact('objects'));
     }
@@ -36,14 +36,15 @@ class PartnerController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(PartnerRequest $request)
     {
         $object = new Partner();
 
-        $object->name = $request->name;
+//        $object->name = $request->name;
+        $object->setTranslations('name', $request->get('name'));
         $object->url = $request->url;
 
         if ($request->hasFile('image')) {
@@ -63,7 +64,7 @@ class PartnerController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Partner  $partner
+     * @param \App\Models\Partner $partner
      * @return \Illuminate\Http\Response
      */
     public function show(Partner $partner)
@@ -74,7 +75,7 @@ class PartnerController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Partner  $partner
+     * @param \App\Models\Partner $partner
      * @return \Illuminate\Http\Response
      */
     public function edit(Partner $object)
@@ -85,13 +86,14 @@ class PartnerController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Partner  $partner
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Models\Partner $partner
      * @return \Illuminate\Http\Response
      */
     public function update(PartnerRequest $request, Partner $object)
     {
         $object->name = $request->name;
+        $object->setTranslations('name', $request->input('name'));
         $object->url = $request->url;
 
 
@@ -111,7 +113,7 @@ class PartnerController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Partner  $partner
+     * @param \App\Models\Partner $partner
      * @return \Illuminate\Http\Response
      */
 
