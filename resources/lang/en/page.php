@@ -45,4 +45,5 @@ return [
     'hours' => 'Hour',
     'minutes' => 'Minute',
     'seconds' => 'Second',
+    'agree' => 'Agree',
 ];

@@ -315,7 +315,7 @@
         </div>
         <p>{{ $cookie->text }}
         </p>
-        <button type="button" class="btn w-100 accept-cookies">ვეთანხმები</button>
+        <button type="button" class="btn w-100 accept-cookies">{{__('page.agree')}}</button>
     </div>
 </div>
 <!-- #footer area end -->
