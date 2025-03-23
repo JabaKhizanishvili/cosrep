@@ -32,7 +32,7 @@ class PolicyController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -43,7 +43,7 @@ class PolicyController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Policy  $policy
+     * @param \App\Models\Policy $policy
      * @return \Illuminate\Http\Response
      */
     public function show(Policy $policy)
@@ -54,7 +54,7 @@ class PolicyController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Policy  $policy
+     * @param \App\Models\Policy $policy
      * @return \Illuminate\Http\Response
      */
     public function edit(Policy $object)
@@ -65,14 +65,16 @@ class PolicyController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Policy  $policy
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Models\Policy $policy
      * @return \Illuminate\Http\Response
      */
     public function update(PolicyRequest $request, Policy $object)
     {
-        $object->name = $request->name;
-        $object->text = $request->text;
+//        $object->name = $request->name;
+        $object->setTranslations('name', $request->input('name'));
+//        $object->text = $request->text;
+        $object->setTranslations('text', $request->input('text'));
         $object->save();
         return redirect()->back()->with('success', "record updated successfully");
     }
@@ -80,7 +82,7 @@ class PolicyController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Policy  $policy
+     * @param \App\Models\Policy $policy
      * @return \Illuminate\Http\Response
      */
     public function destroy(Policy $policy)
