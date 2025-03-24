@@ -86,19 +86,35 @@
 
                                 @if(!empty($section_two->stats))
                                     @php
-                                        $section_two_stats = json_decode($section_two->stats);
+                                        $statsData = $section_two->stats;
+
+                                        if (is_string($statsData)) {
+                                            $statsData = json_decode($statsData, true); // true - ასოციატიური მასივისთვის
+                                        }
+
+                                        if (is_array($statsData) && isset($statsData[app()->getLocale()])) {
+                                            $localeData = $statsData[app()->getLocale()];
+                                            $statsArray = is_string($localeData) ? json_decode($localeData, true) : $localeData;
+                                        } elseif (is_array($statsData) && isset($statsData['ge'])) {
+                                            $localeData = $statsData['ge'];
+                                            $statsArray = is_string($localeData) ? json_decode($localeData, true) : $localeData;
+                                        } else {
+                                            $statsArray = $statsData;
+                                        }
+
+                                        $statsArray = is_array($statsArray) ? $statsArray : [];
                                     @endphp
-                                    @if(is_array($section_two_stats))
-                                        @foreach ($section_two_stats as $section_two_stat)
+
+                                    @if(!empty($statsArray))
+                                        @foreach ($statsArray as $stat)
                                             <div class="col-xs-12 col-sm-12 col-md-4">
                                                 <div class="info">
-                                                    <!-- 1 -->
                                                     <div class="themeioan_counter text-center">
-                                                        <!-- single counter item -->
-                                                        <i class="secondary-color fas {{ $section_two_stat->stat_icon }} fa-3x"></i>
-                                                        <h4>{{ $section_two_stat->stat_number}}</h4>
-                                                        <p>{{ $section_two_stat->stat_name }}</p>
-                                                    </div><!-- end single counter item -->
+                                                        <!-- შეამოწმეთ მასივის სტრუქტურა -->
+                                                        <i class="secondary-color fas {{ $stat['stat_icon'] ?? 'fa-question' }} fa-3x"></i>
+                                                        <h4>{{ $stat['stat_number'] ?? '0' }}</h4>
+                                                        <p>{{ $stat['stat_name'] ?? 'No Data' }}</p>
+                                                    </div>
                                                 </div>
                                             </div>
                                         @endforeach
@@ -199,7 +215,7 @@
                                     @if(!empty($section_one->stats))
                                         <ul class="themeioan_ul_icon">
                                             @php
-                                                $section_one_stats = json_decode($section_one->stats);
+                                                $section_one_stats = $section_one->getTranslation('stats', app()->getLocale());
                                             @endphp
                                             @if(is_array($section_one_stats))
                                                 @foreach ($section_one_stats as $section_one_stat)

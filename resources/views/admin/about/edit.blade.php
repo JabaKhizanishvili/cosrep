@@ -57,7 +57,8 @@
                                     <label for="inputEmail4">Title (English)</label>
 
                                     <input type="text" class="form-control @error('title') invalideInput @enderror"
-                                           id="phone" placeholder="Phone" name="title[en]" value="{{$object->title}} "
+                                           id="phone" placeholder="Phone" name="title[en]"
+                                           value="{{$object->getTranslation('title','en')}} "
                                            required>
                                     @error('title')
                                     <div class="customValidate">

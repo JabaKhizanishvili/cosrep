@@ -35,7 +35,7 @@ class SectionController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -46,7 +46,7 @@ class SectionController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Section  $section
+     * @param \App\Models\Section $section
      * @return \Illuminate\Http\Response
      */
     public function show(Section $section)
@@ -57,7 +57,7 @@ class SectionController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Section  $section
+     * @param \App\Models\Section $section
      * @return \Illuminate\Http\Response
      */
     public function edit(Section $object)
@@ -69,15 +69,15 @@ class SectionController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Section  $section
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Models\Section $section
      * @return \Illuminate\Http\Response
      */
     public function update(SectionRequest $request, Section $object)
     {
 
-        $object->title = $request->title;
-        $object->text = $request->text;
+        $object->setTranslations('title', $request->input('title'));
+        $object->setTranslations('text', $request->input('text'));
         $object->url = $request->url;
 
         if ($request->status == 1) {
@@ -89,33 +89,31 @@ class SectionController extends Controller
         $stats = [];
 
         if ($object->id == 1) {
-
-            $stats = $request->stat_list;
+//            $stats = $request->stat_list;
+//            $stat_string = json_encode($stats);
+            $object->stats = $request->input('stat_list');
         } else {
-            $stats[]  = [
-                'stat_icon' => $request->stat_icon[0],
-                'stat_name' => $request->stat_name[0],
-                'stat_number' => $request->stat_number[0],
+            $stats = [
+                'ge' => [],
+                'en' => []
             ];
 
-            $stats[]  = [
-                'stat_icon' => $request->stat_icon[1],
-                'stat_name' => $request->stat_name[1],
-                'stat_number' => $request->stat_number[1],
-            ];
+            foreach ($request->stat_icon as $key => $icon) {
+                $stats['ge'][] = [
+                    'stat_icon' => $icon,
+                    'stat_name' => $request->stat_name_ge[$key] ?? '',
+                    'stat_number' => $request->stat_number[$key] ?? '',
+                ];
+                $stats['en'][] = [
+                    'stat_icon' => $icon,
+                    'stat_name' => $request->stat_name_en[$key] ?? '',
+                    'stat_number' => $request->stat_number[$key] ?? '',
+                ];
+            }
 
-            $stats[]  = [
-                'stat_icon' => $request->stat_icon[2],
-                'stat_name' => $request->stat_name[2],
-                'stat_number' => $request->stat_number[2],
-            ];
+            $object->setTranslations('stats', $stats);
         }
 
-
-
-
-        $stat_string = json_encode($stats);
-        $object->stats = $stat_string;
 
         if ($request->hasFile('image')) {
             $file_path = $object->getImagePath();
@@ -132,7 +130,7 @@ class SectionController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Section  $section
+     * @param \App\Models\Section $section
      * @return \Illuminate\Http\Response
      */
     public function destroy(Section $section)
