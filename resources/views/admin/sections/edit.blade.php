@@ -145,68 +145,144 @@
                             @if($object->id == 2)
                                 <div class="form-row mb-4">
 
+                                    {{--                                    @if (!empty($object->stats))--}}
+                                    {{--                                        @php--}}
+                                    {{--                                            if (is_string($object->stats)) {--}}
+                                    {{--                                                  $stats = json_decode($object->stats, true);--}}
+                                    {{--                                              } else {--}}
+                                    {{--                                                  $stats = $object->getTranslations('stats');--}}
+                                    {{--                                              }--}}
+
+                                    {{--                                        @endphp--}}
+
+                                    {{--                                        @foreach ( $stats['ge'] ?? $stats as $key => $stat)--}}
+                                    {{--                                            <div class="form-group col-md-4">--}}
+                                    {{--                                                <div class="form-group col-md-12">--}}
+                                    {{--                                                    <label for="inputEmail4">Icon</label>--}}
+                                    {{--                                                    <input type="text" class="form-control" id="phone"--}}
+                                    {{--                                                           name="stat_icon[]"--}}
+                                    {{--                                                           value="{{$stat['stat_icon']}}" required>--}}
+                                    {{--                                                    @error('stat_icon.0')--}}
+                                    {{--                                                    <div class="customValidate">--}}
+                                    {{--                                                        {{ $message }}--}}
+                                    {{--                                                    </div>--}}
+                                    {{--                                                    @enderror--}}
+                                    {{--                                                </div>--}}
+
+                                    {{--                                                <div class="form-group col-md-12">--}}
+                                    {{--                                                    <label for="inputEmail4">Name (ქართულად)</label>--}}
+                                    {{--                                                    <input type="text" class="form-control" id="phone"--}}
+                                    {{--                                                           name="stat_name_ge[]"--}}
+                                    {{--                                                           value="{{$stat['stat_name']}}" required>--}}
+                                    {{--                                                    @error('stat_name.0')--}}
+                                    {{--                                                    <div class="customValidate">--}}
+                                    {{--                                                        {{ $message }}--}}
+                                    {{--                                                    </div>--}}
+                                    {{--                                                    @enderror--}}
+                                    {{--                                                </div>--}}
+
+                                    {{--                                                <div class="form-group col-md-12">--}}
+                                    {{--                                                    <label for="inputEmail4">Name (English)</label>--}}
+                                    {{--                                                    <input type="text" class="form-control" id="phone"--}}
+                                    {{--                                                           name="stat_name_en[]"--}}
+                                    {{--                                                           value="{{ $stats['en'][$key]['stat_name'] ?? $stat['stat_name'] }}"--}}
+                                    {{--                                                           required>--}}
+                                    {{--                                                    @error('stat_name.0')--}}
+                                    {{--                                                    <div class="customValidate">--}}
+                                    {{--                                                        {{ $message }}--}}
+                                    {{--                                                    </div>--}}
+                                    {{--                                                    @enderror--}}
+                                    {{--                                                </div>--}}
+
+                                    {{--                                                <div class=" form-group col-md-12">--}}
+                                    {{--                                                    <label for="inputEmail4">Number</label>--}}
+                                    {{--                                                    <input type="text" class="form-control" id="phone"--}}
+                                    {{--                                                           name="stat_number[]"--}}
+                                    {{--                                                           value="{{$stat['stat_number']}}" required>--}}
+                                    {{--                                                    @error('stat_number.0')--}}
+                                    {{--                                                    <div class="customValidate">--}}
+                                    {{--                                                        {{ $message }}--}}
+                                    {{--                                                    </div>--}}
+                                    {{--                                                    @enderror--}}
+                                    {{--                                                </div>--}}
+                                    {{--                                            </div>--}}
+                                    {{--                                        @endforeach--}}
+
                                     @if (!empty($object->stats))
                                         @php
-                                            if (is_string($object->stats)) {
-                                                  $stats = json_decode($object->stats, true);
-                                              } else {
-                                                  $stats = $object->getTranslations('stats');
-                                              }
+                                            // 1. მონაცემების მომზადება
+                                            $rawStats = $object->stats;
 
+                                            // 2. დეკოდირება თუ საჭიროა
+                                            if (is_string($rawStats)) {
+                                                $stats = json_decode($rawStats, true);
+                                            } else {
+                                                $stats = $object->getTranslations('stats');
+                                            }
+
+                                            // 3. ქართული ვერსიის მიღება
+                                            $geStats = is_array($stats['ge'] ?? null) ? $stats['ge'] : [];
+
+                                            // 4. ინგლისური ვერსიის მიღება
+                                            $enStats = is_array($stats['en'] ?? null) ? $stats['en'] : [];
+
+                                            // 5. თუ მონაცემები არ არის ენის მიხედვით დაყოფილი
+                                            if (empty($geStats) && !empty($stats) && isset($stats[0]['stat_name'])) {
+                                                $geStats = $stats;
+                                                $enStats = $stats;
+                                            }
                                         @endphp
 
-                                        @foreach ( $stats['ge'] ?? $stats as $key => $stat)
-                                            <div class="form-group col-md-4">
-                                                <div class="form-group col-md-12">
-                                                    <label for="inputEmail4">Icon</label>
-                                                    <input type="text" class="form-control" id="phone"
-                                                           name="stat_icon[]"
-                                                           value="{{$stat['stat_icon']}}" required>
-                                                    @error('stat_icon.0')
-                                                    <div class="customValidate">
-                                                        {{ $message }}
+                                        @if(!empty($geStats))
+                                            @foreach ($geStats as $key => $stat)
+                                                <div class="form-group col-md-4">
+                                                    <div class="form-group col-md-12">
+                                                        <label for="inputEmail4">Icon</label>
+                                                        <input type="text" class="form-control" name="stat_icon[]"
+                                                               value="{{ $stat['stat_icon'] ?? '' }}" required>
+                                                        @error('stat_icon.'.$key)
+                                                        <div class="customValidate">
+                                                            {{ $message }}
+                                                        </div>
+                                                        @enderror
                                                     </div>
-                                                    @enderror
-                                                </div>
 
-                                                <div class="form-group col-md-12">
-                                                    <label for="inputEmail4">Name (ქართულად)</label>
-                                                    <input type="text" class="form-control" id="phone"
-                                                           name="stat_name_ge[]"
-                                                           value="{{$stat['stat_name']}}" required>
-                                                    @error('stat_name.0')
-                                                    <div class="customValidate">
-                                                        {{ $message }}
+                                                    <div class="form-group col-md-12">
+                                                        <label>Name (ქართულად)</label>
+                                                        <input type="text" class="form-control" name="stat_name_ge[]"
+                                                               value="{{ $stat['stat_name'] ?? '' }}" required>
+                                                        @error('stat_name_ge.'.$key)
+                                                        <div class="customValidate">
+                                                            {{ $message }}
+                                                        </div>
+                                                        @enderror
                                                     </div>
-                                                    @enderror
-                                                </div>
 
-                                                <div class="form-group col-md-12">
-                                                    <label for="inputEmail4">Name (English)</label>
-                                                    <input type="text" class="form-control" id="phone"
-                                                           name="stat_name_en[]"
-                                                           value="{{ $stats['en'][$key]['stat_name'] ?? $stat['stat_name'] }}"
-                                                           required>
-                                                    @error('stat_name.0')
-                                                    <div class="customValidate">
-                                                        {{ $message }}
+                                                    <div class="form-group col-md-12">
+                                                        <label>Name (English)</label>
+                                                        <input type="text" class="form-control" name="stat_name_en[]"
+                                                               value="{{ $enStats[$key]['stat_name'] ?? $stat['stat_name'] ?? '' }}"
+                                                               required>
+                                                        @error('stat_name_en.'.$key)
+                                                        <div class="customValidate">
+                                                            {{ $message }}
+                                                        </div>
+                                                        @enderror
                                                     </div>
-                                                    @enderror
-                                                </div>
 
-                                                <div class=" form-group col-md-12">
-                                                    <label for="inputEmail4">Number</label>
-                                                    <input type="text" class="form-control" id="phone"
-                                                           name="stat_number[]"
-                                                           value="{{$stat['stat_number']}}" required>
-                                                    @error('stat_number.0')
-                                                    <div class="customValidate">
-                                                        {{ $message }}
+                                                    <div class="form-group col-md-12">
+                                                        <label>Number</label>
+                                                        <input type="text" class="form-control" name="stat_number[]"
+                                                               value="{{ $stat['stat_number'] ?? '' }}" required>
+                                                        @error('stat_number.'.$key)
+                                                        <div class="customValidate">
+                                                            {{ $message }}
+                                                        </div>
+                                                        @enderror
                                                     </div>
-                                                    @enderror
                                                 </div>
-                                            </div>
-                                        @endforeach
+                                            @endforeach
+                                        @endif
 
                                     @else
 
