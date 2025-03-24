@@ -95,7 +95,6 @@ class FrontEndController extends Controller
         $trainers = Trainer::OrderBy('id', 'desc')->get();
         $section_one = Section::where('id', 1)->active()->first();
 
-
         return view('front.about', compact('page', 'about', 'trainers', 'section_one'));
     }
 

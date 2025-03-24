@@ -33,7 +33,7 @@ class AboutController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -44,7 +44,7 @@ class AboutController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\About  $about
+     * @param \App\Models\About $about
      * @return \Illuminate\Http\Response
      */
     public function show(About $about)
@@ -55,7 +55,7 @@ class AboutController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\About  $about
+     * @param \App\Models\About $about
      * @return \Illuminate\Http\Response
      */
     public function edit()
@@ -69,40 +69,45 @@ class AboutController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\About  $about
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Models\About $about
      * @return \Illuminate\Http\Response
      */
     public function update(AboutRequest $request, About $object)
     {
 
-        $object->title = $request->title;
-        $object->text = $request->text;
+//        $object->title = $request->title;
+//        $object->text = $request->text;
 
-        $stats = [];
 
-        $stats[]  = [
-            'stat_icon' => $request->stat_icon[0],
-            'stat_name' => $request->stat_name[0],
-            'stat_number' => $request->stat_number[0],
+        $stats = [
+            'ge' => [],
+            'en' => []
         ];
 
-        $stats[]  = [
-            'stat_icon' => $request->stat_icon[1],
-            'stat_name' => $request->stat_name[1],
-            'stat_number' => $request->stat_number[1],
-        ];
+        foreach ($request->stat_icon as $key => $icon) {
+            $stats['ge'][] = [
+                'stat_icon' => $icon,
+                'stat_name' => $request->stat_name_ge[$key] ?? '',
+                'stat_number' => $request->stat_number[$key] ?? '',
+            ];
+            $stats['en'][] = [
+                'stat_icon' => $icon,
+                'stat_name' => $request->stat_name_en[$key] ?? '',
+                'stat_number' => $request->stat_number[$key] ?? '',
+            ];
+        }
 
-        $stats[]  = [
-            'stat_icon' => $request->stat_icon[2],
-            'stat_name' => $request->stat_name[2],
-            'stat_number' => $request->stat_number[2],
-        ];
+
+        $object->setTranslations('stats', $stats);
+
+        // სტატისტიკების შენახვა, როგორც თარგმნილი მონაცემები
+//        $object->setTranslations('stats', $stats);
 
 
-        $stat_string = json_encode($stats);
-
-        $object->stats = $stat_string;
+//        $object->setTranslations('stats', $stats);
+        $object->setTranslations('title', $request->input('title'));
+        $object->setTranslations('text', $request->input('text'));
 
         if ($request->hasFile('image')) {
             $file_path = $object->getImagePath();
@@ -119,7 +124,7 @@ class AboutController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\About  $about
+     * @param \App\Models\About $about
      * @return \Illuminate\Http\Response
      */
     public function destroy(About $about)

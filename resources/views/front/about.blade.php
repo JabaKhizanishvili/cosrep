@@ -59,28 +59,70 @@
 
                                 <div class="row black-text">
 
-                                    @if(!empty($about->stats))
+                                    {{--                                    @if(!empty($about->stats))--}}
 
+                                    {{--                                        @php--}}
+                                    {{--                                            $about_stats = json_decode($about->stats);--}}
+                                    {{--                                        @endphp--}}
+                                    {{--                                        @if(is_array($about_stats))--}}
+                                    {{--                                            @foreach ($about_stats as $stat)--}}
+                                    {{--                                                <div class="col-xs-12 col-sm-12 col-md-4">--}}
+                                    {{--                                                    <div class="info">--}}
+                                    {{--                                                        <!-- 1 -->--}}
+                                    {{--                                                        <div class="themeioan_counter text-center">--}}
+                                    {{--                                                            <!-- single counter item -->--}}
+                                    {{--                                                            <i class="secondary-color fas {{ $stat->stat_icon }} fa-3x"></i>--}}
+                                    {{--                                                            <h4>{{ $stat->stat_number }}</h4>--}}
+                                    {{--                                                            <p>{{ $stat->stat_name }}</p>--}}
+                                    {{--                                                        </div><!-- end single counter item -->--}}
+                                    {{--                                                    </div>--}}
+                                    {{--                                                </div>--}}
+                                    {{--                                            @endforeach--}}
+                                    {{--                                        @endif--}}
+                                    {{--                                    @endif--}}
+
+                                    @if(!empty($about->stats))
                                         @php
-                                            $about_stats = json_decode($about->stats);
+                                            // 1. მონაცემების მომზადება
+                                            $statsData = $about->stats;
+
+                                            // 2. თუ JSON სტრინგია, დეკოდირება
+                                            if (is_string($statsData)) {
+                                                $statsData = json_decode($statsData, true); // true - ასოციატიური მასივისთვის
+                                            }
+
+                                            // 3. თუ მასივია მაგრამ აქვს ენის ქეები (Spatie translatable)
+                                            if (is_array($statsData) && isset($statsData[app()->getLocale()])) {
+                                                $localeData = $statsData[app()->getLocale()];
+                                                $statsArray = is_string($localeData) ? json_decode($localeData, true) : $localeData;
+                                            } elseif (is_array($statsData) && isset($statsData['ge'])) {
+                                                // Fallback ქართულ ენაზე
+                                                $localeData = $statsData['ge'];
+                                                $statsArray = is_string($localeData) ? json_decode($localeData, true) : $localeData;
+                                            } else {
+                                                // პირდაპირი მასივი
+                                                $statsArray = $statsData;
+                                            }
+
+                                            // 4. დარწმუნდით, რომ მასივია და არა ცარიელი
+                                            $statsArray = is_array($statsArray) ? $statsArray : [];
                                         @endphp
-                                        @if(is_array($about_stats))
-                                            @foreach ($about_stats as $stat)
+
+                                        @if(!empty($statsArray))
+                                            @foreach ($statsArray as $stat)
                                                 <div class="col-xs-12 col-sm-12 col-md-4">
                                                     <div class="info">
-                                                        <!-- 1 -->
                                                         <div class="themeioan_counter text-center">
-                                                            <!-- single counter item -->
-                                                            <i class="secondary-color fas {{ $stat->stat_icon }} fa-3x"></i>
-                                                            <h4>{{ $stat->stat_number }}</h4>
-                                                            <p>{{ $stat->stat_name }}</p>
-                                                        </div><!-- end single counter item -->
+                                                            <!-- შეამოწმეთ მასივის სტრუქტურა -->
+                                                            <i class="secondary-color fas {{ $stat['stat_icon'] ?? 'fa-question' }} fa-3x"></i>
+                                                            <h4>{{ $stat['stat_number'] ?? '0' }}</h4>
+                                                            <p>{{ $stat['stat_name'] ?? 'No Data' }}</p>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             @endforeach
                                         @endif
                                     @endif
-
                                     <!-- #counter area end -->
                                 </div>
                             </div>
