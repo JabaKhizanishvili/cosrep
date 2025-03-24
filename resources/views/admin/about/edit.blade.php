@@ -273,7 +273,7 @@
                                 <div class="form-group col-md-12">
                                     <label for="inputEmail4">Text (English)</label>
                                     <textarea name="text[en]" id="textarea_2" cols="30" rows="10" class="form-control"
-                                              required>{{ $object->text }}</textarea>
+                                              required>{{ $object->getTranslation('text','en') }}</textarea>
                                     @error('text')
                                     <div class="customValidate">
                                         {{ $message }}
