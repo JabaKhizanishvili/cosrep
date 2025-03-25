@@ -89,10 +89,14 @@
 
                                     <div id="service_{{ $service->id }}" class="collapse {{ $key == 0 ?'show' : '' }}"
                                          aria-labelledby="headingOne" data-parent="#accordion">
-                                        <div class="card-body">
-                                            {!! $service->text !!}
+                                        <div class="">
+                                            <div class="card-body m-4 p-4 text-justify shadow  mb-5 bg-body rounded">
+                                                {!! $service->text !!}
+                                            </div>
                                         </div>
                                     </div>
+
+
                                 </div>
 
                             @endforeach
