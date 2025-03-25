@@ -90,7 +90,8 @@
                                     <div id="service_{{ $service->id }}" class="collapse {{ $key == 0 ?'show' : '' }}"
                                          aria-labelledby="headingOne" data-parent="#accordion">
                                         <div class="">
-                                            <div class="card-body m-4 p-4 text-justify shadow  mb-5 bg-body rounded">
+                                            <div class="card-body m-4 p-4 text-justify shadow  mb-5 bg-body rounded"
+                                                 style="min-height: auto; overflow: hidden;">
                                                 {!! $service->text !!}
                                             </div>
                                         </div>

@@ -107,7 +107,21 @@
     <script src="{{  admin_styles('plugins/file-upload/file-upload-with-preview.min.js') }}"></script>
     <script src="{{ admin_styles('ckeditor/ckeditor.js') }}"></script>
     <script>
-        CKEDITOR.replace('textarea_1');
-        CKEDITOR.replace('textarea_2');
+
+        CKEDITOR.replace('textarea_1', {
+            filebrowserUploadUrl: "{{ route('admin.services.uploadMedia', ['_token' => csrf_token()]) }}",
+            filebrowserUploadMethod: 'form',
+            filebrowserImageUploadUrl: "{{ route('admin.services.uploadMedia', ['_token' => csrf_token()]) }}",
+            filebrowserBrowseUrl: "{{ route('admin.services.browseMedia') }}",  // Browse URL to fetch images
+            filebrowserImageBrowseUrl: "{{ route('admin.services.browseMedia') }}",  // Same URL for images
+        });
+
+        CKEDITOR.replace('textarea_2', {
+            filebrowserUploadUrl: "{{ route('admin.services.uploadMedia', ['_token' => csrf_token()]) }}",
+            filebrowserUploadMethod: 'form',
+            filebrowserImageUploadUrl: "{{ route('admin.services.uploadMedia', ['_token' => csrf_token()]) }}",
+            filebrowserBrowseUrl: "{{ route('admin.services.browseMedia') }}",  // Browse URL to fetch images
+            filebrowserImageBrowseUrl: "{{ route('admin.services.browseMedia') }}",  // Same URL for images
+        });
     </script>
 @endsection

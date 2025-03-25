@@ -84,30 +84,29 @@ Route::prefix('admin')->middleware(['auth:web', 'verified'])->group(function () 
 
 
     //organization Routes
-    Route::get('organizations',  [OrganizationController::class, 'index'])->name('admin.organizations.index');
-    Route::get('organizations/create',  [OrganizationController::class, 'create'])->name('admin.organizations.create');
-    Route::post('organizations/create',  [OrganizationController::class, 'store'])->name('admin.organizations.store');
-    Route::get('organizations/{object}/edit',  [OrganizationController::class, 'edit'])->name('admin.organizations.edit');
-    Route::put('organizations/{object}/edit',  [OrganizationController::class, 'update'])->name('admin.organizations.update');
-    Route::delete('organizations/{object}',  [OrganizationController::class, 'destroy'])->name('admin.organizations.destroy');
+    Route::get('organizations', [OrganizationController::class, 'index'])->name('admin.organizations.index');
+    Route::get('organizations/create', [OrganizationController::class, 'create'])->name('admin.organizations.create');
+    Route::post('organizations/create', [OrganizationController::class, 'store'])->name('admin.organizations.store');
+    Route::get('organizations/{object}/edit', [OrganizationController::class, 'edit'])->name('admin.organizations.edit');
+    Route::put('organizations/{object}/edit', [OrganizationController::class, 'update'])->name('admin.organizations.update');
+    Route::delete('organizations/{object}', [OrganizationController::class, 'destroy'])->name('admin.organizations.destroy');
 
 
     //positions Routes
-    Route::get('positions',  [PositionController::class, 'index'])->name('admin.positions.index');
-    Route::get('positions/create',  [PositionController::class, 'create'])->name('admin.positions.create');
-    Route::post('positions/create',  [PositionController::class, 'store'])->name('admin.positions.store');
-    Route::get('positions/{object}/edit',  [PositionController::class, 'edit'])->name('admin.positions.edit');
-    Route::put('positions/{object}/edit',  [PositionController::class, 'update'])->name('admin.positions.update');
-    Route::delete('positions/{object}',  [PositionController::class, 'destroy'])->name('admin.positions.destroy');
+    Route::get('positions', [PositionController::class, 'index'])->name('admin.positions.index');
+    Route::get('positions/create', [PositionController::class, 'create'])->name('admin.positions.create');
+    Route::post('positions/create', [PositionController::class, 'store'])->name('admin.positions.store');
+    Route::get('positions/{object}/edit', [PositionController::class, 'edit'])->name('admin.positions.edit');
+    Route::put('positions/{object}/edit', [PositionController::class, 'update'])->name('admin.positions.update');
+    Route::delete('positions/{object}', [PositionController::class, 'destroy'])->name('admin.positions.destroy');
 
     //office Routes
-    Route::get('offices',  [OfficeController::class, 'index'])->name('admin.offices.index');
-    Route::get('offices/create',  [OfficeController::class, 'create'])->name('admin.offices.create');
-    Route::post('offices/create',  [OfficeController::class, 'store'])->name('admin.offices.store');
-    Route::get('offices/{object}/edit',  [OfficeController::class, 'edit'])->name('admin.offices.edit');
-    Route::put('offices/{object}/edit',  [OfficeController::class, 'update'])->name('admin.offices.update');
-    Route::delete('offices/{object}',  [OfficeController::class, 'destroy'])->name('admin.offices.destroy');
-
+    Route::get('offices', [OfficeController::class, 'index'])->name('admin.offices.index');
+    Route::get('offices/create', [OfficeController::class, 'create'])->name('admin.offices.create');
+    Route::post('offices/create', [OfficeController::class, 'store'])->name('admin.offices.store');
+    Route::get('offices/{object}/edit', [OfficeController::class, 'edit'])->name('admin.offices.edit');
+    Route::put('offices/{object}/edit', [OfficeController::class, 'update'])->name('admin.offices.update');
+    Route::delete('offices/{object}', [OfficeController::class, 'destroy'])->name('admin.offices.destroy');
 
 
     //customers Routes
@@ -124,12 +123,12 @@ Route::prefix('admin')->middleware(['auth:web', 'verified'])->group(function () 
 
 
     //Categories Routes
-    Route::get('categories',  [CategoryController::class, 'index'])->name('admin.categories.index');
-    Route::get('categories/create',  [CategoryController::class, 'create'])->name('admin.categories.create');
-    Route::post('categories/create',  [CategoryController::class, 'store'])->name('admin.categories.store');
-    Route::get('categories/{object}/edit',  [CategoryController::class, 'edit'])->name('admin.categories.edit');
-    Route::put('categories/{object}/edit',  [CategoryController::class, 'update'])->name('admin.categories.update');
-    Route::delete('categories/{object}',  [CategoryController::class, 'destroy'])->name('admin.categories.destroy');
+    Route::get('categories', [CategoryController::class, 'index'])->name('admin.categories.index');
+    Route::get('categories/create', [CategoryController::class, 'create'])->name('admin.categories.create');
+    Route::post('categories/create', [CategoryController::class, 'store'])->name('admin.categories.store');
+    Route::get('categories/{object}/edit', [CategoryController::class, 'edit'])->name('admin.categories.edit');
+    Route::put('categories/{object}/edit', [CategoryController::class, 'update'])->name('admin.categories.update');
+    Route::delete('categories/{object}', [CategoryController::class, 'destroy'])->name('admin.categories.destroy');
     Route::post('categories/position', [CategoryController::class, 'position'])->name('admin.categories.position');
 
     //sliders route
@@ -139,7 +138,7 @@ Route::prefix('admin')->middleware(['auth:web', 'verified'])->group(function () 
     Route::get('sliders/{object}/edit', [SliderController::class, 'edit'])->name('admin.sliders.edit');
     Route::put('sliders/{object}/edit', [SliderController::class, 'update'])->name('admin.sliders.update');
     Route::post('sliders/position', [SliderController::class, 'position'])->name('admin.sliders.position');
-    Route::delete('sliders/{object}',  [SliderController::class, 'destroy'])->name('admin.sliders.destroy');
+    Route::delete('sliders/{object}', [SliderController::class, 'destroy'])->name('admin.sliders.destroy');
 
     //customers Routes
     Route::get('trainers', [TrainerController::class, 'index'])->name('admin.trainers.index');
@@ -197,6 +196,8 @@ Route::prefix('admin')->middleware(['auth:web', 'verified'])->group(function () 
     Route::get('services', [ServiceController::class, 'index'])->name('admin.services.index');
     Route::get('services/create', [ServiceController::class, 'create'])->name('admin.services.create');
     Route::post('services/create', [ServiceController::class, 'store'])->name('admin.services.store');
+    Route::post('services/image', [ServiceController::class, 'uploadImage'])->name('admin.services.uploadMedia');
+    Route::get('services/imagebrowse', [ServiceController::class, 'browseMedia'])->name('admin.services.browseMedia');
     Route::get('services/{object}/edit', [ServiceController::class, 'edit'])->name('admin.services.edit');
     Route::put('services/{object}/edit', [ServiceController::class, 'update'])->name('admin.services.update');
     Route::delete('services/{object}', [ServiceController::class, 'destroy'])->name('admin.services.destroy');
@@ -206,8 +207,6 @@ Route::prefix('admin')->middleware(['auth:web', 'verified'])->group(function () 
     Route::get('sections', [SectionController::class, 'index'])->name('admin.sections.index');
     Route::get('sections/{object}/edit', [SectionController::class, 'edit'])->name('admin.sections.edit');
     Route::put('sections/{object}/edit', [SectionController::class, 'update'])->name('admin.sections.update');
-
-
 
 
     //policies Routes
@@ -247,50 +246,50 @@ Route::redirect('', config('app.fallback_locale'));
 Route::prefix('{locale?}')
     ->middleware(['setlocale'])
     ->group(function () {
-Route::get('/', [FrontEndController::class, 'index'])->name(('front.index'));
-Route::get('/contact', [FrontEndController::class, 'contact'])->name(('front.contact'));
-Route::post('/send', [FrontEndController::class, 'sendEmail'])->name(('front.sendEmail'));
-Route::get('/about-us', [FrontEndController::class, 'about'])->name(('front.about'));
-Route::get('/trainings', [FrontEndController::class, 'trainings'])->name(('front.trainings'));
-Route::get('/trainings/{name}', [FrontEndController::class, 'categoryTrainings'])->name(('front.categoryTrainings'));
-Route::get('/blogs', [FrontEndController::class, 'blogs'])->name(('front.blogs'));
-Route::get('/blogs/{name}', [FrontEndController::class, 'singleBlog'])->name(('front.singleBlog'));
-Route::get('/training/{name}', [FrontEndController::class, 'singleTraining'])->name(('front.singleTraining'));
-Route::get('/login', [FrontEndController::class, 'loginView'])->name(('front.loginView'));
-Route::post('/login', [FrontEndController::class, 'login'])->name(('front.login'));
-Route::get('/terms-of-service', [FrontEndController::class, 'termsOfService'])->name(('front.terms'));
-Route::get('/privacy-policy', [FrontEndController::class, 'privacyPolicy'])->name(('front.privacy'));
-Route::get('/services', [FrontEndController::class, 'services'])->name(('front.services'));
+        Route::get('/', [FrontEndController::class, 'index'])->name(('front.index'));
+        Route::get('/contact', [FrontEndController::class, 'contact'])->name(('front.contact'));
+        Route::post('/send', [FrontEndController::class, 'sendEmail'])->name(('front.sendEmail'));
+        Route::get('/about-us', [FrontEndController::class, 'about'])->name(('front.about'));
+        Route::get('/trainings', [FrontEndController::class, 'trainings'])->name(('front.trainings'));
+        Route::get('/trainings/{name}', [FrontEndController::class, 'categoryTrainings'])->name(('front.categoryTrainings'));
+        Route::get('/blogs', [FrontEndController::class, 'blogs'])->name(('front.blogs'));
+        Route::get('/blogs/{name}', [FrontEndController::class, 'singleBlog'])->name(('front.singleBlog'));
+        Route::get('/training/{name}', [FrontEndController::class, 'singleTraining'])->name(('front.singleTraining'));
+        Route::get('/login', [FrontEndController::class, 'loginView'])->name(('front.loginView'));
+        Route::post('/login', [FrontEndController::class, 'login'])->name(('front.login'));
+        Route::get('/terms-of-service', [FrontEndController::class, 'termsOfService'])->name(('front.terms'));
+        Route::get('/privacy-policy', [FrontEndController::class, 'privacyPolicy'])->name(('front.privacy'));
+        Route::get('/services', [FrontEndController::class, 'services'])->name(('front.services'));
 
 
 //forgot password routes
-Route::get('forget-password', [ForgotPasswordController::class, 'showForgetPasswordForm'])->name('forget.password.get');
-Route::get('reset-password/{token}', [ForgotPasswordController::class, 'showResetPasswordForm'])->name('reset.password.get');
-Route::post('forget-password', [ForgotPasswordController::class, 'submitForgetPasswordForm'])->name('forget.password.post');
-Route::post('reset-password', [ForgotPasswordController::class, 'submitResetPasswordForm'])->name('reset.password.post');
+        Route::get('forget-password', [ForgotPasswordController::class, 'showForgetPasswordForm'])->name('forget.password.get');
+        Route::get('reset-password/{token}', [ForgotPasswordController::class, 'showResetPasswordForm'])->name('reset.password.get');
+        Route::post('forget-password', [ForgotPasswordController::class, 'submitForgetPasswordForm'])->name('forget.password.post');
+        Route::post('reset-password', [ForgotPasswordController::class, 'submitResetPasswordForm'])->name('reset.password.post');
 
 
-Route::middleware(['auth:customer'])->group(function () {
+        Route::middleware(['auth:customer'])->group(function () {
 
-    Route::get('start-training/{object}', [FrontEndController::class, 'startTrainingView'])
-        ->whereNumber('object')
-        ->name('front.startTrainingView');
+            Route::get('start-training/{object}', [FrontEndController::class, 'startTrainingView'])
+                ->whereNumber('object')
+                ->name('front.startTrainingView');
 
-    Route::get('start-test/{object}', [FrontEndController::class, 'startTestView'])->name('front.startTestView');
-    Route::post('end-test/{object}', [FrontEndController::class, 'endTest'])->name('front.EndTest');
+            Route::get('start-test/{object}', [FrontEndController::class, 'startTestView'])->name('front.startTestView');
+            Route::post('end-test/{object}', [FrontEndController::class, 'endTest'])->name('front.EndTest');
 
-    Route::post('/trainer-message/{object}', [FrontEndController::class, 'sendTrainerMessage'])->name(('front.sendTrainerMessage'));
+            Route::post('/trainer-message/{object}', [FrontEndController::class, 'sendTrainerMessage'])->name(('front.sendTrainerMessage'));
 
-    Route::get('dashboard', [FrontEndController::class, 'dashboard'])->name('front.dashboard');
-    Route::get('change_password', [FrontEndController::class, 'changePasswordView'])->name('front.changePasswordView');
-    Route::post('change_password', [FrontEndController::class, 'changePassword'])->name('front.changePassword');
-    Route::get('test-details/{object}', [FrontEndController::class, 'testDetails'])->name('front.testDetails');
-    Route::post('/logout', function () {
-        Auth::guard('customer')->logout();
-        return redirect()->route('front.login');
-    })->name('front.logout');
-});
-
-
+            Route::get('dashboard', [FrontEndController::class, 'dashboard'])->name('front.dashboard');
+            Route::get('change_password', [FrontEndController::class, 'changePasswordView'])->name('front.changePasswordView');
+            Route::post('change_password', [FrontEndController::class, 'changePassword'])->name('front.changePassword');
+            Route::get('test-details/{object}', [FrontEndController::class, 'testDetails'])->name('front.testDetails');
+            Route::post('/logout', function () {
+                Auth::guard('customer')->logout();
+                return redirect()->route('front.login');
+            })->name('front.logout');
         });
+
+
+    });
 

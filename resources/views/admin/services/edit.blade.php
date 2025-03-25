@@ -69,7 +69,8 @@
                             <div class="form-row mb-4">
                                 <div class="form-group col-md-12">
                                     <label for="inputEmail4">Text (ქართულად)</label>
-                                    <textarea name="text[ge]" id="textarea_1" cols="30" rows="10" class="form-control"
+                                    <textarea name="text[ge]" id="textarea_1" cols="30"
+                                              rows="10" class="form-control"
                                               placeholder="Text" required>{{ $object->text }}</textarea>
                                     @error('text')
                                     <div class="customValidate">
@@ -82,7 +83,8 @@
                             <div class="form-row mb-4">
                                 <div class="form-group col-md-12">
                                     <label for="inputEmail4">Text (English)</label>
-                                    <textarea name="text[en]" id="textarea_2" cols="30" rows="10" class="form-control"
+                                    <textarea name="text[en]" id="textarea_2" cols="30"
+                                              rows="10" class="form-control"
                                               placeholder="Text"
                                               required>{{ $object->getTranslation('text','en') }}</textarea>
                                     @error('text')
@@ -114,8 +116,23 @@
 
 
     <script>
-        CKEDITOR.replace('textarea_1');
-        CKEDITOR.replace('textarea_2');
+
+        CKEDITOR.replace('textarea_1', {
+            filebrowserUploadUrl: "{{ route('admin.services.uploadMedia', ['_token' => csrf_token()]) }}",
+            filebrowserUploadMethod: 'form',
+            filebrowserImageUploadUrl: "{{ route('admin.services.uploadMedia', ['_token' => csrf_token()]) }}",
+            filebrowserBrowseUrl: "{{ route('admin.services.browseMedia') }}",  // Browse URL to fetch images
+            filebrowserImageBrowseUrl: "{{ route('admin.services.browseMedia') }}",  // Same URL for images
+        });
+
+        CKEDITOR.replace('textarea_2', {
+            filebrowserUploadUrl: "{{ route('admin.services.uploadMedia', ['_token' => csrf_token()]) }}",
+            filebrowserUploadMethod: 'form',
+            filebrowserImageUploadUrl: "{{ route('admin.services.uploadMedia', ['_token' => csrf_token()]) }}",
+            filebrowserBrowseUrl: "{{ route('admin.services.browseMedia') }}",  // Browse URL to fetch images
+            filebrowserImageBrowseUrl: "{{ route('admin.services.browseMedia') }}",  // Same URL for images
+        });
+
 
     </script>
 @endsection
