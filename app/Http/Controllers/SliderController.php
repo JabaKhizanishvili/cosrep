@@ -38,13 +38,14 @@ class SliderController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(SliderRequest $request)
     {
         $object = new Slider();
-        $object->name = $request->name;
+        $object->setTranslations('name', $request->input('name'));
+//        $object->name = $request->name;
         $object->url = $request->url;
 
         if ($request->status == 1) {
@@ -70,7 +71,7 @@ class SliderController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Slider  $slider
+     * @param \App\Models\Slider $slider
      * @return \Illuminate\Http\Response
      */
     public function show(Slider $slider)
@@ -81,7 +82,7 @@ class SliderController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Slider  $slider
+     * @param \App\Models\Slider $slider
      * @return \Illuminate\Http\Response
      */
     public function edit(Slider $object)
@@ -92,13 +93,14 @@ class SliderController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Slider  $slider
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Models\Slider $slider
      * @return \Illuminate\Http\Response
      */
     public function update(SliderRequest $request, Slider $object)
     {
-        $object->name = $request->name;
+//        $object->name = $request->name;
+        $object->setTranslations('name', $request->input('name'));
         $object->url = $request->url;
 
         if ($request->status == 1) {
@@ -122,7 +124,7 @@ class SliderController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Slider  $slider
+     * @param \App\Models\Slider $slider
      * @return \Illuminate\Http\Response
      */
     public function destroy(Slider $object)
