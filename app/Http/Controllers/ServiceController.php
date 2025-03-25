@@ -20,7 +20,7 @@ class ServiceController extends Controller
 
         if (!empty($request->keyword)) {
             $objects->where('id', 'like', '%' . $request->keyword . '%')
-                ->orWhere('name', 'like', '%' . $request->keyword  . '%');
+                ->orWhere('name', 'like', '%' . $request->keyword . '%');
         };
 
         $objects = $objects->orderBy('id', 'desc')->paginate(10);
@@ -41,15 +41,18 @@ class ServiceController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(ServiceRequest $request)
     {
         $object = new Service();
 
-        $object->name = $request->name;
-        $object->text = $request->text;
+//        $object->name = $request->name;
+//        $object->text = $request->text;
+
+        $object->setTranslations('name', $request->input('name'));
+        $object->setTranslations('text', $request->input('text'));
 
         $object->save();
 
@@ -59,7 +62,7 @@ class ServiceController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Service  $service
+     * @param \App\Models\Service $service
      * @return \Illuminate\Http\Response
      */
     public function show(Service $service)
@@ -70,7 +73,7 @@ class ServiceController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Service  $service
+     * @param \App\Models\Service $service
      * @return \Illuminate\Http\Response
      */
     public function edit(Service $object)
@@ -81,14 +84,16 @@ class ServiceController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Service  $service
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Models\Service $service
      * @return \Illuminate\Http\Response
      */
     public function update(ServiceRequest $request, Service $object)
     {
-        $object->name = $request->name;
-        $object->text = $request->text;
+//        $object->name = $request->name;
+//        $object->text = $request->text;
+        $object->setTranslations('name', $request->input('name'));
+        $object->setTranslations('text', $request->input('text'));
 
         $object->save();
 
@@ -98,7 +103,7 @@ class ServiceController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Service  $service
+     * @param \App\Models\Service $service
      * @return \Illuminate\Http\Response
      */
     public function destroy(Service $object)
