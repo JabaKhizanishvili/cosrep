@@ -157,7 +157,7 @@
                                     @if(!empty($section_one->stats))
                                         <ul class="themeioan_ul_icon">
                                             @php
-                                                $section_one_stats = json_decode($section_one->stats);
+                                                $section_one_stats = $section_one->getTranslation('stats', app()->getLocale());
                                             @endphp
                                             @if(is_array($section_one_stats))
                                                 @foreach ($section_one_stats as $section_one_stat)
