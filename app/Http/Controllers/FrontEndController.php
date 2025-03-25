@@ -131,10 +131,12 @@ class FrontEndController extends Controller
     public function singleBlog($locale, $name)
     {
 
-//        $page = Page::where('slug', '/blogs')->firstOrFail();
+        $page = Page::where('slug', '/blogs')->firstOrFail();
         $page = Page::getCachedPageBySlug('/blogs');
         $name = urldecode($name);
-        $blog = Blog::where('name', $name)->firstOrFail();
+
+        $blog = Blog::where("name->" . app()->getLocale(), $name)->firstOrFail();
+//        $blogs = Blog::where('id', '!=', $blog->id)->limit(5)->get();
         $blogs = Blog::where('id', '!=', $blog->id)->limit(5)->get();
 
         return view('front.singleBlog', compact('blog', 'blogs', 'page'));

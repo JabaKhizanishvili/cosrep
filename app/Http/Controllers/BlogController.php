@@ -28,10 +28,9 @@ class BlogController extends Controller
         }
 
 
-
         if (!empty($request->keyword)) {
             $objects->where('id', 'like', '%' . $request->keyword . '%')
-                ->orWhere('name', 'like', '%' . $request->keyword  . '%');
+                ->orWhere('name', 'like', '%' . $request->keyword . '%');
         };
 
         $objects = $objects->orderBy('id', 'desc')->paginate(10);
@@ -52,15 +51,15 @@ class BlogController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(BlogRequest $request)
     {
         $object = new Blog();
-
-        $object->name = $request->name;
-        $object->text = $request->text;
+        
+        $object->setTranslations('name', $request->input('name'));
+        $object->setTranslations('text', $request->input('text'));
 
         if ($request->hasFile('image')) {
             $file_path = $object->getImagePath();
@@ -77,7 +76,7 @@ class BlogController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Blog  $blog
+     * @param \App\Models\Blog $blog
      * @return \Illuminate\Http\Response
      */
     public function show(Blog $blog)
@@ -88,7 +87,7 @@ class BlogController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Blog  $blog
+     * @param \App\Models\Blog $blog
      * @return \Illuminate\Http\Response
      */
     public function edit(Blog $object)
@@ -99,14 +98,17 @@ class BlogController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Blog  $blog
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Models\Blog $blog
      * @return \Illuminate\Http\Response
      */
     public function update(BlogRequest $request, Blog $object)
     {
-        $object->name = $request->name;
-        $object->text = $request->text;
+//        $object->name = $request->name;
+//        $object->text = $request->text;
+        $object->setTranslations('name', $request->input('name'));
+        $object->setTranslations('text', $request->input('text'));
+
 
         if ($request->hasFile('image')) {
             $file_path = $object->getImagePath();
@@ -123,7 +125,7 @@ class BlogController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Blog  $blog
+     * @param \App\Models\Blog $blog
      * @return \Illuminate\Http\Response
      */
     public function destroy(Blog $object)
