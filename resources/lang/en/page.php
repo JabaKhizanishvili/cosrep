@@ -46,4 +46,5 @@ return [
     'minutes' => 'Minute',
     'seconds' => 'Second',
     'agree' => 'Agree',
+    'topic' => 'Topic',
 ];

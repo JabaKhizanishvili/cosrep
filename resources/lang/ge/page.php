@@ -46,4 +46,5 @@ return [
     'minutes' => 'წუთი',
     'seconds' => 'წამი',
     'agree' => 'ვეთანხმები',
+    'topic' => 'თემა',
 ];

@@ -107,7 +107,7 @@
                                                    data-toggle="pill" href="#tab_{{ $media->id }}" role="tab"
                                                    aria-controls="pills-company" aria-selected="true"
                                                    data-id='{{ $media->id }}'
-                                                   data-name="{{ $media->name }}">თემა {{ $key + 1 }}</a>
+                                                   data-name="{{ $media->name }}">{{__('page.topic')}} {{ $key + 1 }}</a>
                                             </li>
                                         @endforeach
 
