@@ -77,11 +77,14 @@
                             @foreach ($services as $key =>$service)
 
                                 <div class="card">
-                                    <div class="card-header" id="headingOne">
-                                        <div class="mb-0">
-                                            <div class="btn btn-link" role="button" data-toggle="collapse"
-                                                 data-target="#service_{{ $service->id }}" aria-expanded="true"
-                                                 aria-controls="service_{{ $service->id }}">
+                                    <div
+                                        {{--                                        class="card-header"--}}
+                                        class="card-header" role="button" data-toggle="collapse"
+                                        data-target="#service_{{ $service->id }}" aria-expanded="true"
+                                        aria-controls="service_{{ $service->id }}"
+                                        id="headingOne">
+                                        <div class="m-2">
+                                            <div class="btn cursor-pointer">
                                                 {{ $service->name }}
                                             </div>
                                         </div>
@@ -90,7 +93,7 @@
                                     <div id="service_{{ $service->id }}" class="collapse {{ $key == 0 ?'show' : '' }}"
                                          aria-labelledby="headingOne" data-parent="#accordion">
                                         <div class="">
-                                            <div class="card-body m-4 p-4 text-justify shadow  mb-5 bg-body rounded"
+                                            <div class="card-body m-lg-4 p-lg-4 text-justify mb-5 bg-body rounded"
                                                  style="min-height: auto; overflow: hidden;">
                                                 {!! $service->text !!}
                                             </div>
