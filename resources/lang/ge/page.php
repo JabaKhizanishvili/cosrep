@@ -54,5 +54,6 @@ return [
     'start_test' => 'ტესტის დაწყება',
     'starttrainingwarning' => 'ტესტის დასაწყებად გთხოვთ გაიაროთ ყველა თემა',
     'gadasvla' => 'გადასვლა',
+    'testneverfinished' => 'ტრენინგი არ გაგივლიათ.'
 
 ];

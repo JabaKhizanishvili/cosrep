@@ -54,5 +54,6 @@ return [
     'start_test' => 'Start Test',
     'starttrainingwarning' => 'To start test you must click on all the topics.',
     'gadasvla' => 'Details',
+    'testneverfinished' => 'You have not completed the training.'
 
 ];

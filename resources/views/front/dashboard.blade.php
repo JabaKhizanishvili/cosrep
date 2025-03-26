@@ -63,6 +63,25 @@
             color: #fff;
             z-index: 1;
         }
+
+        .testNeverFinished:after {
+            content: "{{__('page.testneverfinished')}}";
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            -webkit-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+            background-color: rgba(220, 53, 69, 0.7);
+            width: 100%;
+            height: 30%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 20px;
+            color: #fff;
+            z-index: 1;
+        }
+
     </style>
 @endsection
 
