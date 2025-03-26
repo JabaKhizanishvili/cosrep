@@ -8,6 +8,7 @@ return [
     'appointment_can_be_edited_before' => 0, //in days
     'max_appointment_participants' => 100, //in days
     'company_short_name' => 'COS',
+    'email_language' => 'en',
 
 
 ];

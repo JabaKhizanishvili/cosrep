@@ -1,6 +1,11 @@
 {{--@component('mail::message')--}}
+{{--@php--}}
+{{--    $lang = config('meta.email_language'); // კონფიგიდან ენის ამოღება--}}
+
+{{--@endphp--}}
+
 @php
-    $lang = config('meta.email_language'); // კონფიგიდან ენის ამოღება
+    $lang = \App\Models\Settings::where('key', 'email_language')->value('value') ?? config('meta.email_language');
 @endphp
 
 @if($lang == 'ge')
@@ -11,14 +16,19 @@
     <ul>
         <li>ტრენინგის სახელი: <strong>{{ $training_name }}</strong></li>
         <li>ტრენინგის დასაწყებად გთხოვთ გადახვიდეთ ლინკზე: <br>
-            <a href="{{ route('front.startTrainingView', $appointment) }}">
-                <strong>{{ route('front.startTrainingView', $appointment) }}</strong>
+            <a href="{{ route('front.startTrainingView', [ 'locale' => $lang, 'object' => $appointment  ])}}">
+                <strong>{{ route('front.startTrainingView', [ 'locale' => $lang, 'object' => $appointment  ]) }}</strong>
             </a>
+
+            {{--            <a href="{{ route('front.startTrainingView', ['locale' => $lang, 'object' => $appointment]) }}">--}}
+            {{--                <strong>{{ route('front.startTrainingView', ['locale' => $lang, 'object' => $appointment]) }}</strong>--}}
+            {{--            </a>--}}
+
         </li>
         <li>Username: <strong>{{ $username }}</strong></li>
         @if(empty($password))
             <li>დაგავიწყდათ პაროლი?
-                <a style="text-decoration:underline" href="{{ route('forget.password.get') }}">პაროლის აღდგენა</a>
+                <a style=" text-decoration:underline" href="{{ route('forget.password.get') }}">პაროლის აღდგენა</a>
             </li>
         @else
             <li>Password: <strong>{{ $password }}</strong></li>
@@ -39,8 +49,9 @@
     <ul>
         <li>Training name: <strong>{{ $training_name }}</strong></li>
         <li>To start the training, please visit: <br>
-            <a href="{{ route('front.startTrainingView', $appointment) }}">
-                <strong>{{ route('front.startTrainingView', $appointment) }}</strong>
+            
+            <a href="{{ route('front.startTrainingView', [ 'locale' => $lang, 'object' => $appointment  ])}}">
+                <strong>{{ route('front.startTrainingView', [ 'locale' => $lang, 'object' => $appointment  ]) }}</strong>
             </a>
         </li>
         <li>Username: <strong>{{ $username }}</strong></li>

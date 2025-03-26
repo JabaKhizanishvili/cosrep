@@ -272,7 +272,6 @@ Route::prefix('{locale?}')
         Route::middleware(['auth:customer'])->group(function () {
 
             Route::get('start-training/{object}', [FrontEndController::class, 'startTrainingView'])
-                ->whereNumber('object')
                 ->name('front.startTrainingView');
 
             Route::get('start-test/{object}', [FrontEndController::class, 'startTestView'])->name('front.startTestView');

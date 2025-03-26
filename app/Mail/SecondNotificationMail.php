@@ -35,10 +35,10 @@ class SecondNotificationMail extends Mailable
     public function build()
     {
         $emailSubject = '';
-        if($this->lang == 'ge'){
-         $emailSubject = 'ტრენინგის შეხსენება - ';
-        }else{
-         $emailSubject = 'Training remainder - ';
+        if ($this->lang == 'ge') {
+            $emailSubject = 'ტრენინგის შეხსენება - ';
+        } else {
+            $emailSubject = 'Training remainder - ';
         }
 
         return $this->subject($emailSubject . config('meta.company_short_name'))->markdown('emails.SecondNotificationMail')->with([
