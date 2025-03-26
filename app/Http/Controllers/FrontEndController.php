@@ -134,10 +134,11 @@ class FrontEndController extends Controller
         $page = Page::where('slug', '/blogs')->firstOrFail();
         $page = Page::getCachedPageBySlug('/blogs');
         $name = urldecode($name);
-
-        $blog = Blog::where("name->" . app()->getLocale(), $name)->firstOrFail();
+        $blog = Blog::where('name->ge', $name)
+            ->orWhere('name->en', $name)
+            ->firstOrFail();
 //        $blogs = Blog::where('id', '!=', $blog->id)->limit(5)->get();
-        $blogs = Blog::where('id', '!=', $blog->id)->limit(5)->get();
+        $blogs = Blog::where('id', '!=', $blog->id)->orderBy('created_at', 'desc')->limit(5)->get();
 
         return view('front.singleBlog', compact('blog', 'blogs', 'page'));
     }
