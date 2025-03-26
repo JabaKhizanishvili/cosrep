@@ -33,7 +33,7 @@
                     <div class="lernen_banner_title">
                         <h3>{{__('page.start_training')}}</h3>
                         <br>
-                        <h1>{{ $appointment->training->name }}</h1>
+                        <h1>{{ $appointment->training->title }}</h1>
 
                         <div class="lernen_breadcrumb">
                             <div class="breadcrumbs">
@@ -46,7 +46,7 @@
                                 <span class="separator">&gt;</span>
 
 
-                                <span class="last-item">{{ limit_words($appointment->training->name, 50) }}</span>
+                                <span class="last-item">{{ limit_words($appointment->training->title, 50) }}</span>
                             </div>
                         </div>
                     </div>
@@ -61,7 +61,7 @@
                 <div class="row justify-content-center text-center">
                     <div class="col-lg-12">
                         <div class="section-title with-p">
-                            <h2>{{ $appointment->training->name }}</h2>
+                            <h2>{{ $appointment->training->title }}</h2>
                             <div class="bar"></div>
                             <p style="max-width: unset">
                                 {{ $appointment->training->text }}
@@ -77,14 +77,12 @@
                        style="color: #F7ED36; font-size: 35px; margin-bottom: 20px"></i>
                     <p>
 
-                        ქვემოთ მოცემული ტრენინგი შედგება სხვადასხვა თემებისგან, იმისათვის, რომ გაიაროთ ტრენინგი
-                        აუცილებელია დააჭიროთ ყველა თემას, სხვა შემთხვევაში ტესტირებას ვერ გაივლით.
+                        {{__('page.starttrainingtext1')}}
                     </p>
                     <p>
-                        აღსანიშნავია, რომ თუ გახვალთ პროგრამიდან და თავიდან შეხვალთ აუცილებელია დააჭიროთ ყველა თემას,
-                        სხვა შემთხვევაში ტესტირებას ვერ გაივლით.
+                        {{__('page.starttrainingtext2')}}
                     </p>
-                    <p>გისურვებთ წარმატებებს!</p>
+                    <p>{{__('page.starttraininggoodluck')}}</p>
 
                 </div>
                 <hr style="margin-bottom: 40px">
@@ -182,9 +180,10 @@
                     <div class="col-md-12 col-lg-12 mt-5">
                         <div style="display: inline-block; float:right">
                             <a target="_blank" href="{{ route('front.startTestView', $appointment) }}"
-                               class="btn btn-success text-white float-right" id="start-test">ტესტის დაწყება</a>
+                               class="btn btn-success text-white float-right"
+                               id="start-test">{{__('page.start_test')}}</a>
                             <br>
-                            <p id="test-warning">ტესტის დასაწყებად გთხოვთ გაიაროთ ყველა თემა</p>
+                            <p id="test-warning">{{__('page.starttrainingwarning')}}</p>
                         </div>
 
                     </div>

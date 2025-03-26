@@ -59,10 +59,11 @@
                             <div class="services_image services_bg4 hoverblack"
                                  style="background: url({{ trainingImageThumb($training->image) }}); backgroun-size:cover">
                                 <div class="opac">
-                                    <h3>{{ $training->name }}</h3>
+                                    <h3>{{ $training->title }}</h3>
                                     <p>{{ limit_words(strip_tags($training->text), 100) }}</p>
                                     <a href="{{ route('front.singleTraining', rawurlencode($training->name)) }}"
-                                       class="color-one btn-custom">გადასვლა <i class="fas fa-arrow-right"></i></a>
+                                       class="color-one btn-custom">{{__('page.gadasvla')}} <i
+                                            class="fas fa-arrow-right"></i></a>
                                 </div>
                             </div>
                         </div>

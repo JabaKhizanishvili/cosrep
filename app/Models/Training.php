@@ -4,10 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Translatable\HasTranslations;
 
 class Training extends Model
 {
     use HasFactory;
+    use HasTranslations;
+
+    public $translatable = ['title', 'text'];
 
     public const SORT_ARRAY = [
         // 'customers' => 'Customers +',
@@ -20,7 +24,6 @@ class Training extends Model
         '1' => 'Yes',
         '2' => 'No',
     ];
-
 
 
     public function trainer()

@@ -60,7 +60,7 @@ class TrainingController extends Controller
 
         if (!empty($request->keyword)) {
             $objects->where('id', 'like', '%' . $request->keyword . '%')
-                ->orWhere('name', 'like', '%' . $request->keyword  . '%');
+                ->orWhere('name', 'like', '%' . $request->keyword . '%');
         };
 
         $objects = $objects->orderBy('id', 'desc')->paginate(10);
@@ -87,7 +87,7 @@ class TrainingController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(TrainingRequest $request)
@@ -95,7 +95,8 @@ class TrainingController extends Controller
         $object = new Training();
 
         $object->name = $request->name;
-        $object->text = $request->text;
+        $object->setTranslations('title', $request->input('title'));
+        $object->setTranslations('text', $request->input('text'));
         $object->category_id = $request->category_id;
         $object->trainer_id = $request->trainer_id;
         $object->point_to_pass = $request->point_to_pass;
@@ -138,7 +139,7 @@ class TrainingController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Training  $training
+     * @param \App\Models\Training $training
      * @return \Illuminate\Http\Response
      */
     public function show(Training $training)
@@ -149,7 +150,7 @@ class TrainingController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Training  $training
+     * @param \App\Models\Training $training
      * @return \Illuminate\Http\Response
      */
     public function edit(Training $object)
@@ -163,14 +164,15 @@ class TrainingController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Training  $training
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Models\Training $training
      * @return \Illuminate\Http\Response
      */
     public function update(TrainingRequest $request, Training $object)
     {
         $object->name = $request->name;
-        $object->text = $request->text;
+        $object->setTranslations('title', $request->input('title'));
+        $object->setTranslations('text', $request->input('text'));
         $object->category_id = $request->category_id;
         $object->trainer_id = $request->trainer_id;
         $object->point_to_pass = $request->point_to_pass;
@@ -214,7 +216,7 @@ class TrainingController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Training  $training
+     * @param \App\Models\Training $training
      * @return \Illuminate\Http\Response
      */
     public function destroy(Training $training)
@@ -231,9 +233,9 @@ class TrainingController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'question' => 'required|max:255',
-            "answers"    => "required|array|min:1",
-            "answers.*"  => "required|string|min:1",
-            "correct"  => "required|integer",
+            "answers" => "required|array|min:1",
+            "answers.*" => "required|string|min:1",
+            "correct" => "required|integer",
         ]);
         if ($validator->fails()) {
             $errors = $validator->errors();
@@ -259,9 +261,9 @@ class TrainingController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'question' => 'required|max:255',
-            "answers"    => "required|array|min:1",
-            "answers.*"  => "required|string|min:1",
-            "correct"  => "required|integer",
+            "answers" => "required|array|min:1",
+            "answers.*" => "required|string|min:1",
+            "correct" => "required|integer",
         ]);
 
         if ($validator->fails()) {
@@ -293,11 +295,11 @@ class TrainingController extends Controller
 
 
         $media = new TrainingMedia();
-        $media->path  = $path;
-        $media->type  = $request->type;
-        $media->name  = $request->name;
+        $media->path = $path;
+        $media->type = $request->type;
+        $media->name = $request->name;
 
-        $media->training_id  = $request->training_id;
+        $media->training_id = $request->training_id;
         $media->save();
 
         return response()->json('ok', 200);
@@ -364,8 +366,8 @@ class TrainingController extends Controller
             $keyword = $request->keyword;
             $appointmentCustomers->whereHas('customer', function ($q) use ($keyword) {
                 return $q->where('id', 'like', '%' . $keyword . '%')
-                    ->orWhere('name', 'like', '%' . $keyword  . '%')
-                    ->orWhere('email', 'like', '%' . $keyword  . '%');
+                    ->orWhere('name', 'like', '%' . $keyword . '%')
+                    ->orWhere('email', 'like', '%' . $keyword . '%');
             });
         }
 

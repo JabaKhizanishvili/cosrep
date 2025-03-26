@@ -28,6 +28,41 @@
             color: #fff !important;
 
         }
+
+        .testStatusFail:after {
+            content: "{{ __('page.unsuccessful') }}";
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(220, 53, 69, 0.7);
+            width: 100%;
+            height: 30%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 20px;
+            color: #fff;
+            z-index: 1;
+        }
+
+        .testStatusSuccess:after {
+            content: "{{__('page.successful')}}";
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            -webkit-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+            background-color: rgba(40, 167, 69, 0.5);
+            width: 100%;
+            height: 30%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 20px;
+            color: #fff;
+            z-index: 1;
+        }
     </style>
 @endsection
 
@@ -148,7 +183,7 @@
                                                          alt="">
                                                 </div>
                                                 <div class="event-content">
-                                                    <h5 class="title">{{ limit_words(strip_tags($appointment->training->name), 100) }}
+                                                    <h5 class="title">{{ limit_words(strip_tags($appointment->training->title), 100) }}
                                                     </h5>
                                                     <div class="course-viewer">
                                                         <ul>

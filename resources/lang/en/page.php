@@ -47,4 +47,12 @@ return [
     'seconds' => 'Second',
     'agree' => 'Agree',
     'topic' => 'Topic',
+    'trainer' => 'Trainer',
+    'starttrainingtext1' => 'The training below consists of various topics. In order to complete the training, it is necessary to click on all topics; otherwise, you will not be able to take the test.',
+    'starttrainingtext2' => 'Please note that if you exit the program and log in again, you must click on all topics again; otherwise, you will not be able to take the test.',
+    'starttraininggoodluck' => 'Good Luck !',
+    'start_test' => 'Start Test',
+    'starttrainingwarning' => 'To start test you must click on all the topics.',
+    'gadasvla' => 'Details',
+
 ];
