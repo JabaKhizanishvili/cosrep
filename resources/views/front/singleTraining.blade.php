@@ -105,7 +105,7 @@
                                     @endif
 
                                     @if($training->trainer->email)
-                                        <a href="{{ $training->trainer->email }}" target="_blank"><i
+                                        <a href="mailto:{{ $training->trainer->email }}" target="_blank"><i
                                                 class="fa fa-envelope" aria-hidden="true"></i></a>
                                     @endif
                                 </div>
