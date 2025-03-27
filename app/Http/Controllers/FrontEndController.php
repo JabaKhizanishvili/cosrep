@@ -317,8 +317,7 @@ class FrontEndController extends Controller
         }
 
         $appointment = $object;
-
-
+        
         return view('front.startTest', compact('customer', 'page', 'appointment'));
     }
 
