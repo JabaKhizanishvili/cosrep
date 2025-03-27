@@ -54,6 +54,10 @@ return [
     'start_test' => 'ტესტის დაწყება',
     'starttrainingwarning' => 'ტესტის დასაწყებად გთხოვთ გაიაროთ ყველა თემა',
     'gadasvla' => 'გადასვლა',
-    'testneverfinished' => 'ტრენინგი არ გაგივლიათ.'
+    'testneverfinished' => 'ტრენინგი არ გაგივლიათ.',
+    'end_test' => 'ტესტის დასრულება',
+    'start_test_text1' => 'სავარაუდო პასუხის არჩევა სავალდებულოა',
+    'point' => 'ქულა',
+    'your_answer' => 'თქვენი პასუხი',
 
 ];

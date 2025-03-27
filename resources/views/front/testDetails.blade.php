@@ -65,6 +65,7 @@
                                         : {{ date('Y-m-d H:i:s', strtotime($appointmentCustomer->finished_at)) }}</li>
                                     <li>{{ __('page.questions_count') }}
                                         : {{ count(json_decode($appointmentCustomer->test)) }}</li>
+                                    {{--                                        : {{ count($appointmentCustomer->test) }}</li>--}}
                                     <li>{{ __('page.passing_score') }}: {{ $appointmentCustomer->point_to_pass }}</li>
                                     <li>{{ __('page.your_score') }}: {{ $appointmentCustomer->final_point }}</li>
                                     <br>
@@ -84,44 +85,51 @@
                         </div><!-- end single features -->
                     </div>
 
-                    @foreach (json_decode($appointmentCustomer->test) as $key => $test)
+                    @foreach ( is_string($appointmentCustomer->test) ? json_decode($appointmentCustomer->test) : $appointmentCustomer->test  as $key => $test)
                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 mb25">
-
-                            <!-- 1 -->
                             <div class="single-features-light"><!-- single features -->
                                 <div class="move question_section">
-                                    <!-- uses solid style -->
-                                    <h4><a href="#">#{{ $key + 1 }} - {{ $test->question }}</a></h4>
+                                    {{--                                    <h4><a href="#">#{{ $key + 1 }} - {{ $test['question'][app()->getLocale()] }}</a>--}}
+                                    <h4><a href="#">#{{ $key + 1 }} - {{ $test->question->en }}</a>
+                                    </h4>
                                     <ul>
                                         @php
-                                            $customer_answer_numbers = json_decode($appointmentCustomer->answers);
-                                            $test_answers = json_decode($test->answers);
+                                            $customer_answer_numbers = $appointmentCustomer->answers;
+                                            if(is_string($customer_answer_numbers)){
+                                                $customer_answer_numbers = json_decode($customer_answer_numbers);
+                                            }
+
+
+                                            $test_answers = $test->answers->en;
+                                            if(is_string($test_answers)){
+                                                $test_answers = json_decode($test_answers);
+                                            }
 
                                         @endphp
                                         @foreach ($test_answers as $k => $answer)
-                                            @if($k == $test->correct)
-                                                <li class="{{ $k == $test->correct ? 'correct_answer' : ''  }}">
-                                                    {{ $answer }} ({{__('page.correct_answer')}})
-                                                </li>
-                                            @else
-                                                <li class="">
-                                                    {{ $answer }}
-                                                </li>
-                                            @endif
-
+                                            <li class="{{ $k == $test->correct ? 'correct_answer' : '' }}">
+                                                {{ $answer }}
+                                                ({{ $k == $test->correct ?  __('page.correct_answer')  : '' }}
+                                                )
+                                            </li>
                                         @endforeach
                                     </ul>
                                     <br>
-                                    <p>თქვენი პასუხი: <span class="btn btn-info text-white"
-                                                            style="text-transform: unset">{{ $test_answers[$customer_answer_numbers[$key]] }}</span>
+                                    <p>{{__('page.your_answer')}}:
+                                        <span class="btn btn-info text-white" style="text-transform: unset">
+                                            {{ $test_answers[$customer_answer_numbers[$key]] ?? '-' }}
+                    </span>
                                     </p>
-                                    <p>ქულა: <span
-                                            class="btn btn-info text-white">{{ $customer_answer_numbers[$key] == $test->correct ? '1' : '0' }}</span>
+                                    <p>{{__('page.point')}}:
+                                        <span class="btn btn-info text-white">
+                        {{ $customer_answer_numbers[$key] == $test->correct ? '1' : '0' }}
+                    </span>
                                     </p>
                                 </div>
                             </div><!-- end single features -->
                         </div>
                     @endforeach
+
 
                 </div>
                 <!-- .row end -->

@@ -317,7 +317,7 @@ class FrontEndController extends Controller
         }
 
         $appointment = $object;
-        
+
         return view('front.startTest', compact('customer', 'page', 'appointment'));
     }
 
@@ -374,7 +374,7 @@ class FrontEndController extends Controller
             $answered = abs((int)$request->get("answer_$question->id"));
 
             //check if answer exists in our table
-            $answers = json_decode($question->answers);
+            $answers = is_array($question->answers) ? $question->answers : json_decode($question->answers);
             $answers_count = count($answers);
             if ($answered > $answers_count - 1) {
                 return redirect()->back()->with('error', 'დაფიქსირდა შეცდომა გთხოვთ სცადოთ ახლიდან')->withInput();

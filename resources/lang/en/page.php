@@ -54,6 +54,10 @@ return [
     'start_test' => 'Start Test',
     'starttrainingwarning' => 'To start test you must click on all the topics.',
     'gadasvla' => 'Details',
-    'testneverfinished' => 'You have not completed the training.'
+    'testneverfinished' => 'You have not completed the training.',
+    'end_test' => 'End Test',
+    'start_test_text1' => 'You must answer All questions!',
+    'point' => 'Point',
+    'your_answer' => 'Your answer',
 
 ];

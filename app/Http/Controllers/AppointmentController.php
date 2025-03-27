@@ -53,7 +53,7 @@ class AppointmentController extends Controller
 
         if (!empty($request->keyword)) {
             $objects->where('id', 'like', '%' . $request->keyword . '%')
-                ->orWhere('name', 'like', '%' . $request->keyword  . '%');
+                ->orWhere('name', 'like', '%' . $request->keyword . '%');
         };
 
         $objects = $objects->orderBy('id', 'desc')->paginate(10);
@@ -78,7 +78,7 @@ class AppointmentController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(AppointmentRequest $request)
@@ -114,7 +114,6 @@ class AppointmentController extends Controller
                 return redirect()->back()->withInput()->with("error", "On the same Date Appointment Already exists. Appointment Id: $appointment->id");
             }
         }
-
 
 
         $training = Training::where('id', $request->training_id)->first();
@@ -160,7 +159,7 @@ class AppointmentController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Appointment  $appointment
+     * @param \App\Models\Appointment $appointment
      * @return \Illuminate\Http\Response
      */
     public function show(Appointment $appointment)
@@ -171,7 +170,7 @@ class AppointmentController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Appointment  $appointment
+     * @param \App\Models\Appointment $appointment
      * @return \Illuminate\Http\Response
      */
     public function edit(Appointment $object)
@@ -184,8 +183,8 @@ class AppointmentController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Appointment  $appointment
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Models\Appointment $appointment
      * @return \Illuminate\Http\Response
      */
     public function update(AppointmentRequest $request, Appointment $object)
@@ -249,12 +248,17 @@ class AppointmentController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Appointment  $appointment
+     * @param \App\Models\Appointment $appointment
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Appointment $appointment)
+    public function destroy(Request $request, Appointment $object)
     {
         //
+        if (!$object->canBeEdited()) {
+            return redirect()->back()->withInput()->with("error", "Appointment can't be updated Anymore");
+        }
+        $object->delete();
+        return redirect(route('admin.appointments.index', ['page' => $request->page]))->with('success', 'Record Deleted successfully');
     }
 
     public function repeatView(Request $request)
@@ -288,7 +292,7 @@ class AppointmentController extends Controller
 
         if (!empty($request->keyword)) {
             $objects->where('id', 'like', '%' . $request->keyword . '%')
-                ->orWhere('name', 'like', '%' . $request->keyword  . '%');
+                ->orWhere('name', 'like', '%' . $request->keyword . '%');
         };
 
         $objects = $objects->orderBy('repeat', 'asc')->paginate(10);
@@ -391,7 +395,7 @@ class AppointmentController extends Controller
 
             $customers->where(function ($q) use ($keyword) {
                 $q->where('id', 'like', '%' . $keyword . '%')
-                    ->orWhere('name', 'like', '%' . $keyword  . '%');
+                    ->orWhere('name', 'like', '%' . $keyword . '%');
             });
         };
 
@@ -443,7 +447,7 @@ class AppointmentController extends Controller
             $keyword = $request->keyword;
             $customers->whereHas('customer', function ($q) use ($keyword) {
                 $q->where('id', 'like', '%' . $keyword . '%')
-                    ->orWhere('name', 'like', '%' . $keyword  . '%');
+                    ->orWhere('name', 'like', '%' . $keyword . '%');
             });
         };
 

@@ -16,6 +16,36 @@ class AppointmentCustomer extends Model
         'finished_at'
     ];
 
+    protected $casts = [
+        'test' => 'array',
+        'answers' => 'array'
+    ];
+
+    public function getProperlyDecodedTest()
+    {
+        $test = is_string($this->test) ? json_decode($this->test, true) : $this->test;
+
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            // თუ ვერ დეკოდირდა, სცადეთ HTML entities დეკოდირება
+            $test = json_decode(html_entity_decode($this->test), true) ?? [];
+        }
+
+        return $this->recursiveDecode($test);
+    }
+
+    protected function recursiveDecode($data)
+    {
+        if (is_array($data)) {
+            return array_map([$this, 'recursiveDecode'], $data);
+        }
+
+        if (is_string($data)) {
+            return html_entity_decode($data, ENT_QUOTES, 'UTF-8');
+        }
+
+        return $data;
+    }
+
     public const NOTIFIED_ONE = 1;
     public const NOTIFIED_TWO = 2;
 

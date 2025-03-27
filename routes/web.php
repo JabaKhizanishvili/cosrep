@@ -225,7 +225,7 @@ Route::prefix('admin')->middleware(['auth:web', 'verified'])->group(function () 
 
     Route::get('appointments/{object}/edit', [AppointmentController::class, 'edit'])->name('admin.appointments.edit');
     Route::put('appointments/{object}/edit', [AppointmentController::class, 'update'])->name('admin.appointments.update');
-    Route::delete('appointments/{object}', [AppointmentController::class, 'destroy'])->name('admin.appointments.destroy');
+    Route::delete('appointments/{object}/delete', [AppointmentController::class, 'destroy'])->name('admin.appointments.destroy');
     // Route::get('appointments/repeatView', [AppointmentController::class, 'repeatView'])->name('admin.appointments.repeatView');
     // Route::get('appointments/{object}/repeat', [AppointmentController::class, 'repeat'])->name('admin.appointments.repeat');
     Route::get('appointments/{object}/registeredCustomers', [AppointmentController::class, 'registeredCustomers'])->name('admin.appointments.registeredCustomers');

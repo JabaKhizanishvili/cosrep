@@ -33,7 +33,7 @@
                 <div class="row">
 
                     <div class="lernen_banner_title">
-                        <h3>ტესტის დაწყება</h3>
+                        <h3>{{__('page.start_test')}}</h3>
                         <br>
                         <h1>{{ $appointment->training->name }}</h1>
 
@@ -85,7 +85,7 @@
                                         <!-- uses solid style -->
                                         <h4><a href="#">#{{ $key + 1 }} - {{ $test->question }}</a></h4>
                                         <ul>
-                                            @foreach (json_decode($test->answers) as $k => $answer)
+                                            @foreach ( is_string($test->getTranslation('answers',app()->getLocale())) ? json_decode($test->answers) : $test->getTranslation('answers',app()->getLocale())  as $k => $answer)
                                                 <li>
                                                     <input type="radio" name="answer_{{ $test->id }}" class="answers"
                                                            value="{{ $k }}" {{ old("answer_$test->id") == $k && old("answer_$test->id") != null ? 'checked' : '' }}> {{ $answer }}
@@ -93,7 +93,7 @@
                                             @endforeach
                                         </ul>
 
-                                        <div class="questionError">სავარაუდო პასუხის არჩევა სავალდებულოა</div>
+                                        <div class="questionError">{{__('page.start_test_text1')}}</div>
                                     </div>
                                 </div><!-- end single features -->
                             </div>
@@ -102,9 +102,10 @@
                     </div>
                     <!-- .row end -->
 
+
                     <div class="row">
                         <div class="col-md-12 col-lg-12 mt-5">
-                            <button class="btn btn-success text-white float-right">ტესტის დასრულება</button>
+                            <button class="btn btn-success text-white float-right">{{__('page.end_test')}}</button>
 
                         </div>
                     </div>

@@ -233,9 +233,9 @@ class TrainingController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'question' => 'required|max:255',
-            "answers" => "required|array|min:1",
-            "answers.*" => "required|string|min:1",
-            "correct" => "required|integer",
+            "answers" => "required|min:1",
+            "answers.*" => "required|min:1",
+            "correct" => "required",
         ]);
         if ($validator->fails()) {
             $errors = $validator->errors();
@@ -243,9 +243,11 @@ class TrainingController extends Controller
         }
         $test = new TrainingTest();
         $test->training_id = $object->id;
-        $test->question = $request->question;
-        $test->answers = json_encode($request->answers);
+        $test->setTranslations('question', $request->input('question'));
+        $test->setTranslations('answers', $request->input('answers'));
         $test->correct = $request->correct;
+//        $test->question = $request->question;
+//        $test->answers = json_encode($request->answers);
         $test->save();
 
         return redirect()->back()->with("success", "Record Created Successfully");
@@ -261,19 +263,20 @@ class TrainingController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'question' => 'required|max:255',
-            "answers" => "required|array|min:1",
-            "answers.*" => "required|string|min:1",
-            "correct" => "required|integer",
+            "answers" => "required|min:1",
+            "answers.*" => "required|min:1",
+            "correct" => "required",
         ]);
 
         if ($validator->fails()) {
             $errors = $validator->errors();
             return redirect()->back()->withInput()->with("error", $errors);
         }
-
-        $object->question = $request->question;
-        $object->answers = json_encode($request->answers);
+//        $object->question = $request->question;
+//        $object->answers = json_encode($request->answers);
         $object->correct = $request->correct;
+        $object->setTranslations('question', $request->input('question'));
+        $object->setTranslations('answers', $request->input('answers'));
         $object->save();
 
         return redirect()->back()->with("success", "Record Created Successfully");
