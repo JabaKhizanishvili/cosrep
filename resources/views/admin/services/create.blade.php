@@ -148,10 +148,7 @@
     <script src="{{ admin_styles('ckeditor/ckeditor.js') }}"></script>
     <script>
 
-        var firstUpload = new FileUploadWithPreview('myFirstImage')
-        $(".basic").select2({
-            tags: true,
-        });
+
         CKEDITOR.replace('textarea_1', {
             filebrowserUploadUrl: "{{ route('admin.services.uploadMedia', ['_token' => csrf_token()]) }}",
             filebrowserUploadMethod: 'form',
@@ -166,6 +163,11 @@
             filebrowserImageUploadUrl: "{{ route('admin.services.uploadMedia', ['_token' => csrf_token()]) }}",
             filebrowserBrowseUrl: "{{ route('admin.services.browseMedia') }}",  // Browse URL to fetch images
             filebrowserImageBrowseUrl: "{{ route('admin.services.browseMedia') }}",  // Same URL for images
+        });
+
+        var firstUpload = new FileUploadWithPreview('myFirstImage')
+        $(".basic").select2({
+            tags: true,
         });
     </script>
 @endsection

@@ -15,16 +15,6 @@
             margin-left: calc(-50vw + 50%); /* ეს გაასწორებს მშობლის გასწვრივ, რომ გასცდეს */
         }
 
-        .swiper-slide {
-            width: 100%; /* ყოველი სლაიდი 100% ფართო იქნება */
-            overflow: hidden;
-        }
-
-        swiper-slide img{
-            object-fit: fill;
-        }
-
-
         h2 {
             margin: 0;
             font-size: 2rem;
@@ -99,15 +89,31 @@
             width: 100%;
             height: 100%;
             transition: all 0.1s ease-in-out;
-            -webkit-filter: grayscale(90%);
-            filter: grayscale(90%);
-            -webkit-transition: .3s ease-in-out;
+            background-position: center;    /* ცენტრში გასწორება */
+            background-size: cover;        /* სურათის მთლიანად დაზუმვა (პროპორციების შენარჩუნებით) */
+            background-repeat: no-repeat;  /* სურათის გამეორების აკრძალვა */
+            /*-webkit-filter: grayscale(100%);*/
             transition: .3s ease-in-out;
+            filter: grayscale(100%);
         }
+
+
+        .swiper-slide {
+            width: 100%; /* ყოველი სლაიდი 100% ფართო იქნება */
+            overflow: hidden;
+        }
+
+        .swiper-slide:hover .image-wrapper {
+            transform: scale(1.1);
+            filter: unset;
+        }
+
+
 
         .service-image {
             width: 100%;
             height: 100%;
+            filter: grayscale(100%);
             object-fit: cover;
             transition: transform 0.3s ease-in-out, filter 0.3s ease-in-out; /* ანიმაციის ეფექტები */
 
@@ -115,11 +121,6 @@
 
         .swiper-slide:hover .service-image {
             transform: scale(1.1); /* Zooms the image */
-        }
-
-        .swiper-slide:hover .image-wrapper {
-            -webkit-filter: grayscale(0);
-            filter: grayscale(0);
         }
 
 
@@ -202,9 +203,9 @@
                             <div class="swiper-wrapper">
                                 @foreach ($services as $key =>$service)
                                 <div class="swiper-slide">
-                                    <a href="{{route('front.singleServices',urlencode($service->slug))}}">
-                                    <div class="image-wrapper">
-                                        <img src="{{ServicesImage($service->image)}}" alt="{{$service->name}}" class="service-image"/>
+                                    <a class="" href="{{route('front.singleServices',urlencode($service->slug))}}">
+                                    <div class="image-wrapper"  style="background-image: linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.5) 80%), url('{{ ServicesImage($service->image) }}')" >
+{{--                                        <img src="{{ServicesImage($service->image)}}" alt="{{$service->name}}" class="service-image"/>--}}
                                     </div>
                                     <div class="slide-content">
                                         <h2>{{$service->name}}</h2>

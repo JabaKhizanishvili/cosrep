@@ -160,10 +160,6 @@
 
     <script>
 
-        var firstUpload = new FileUploadWithPreview('myFirstImage')
-        $(".basic").select2({
-            tags: true,
-        });
 
         CKEDITOR.replace('textarea_1', {
             filebrowserUploadUrl: "{{ route('admin.services.uploadMedia', ['_token' => csrf_token()]) }}",
@@ -181,6 +177,10 @@
             filebrowserImageBrowseUrl: "{{ route('admin.services.browseMedia') }}",  // Same URL for images
         });
 
+        var firstUpload = new FileUploadWithPreview('myFirstImage')
+        $(".basic").select2({
+            tags: true,
+        });
 
     </script>
 @endsection
