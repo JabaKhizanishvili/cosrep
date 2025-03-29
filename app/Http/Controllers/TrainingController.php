@@ -290,27 +290,42 @@ class TrainingController extends Controller
     public function media(Request $request)
     {
 
-        $url = urldecode($request->url);
+        if (empty($request->input('file_ge'))) {
+            return redirect()->back()->withInput()->with("error", "ატვირთეთ ფაილები");
+        }
+
+        if (empty($request->input('file_en'))) {
+            return redirect()->back()->withInput()->with("error", "ატვირთეთ ფაილები");
+        }
+
+
         $amazon_s3_url = config('meta.amazon_s3_url');
 
-        $path = parse_url($url, PHP_URL_PATH); // gives "/pwsdedtech"
-        $path = str_replace($amazon_s3_url, '', $url);
 
+        $path_ge = str_replace($amazon_s3_url, '', $request->input('file_ge'));
+        $path_en = str_replace($amazon_s3_url, '', $request->input('file_en'));
 
         $media = new TrainingMedia();
-        $media->path = $path;
-        $media->type = $request->type;
-        $media->name = $request->name;
-
         $media->training_id = $request->training_id;
+        $media->type = $request->type;
+        $media->setTranslations('name', $request->input('name'));
+
+        $media->setTranslations('path', [
+            'ge' => $path_ge,
+            'en' => $path_en,
+        ]);
+
+
         $media->save();
 
-        return response()->json('ok', 200);
+//        return response()->json('ok', 200);
+        return redirect()->back()->with("success", "Record Created Successfully");
     }
 
     public function updateMedia(TrainingMedia $object, UpdateMediaRequest $request)
     {
-        $object->name = $request->name;
+//        $object->name = $request->name;
+        $object->setTranslations('name', $request->input('name'));
         $object->save();
         return redirect()->back()->with('success', "record updated successfully");
     }

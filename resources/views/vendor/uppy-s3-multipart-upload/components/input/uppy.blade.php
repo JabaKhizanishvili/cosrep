@@ -6,6 +6,8 @@
             const url = response.uploadURL;
             {{-- const fileName = file.name; --}}
             const fileName = new Date().getTime().toString();
+{{--            document.querySelector('#file_{{$locale}}').value = url;--}}
+            document.querySelector('#file_{{ $attributes->get('locale') }}').value = fileName;
             console.log(fileName)
             const uploadedFileData = JSON.stringify(response.body);
             console.log(uploadedFileData)
@@ -24,22 +26,6 @@
             var name = document.getElementById('name').value;
 
             var training_id = document.getElementById('training_id').value;
-
-
-            axios({
-                method: 'post',
-                url: '{{ route('admin.trainings.media') }}',
-                data: {
-                    type: type,
-                    name: name,
-                    training_id: training_id,
-                    url: url,
-                }
-              })
-              .then(function(response){
-                if(response.status == 200) {window.location.reload()}
-              })
-              .catch(err => console.warn(err));
 
 
             inputElementUrlUploadFile.value = url;
@@ -105,13 +91,13 @@
     "
 >
     <section class="{{ $uploadElementClass }}">
-      <div class="for-DragDrop" x-ref="input"></div>
+        <div class="for-DragDrop" x-ref="input"></div>
 
-      <div class="for-ProgressBar"></div>
+        <div class="for-ProgressBar"></div>
 
-      <div class="uploaded-files">
-        <h5 style="margin-top: 10px">{{ __('Uploaded file:') }}</h5>
-        <ol></ol>
-      </div>
+        <div class="uploaded-files">
+            <h5 style="margin-top: 10px">{{ __('Uploaded file:') }}</h5>
+            <ol></ol>
+        </div>
     </section>
 </div>
