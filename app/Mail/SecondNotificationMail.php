@@ -22,8 +22,7 @@ class SecondNotificationMail extends Mailable
         $this->appointment = $appointment;
         $this->customer = $customer;
         $this->password = $pwd;
-        $lang = Settings::get('email_language', 'ge');
-        $this->lang = $lang;
+        $this->lang = Settings::get('email_language', 'ge');
 
     }
 
@@ -50,6 +49,7 @@ class SecondNotificationMail extends Mailable
             'name' => $this->customer->name,
             'email' => $this->customer->email,
             'appointment' => $this->appointment,
+            'lang' => $this->lang,
         ]);
     }
 }

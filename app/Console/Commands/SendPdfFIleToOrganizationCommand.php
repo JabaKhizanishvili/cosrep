@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Models\Settings;
 use Throwable;
 use App\Models\Customer;
 use App\Models\Appointment;
@@ -33,9 +34,12 @@ class SendPdfFIleToOrganizationCommand extends Command
      *
      * @return void
      */
+    protected $lang;
+
     public function __construct()
     {
         parent::__construct();
+        $this->lang = Settings::get('email_language', 'ge');
     }
 
     /**
@@ -111,6 +115,7 @@ class SendPdfFIleToOrganizationCommand extends Command
             'customers' => $customers,
             'trainer_signature' => signatureImage($training->trainer->signature),
             'documentName' => $pdfName,
+            'lang' => $this->lang,
 
         ];
 

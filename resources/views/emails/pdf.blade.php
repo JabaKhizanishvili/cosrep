@@ -104,20 +104,98 @@ h1{
     <title></title>
 </head>
 <body>
-
-    <div id="html-template">
+<div id="html-template">
     <div class="logo" style="text-align: center">
         <img src="https://cos.com.ge/front_styles/images/logo.png" alt="" width="200px">
     </div>
-    <br>
-    <br>
+    <br><br>
 
-    <p class="heading" style="margin-bottom: 0">უსაფრთხოების ინსტრუქტაჟის ჩატარების ფორმა</p>
+    <?php if ($lang == 'en'): ?>
+        <!-- ინგლისური ვერსია -->
+    <p class="heading" style="margin-bottom: 0">Safety Instruction Form</p>
     <p class="heading">HSI Instruction form</p>
-    <br>
-    <br>
-    <br>
+    <br><br><br>
 
+    <div class="section">
+        <p style=""><i>Date of instruction: </i></p>
+        <p class="udnerline"><strong>{{ $start_date }} - {{ $end_date }} </strong></p>
+    </div>
+
+    <div class="section">
+        <p style=""><i>Organization: </i></p>
+        <p class="udnerline"><strong>{{ $organization->name }} </strong></p>
+    </div>
+
+    <div class="section">
+        <p><i>Facility name:</i></p>
+        <p class="udnerline"><strong>{{ $office->name }} </strong></p>
+    </div>
+
+    <div class="section">
+        <p><i>Facility address:</i></p>
+        <p class="udnerline"><strong>{{ $office->address }} </strong></p>
+    </div>
+
+    <div class="section">
+        <p style=""><i>Module:</i></p>
+        <p class="udnerline"><strong>{{ $training_name }} </strong></p>
+    </div>
+
+    <p style=""><i>Topics:</i></p>
+    @foreach ($media as $key => $m)
+        @if(!empty($m->name) && $m->type == 'document')
+            <span class="udnerline"><strong>{{ $m->name }}</span>{{ $key == count($media) - 1 ? '.' : ',' }} &nbsp;<strong>
+                @endif
+                @endforeach
+                <br>
+                <div class="section">
+                    <p style=""><i>Responsible authority:</i></p>
+                    <p class="udnerline"><strong>{{ $trainer_name }} </strong></p>
+                </div>
+
+                <table width="100" border="1" style="table-layout:fixed" cellspacing="0" border="1">
+                    <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Full Name</th>
+                        <th scope="col">Personal ID</th>
+                        <th scope="col">Position</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Signature</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @foreach ($customers as $key => $customer)
+                        <tr>
+                            <th style="width:5%">{{ $key + 1 }}</th>
+                            <td style="width: 23%">{{ $customer->name }}</td>
+                            <td style="width: 23%">{{ $customer->username }}</td>
+                            <td style="width: 23%">{{ $customer->position->name }}</td>
+                            <td style="width: 200px;word-wrap:break-word; width: 26%">{{ $customer->email }}</td>
+                            <td style="width: 23%"><div class="div"></div></td>
+                        </tr>
+                    @endforeach
+                    </tbody>
+                </table>
+
+                <div class="section">
+                    <p style=""><i>Responsible authority:</i></p>
+                    <p class="udnerline"><strong>{{ $trainer_name }} </strong></p>
+                </div>
+
+                <div class="section">
+                    <p><i>Signature:</i></p>
+                    <p><br>
+                        <img src="{{ $trainer_signature }}" style="width: 200px">
+                    </p>
+                </div>
+
+
+                <?php else: ?>
+                    <!-- ქართული ვერსია (ორიგინალი) -->
+                <p class="heading" style="margin-bottom: 0">უსაფრთხოების ინსტრუქტაჟის ჩატარების ფორმა</p>
+                <p class="heading">HSI Instruction form</p>
+                <br><br><br>
 
     <div class="section">
         <p style=""><i>თარიღი / Date of instruction: </i></p>
@@ -191,20 +269,13 @@ h1{
         <p class="udnerline"><strong>{{ $trainer_name }} </strong></p>
       </div>
 
-      <div class="section">
-        <p style=""><i>ხელმოწერა / Signature:</i></p>
-        <p class=""><br>
-            {{-- <img src="http://cos.ge/storage/certificates/2022-02-07_00-58-32.png" style="width: 200px"> --}}
-            <img src="{{ $trainer_signature }}" style="width: 200px">
-
-
-        </p>
-      </div>
-
-    </div>
-
-    <script>
-
-    </script>
+                            <div class="section">
+                                <p><i>ხელმოწერა / Signature:</i></p>
+                                <p><br>
+                                    <img src="{{ $trainer_signature }}" style="width: 200px">
+                                </p>
+                            </div>
+            <?php endif; ?>
+</div>
 </body>
 </html>

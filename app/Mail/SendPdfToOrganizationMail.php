@@ -29,13 +29,20 @@ class SendPdfToOrganizationMail extends Mailable
      */
     public function build()
     {
-        return $this->subject("აღრიცხვის ჟურნალი - " . config('meta.company_short_name'))->markdown('emails.SendPdfToOrganizationMail')->with([
+        if ($this->data['lang'] == 'en') {
+            $subject = 'Record Book';
+        } else {
+            $subject = 'აღრიცხვის ჟურნალი';
+        }
+
+        return $this->subject("$subject - " . config('meta.company_short_name'))->markdown('emails.SendPdfToOrganizationMail')->with([
             'training_name' => $this->data['training_name'],
             'start_date' => $this->data['start_date'],
             'end_date' => $this->data['end_date'],
             'office' => $this->data['office'],
             'organization' => $this->data['organization'],
+            'lang' => $this->data['lang'],
 
-        ])->attachData($this->file,  $this->data['documentName']);
+        ])->attachData($this->file, $this->data['documentName']);
     }
 }

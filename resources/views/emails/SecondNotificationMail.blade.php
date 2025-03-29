@@ -4,9 +4,6 @@
 
 {{--@endphp--}}
 
-@php
-    $lang = \App\Models\Settings::where('key', 'email_language')->value('value') ?? config('meta.email_language');
-@endphp
 
 @if($lang == 'ge')
     # ძვირფასო {{ $name }}
@@ -49,7 +46,7 @@
     <ul>
         <li>Training name: <strong>{{ $training_name }}</strong></li>
         <li>To start the training, please visit: <br>
-            
+
             <a href="{{ route('front.startTrainingView', [ 'locale' => $lang, 'object' => $appointment  ])}}">
                 <strong>{{ route('front.startTrainingView', [ 'locale' => $lang, 'object' => $appointment  ]) }}</strong>
             </a>
