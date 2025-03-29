@@ -189,6 +189,17 @@ function blogImage($object)
     }
 }
 
+function ServicesImage($object)
+{
+    if (!File::exists(storage_path('app/public/services/' . $object))) {
+        $object = 'noimage.jpg';
+
+        return asset('/' . $object);
+    } else {
+        return asset('/storage/services/' . $object);
+    }
+}
+
 function categoryImage($object)
 {
     if (!File::exists(storage_path('app/public/categories/' . $object))) {

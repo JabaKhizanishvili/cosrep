@@ -448,4 +448,14 @@ class FrontEndController extends Controller
 
         return view('front.services', compact('page', 'services'));
     }
+
+    public function singleServices($locale, $name)
+    {
+        $page = Page::getCachedPageBySlug('/services');
+        $services = Service::where('slug', $name)->firstOrFail();
+
+        return view('front.singleServices', compact('page', 'services'));
+    }
+
+
 }

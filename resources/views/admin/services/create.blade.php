@@ -35,6 +35,19 @@
                               id="submitForm">
                             @csrf
 
+                            <div class="form-row mb-4">
+                                <div class="form-group col-md-12">
+                                    <label for="inputEmail4">Slug უნიკალური სახელი</label>
+                                    <input type="text" class="form-control @error('slug') invalideInput @enderror"
+                                           id="slug" placeholder="Slug" name="slug" value="{{old('slug')}}"
+                                           required>
+                                    @error('slug')
+                                    <div class="customValidate">
+                                        {{ $message }}
+                                    </div>
+                                    @enderror
+                                </div>
+                            </div>
 
                             <div class="form-row mb-4">
                                 <div class="form-group col-md-12">
@@ -89,6 +102,33 @@
                                     @enderror
                                 </div>
                             </div>
+
+                            <div class="form-row mb-4">
+                                <div class="form-group col-md-6">
+                                    <div class="widget-content widget-content-area">
+                                        <div class="custom-file-container" data-upload-id="myFirstImage">
+                                            <label>Upload Image <a href="javascript:void(0)"
+                                                                   class="custom-file-container__image-clear"
+                                                                   title="Clear Image">x</a></label>
+                                            <label class="custom-file-container__custom-file">
+                                                <input type="file"
+                                                       class="custom-file-container__custom-file__custom-file-input"
+                                                       accept="image/*" name="image">
+                                                <input type="hidden" name="MAX_FILE_SIZE" value="10485760"/>
+                                                <span
+                                                    class="custom-file-container__custom-file__custom-file-control"></span>
+                                            </label>
+                                            <div class="custom-file-container__image-preview"></div>
+                                        </div>
+                                    </div>
+                                    @error('image')
+                                    <div class="customValidate">
+                                        {{ $message }}
+                                    </div>
+                                    @enderror
+                                </div>
+                            </div>
+
                             <button type="submit" class="btn btn-primary mt-3" id="submitButton">Create</button>
                         </form>
                     </div>
@@ -108,6 +148,10 @@
     <script src="{{ admin_styles('ckeditor/ckeditor.js') }}"></script>
     <script>
 
+        var firstUpload = new FileUploadWithPreview('myFirstImage')
+        $(".basic").select2({
+            tags: true,
+        });
         CKEDITOR.replace('textarea_1', {
             filebrowserUploadUrl: "{{ route('admin.services.uploadMedia', ['_token' => csrf_token()]) }}",
             filebrowserUploadMethod: 'form',

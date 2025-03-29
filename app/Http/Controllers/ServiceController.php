@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ServiceRequest;
 use App\Models\Service;
+use App\Services\FileUpload;
 use Illuminate\Http\Request;
 use League\Glide\Server;
 use Illuminate\Support\Facades\Storage;
@@ -53,6 +54,15 @@ class ServiceController extends Controller
         $object->setTranslations('name', $request->input('name'));
         $object->setTranslations('text', $request->input('text'));
 
+        if ($request->hasFile('image')) {
+            $file_path = $object->getImagePath();
+            $image = FileUpload::image($file_path, request('image'), 800);
+
+            $object->image = $image;
+        }
+
+        $object->slug = $request->input('slug');
+
         $object->save();
 
         return redirect(route('admin.services.index'))->with('success', 'Record added successfully');
@@ -89,10 +99,16 @@ class ServiceController extends Controller
      */
     public function update(ServiceRequest $request, Service $object)
     {
-//        $object->name = $request->name;
-//        $object->text = $request->text;
         $object->setTranslations('name', $request->input('name'));
         $object->setTranslations('text', $request->input('text'));
+        if ($request->hasFile('image')) {
+            $file_path = $object->getImagePath();
+            $image = FileUpload::image($file_path, request('image'), 800);
+
+            $object->image = $image;
+        }
+
+        $object->slug = $request->input('slug');
 
         $object->save();
 

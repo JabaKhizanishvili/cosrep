@@ -260,6 +260,7 @@ Route::prefix('{locale?}')
         Route::get('/terms-of-service', [FrontEndController::class, 'termsOfService'])->name(('front.terms'));
         Route::get('/privacy-policy', [FrontEndController::class, 'privacyPolicy'])->name(('front.privacy'));
         Route::get('/services', [FrontEndController::class, 'services'])->name(('front.services'));
+        Route::get('/services/{name}', [FrontEndController::class, 'singleServices'])->name(('front.singleServices'));
 
 
 //forgot password routes

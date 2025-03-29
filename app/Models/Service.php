@@ -13,4 +13,9 @@ class Service extends Model
 
     protected $fillable = ['name', 'text'];
     public $translatable = ['name', 'text'];
+
+    public function getImagePath()
+    {
+        return '/app/public/services/';
+    }
 }

@@ -3,7 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-
+use Illuminate\Validation\Rule;
 class ServiceRequest extends FormRequest
 {
     /**
@@ -23,16 +23,15 @@ class ServiceRequest extends FormRequest
      */
     public function rules()
     {
-        if (isset($this->object)) {
-            return [
-                'name' => 'required|max:255|unique:services,name,' . $this->object->id,
-                'text' => 'required|max:100000',
-            ];
-        } else {
-            return [
-                'name' => 'required|unique:services,name|max:255',
-                'text' => 'required|max:100000',
-            ];
-        }
+        $rules = [
+            'name' => 'required',
+            'text' => 'required|max:100000',
+            'slug' => [
+                'required',
+                Rule::unique('services', 'slug')->ignore($this->object->id ?? null)
+            ]
+        ];
+
+        return $rules;
     }
 }
