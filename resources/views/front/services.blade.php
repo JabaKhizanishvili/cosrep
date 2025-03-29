@@ -208,7 +208,7 @@
 {{--                                        <img src="{{ServicesImage($service->image)}}" alt="{{$service->name}}" class="service-image"/>--}}
                                     </div>
                                     <div class="slide-content">
-                                        <h2>{{$service->name}}</h2>
+                                        <h2>{{ \Str::limit($service->name,45) }}</h2>
                                         <p class="mt-4 px-2">  {!! \Str::limit(strip_tags($service->text), 155) !!}  </p>
                                         <i class="bi bi-arrow-right h3"></i>
                                     </div>
@@ -238,8 +238,8 @@
     <!-- Initialize Swiper -->
     <script>
         var swiper = new Swiper(".mySwiper", {
-            slidesPerView: 3,  // ნორმალური ეკრანებისთვის 3 სლაიდი
-            spaceBetween: 15,   // სივრცე სლაიდებს შორის
+            slidesPerView: 3,
+            spaceBetween: 15,
             pagination: {
                 el: ".swiper-pagination",
                 clickable: true,
@@ -248,17 +248,14 @@
                 crossFade: true,
             },
             breakpoints: {
-                // 320px-დან 768px-მდე (პატარა ეკრანებისთვის)
                 0: {
-                    slidesPerView: 1,  // მხოლოდ ერთი სლაიდი
+                    slidesPerView: 1,
                 },
-                // 769px-დან 1024px-მდე (მეორე ზომის ეკრანებისთვის)
                 768: {
-                    slidesPerView: 2,  // ორი სლაიდი
+                    slidesPerView: 2,
                 },
-                // 1025px-ზე მეტი ზომა (საშუალო და დიდი ეკრანებისთვის)
                 1025: {
-                    slidesPerView: 3,  // სამი სლაიდი
+                    slidesPerView: 3,
                 },
             },
         });
