@@ -244,6 +244,10 @@
                 el: ".swiper-pagination",
                 clickable: true,
             },
+            autoplay : {
+                delay: 4000,
+                disableOnInteraction: false,
+            },
             fadeEffect: {
                 crossFade: true,
             },
