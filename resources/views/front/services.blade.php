@@ -32,7 +32,7 @@
             min-height: 5vw;
             text-justify: inter-word;
             display: -webkit-box;
-            -webkit-line-clamp: 2; /* 3 ხაზის შეზღუდვა */
+            -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
             overflow: hidden;  /* ზედმეტი ტექსტის დამალვა */
             text-overflow: ellipsis;  /* ზედმეტი ტექსტის დამალვა "..." */
@@ -208,8 +208,10 @@
 {{--                                        <img src="{{ServicesImage($service->image)}}" alt="{{$service->name}}" class="service-image"/>--}}
                                     </div>
                                     <div class="slide-content">
-                                        <h2>{{ \Str::limit($service->name,45) }}</h2>
-                                        <p class="mt-4 px-2">  {!! \Str::limit(strip_tags($service->text), 155) !!}  </p>
+                                        <h2>{{ \Str::limit($service->name,40) }}</h2>
+                                        <p class="mt-4 px-2">
+                                            {!! \Str::limit(strip_tags($service->text), 155) !!}
+                                        </p>
                                         <i class="bi bi-arrow-right h3"></i>
                                     </div>
                                     </a>

@@ -46,18 +46,42 @@
     <!-- Google Fonts -->
 {{--    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">--}}
     <link href="https://db.onlinewebfonts.com/c/e8265e33dfba2c2751ec163c68553e74?family=Gilroy+GEO+Heavy" rel="stylesheet">
-    <link href="https://db.onlinewebfonts.com/c/03064356c75fa5724311add92fe92b0f?family=Gilroy-Black" rel="stylesheet">
+{{--    <link href="https://db.onlinewebfonts.com/c/03064356c75fa5724311add92fe92b0f?family=Gilroy-Black" rel="stylesheet">--}}
+    <link href="https://fonts.cdnfonts.com/css/gilroy-bold" rel="stylesheet">
 
-    <style>
-        body {
-            font-family:
-                @if(app()->getLocale() == 'en')
-                  'Gilroy GEO', Sans-serif;
-                @else
-                  'Gilroy GEO', 'Gilroy';
-                @endif
-        }
-    </style>
+
+    @if(app()->getLocale() == 'en')
+        <style>
+            body {
+                font-family:
+                    'Gilroy-Medium', Sans-Serif;
+            }
+            h1, h2, h3, h4, h5 {
+                font-family: 'Gilroy-Medium', Sans-Serif !important;
+            }
+        </style>
+    @else
+        <style>
+            body{
+             font-family:'Gilroy GEO', 'Gilroy';
+            }
+            h1,h2, h3, h4, h5{
+                font-family:'Gilroy-Medium', Sans-Serif;
+            }
+        </style>
+    @endif
+
+{{--    <style>--}}
+{{--        body {--}}
+{{--            font-family:--}}
+{{--                @if(app()->getLocale() == 'en')--}}
+{{--                  /*'Gilroy GEO', Sans-serif;*/--}}
+{{--                      'Gilroy-Medium', Sans-Serif;--}}
+{{--                @else--}}
+{{--                  'Gilroy GEO', 'Gilroy';--}}
+{{--                @endif--}}
+{{--        }--}}
+{{--    </style>--}}
 
     <style>
         #footer i::before {
@@ -216,7 +240,8 @@
                             <div class="address-icon">
                                 <i class="fas fa-home"></i>
                             </div>
-                            <p>{{ $contact->address }}</p>
+{{--                            <p>{{ $contact->address }}</p>--}}
+                            <p>{{ transliterateEn($contact->address)  }}</p>
                         </div>
                     @endif
 

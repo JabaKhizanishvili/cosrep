@@ -103,7 +103,9 @@
                                 <h3>{{__('page.details')}}</h3>
                                 <p>
                                     @if($contact->address)
-                                        {{ $contact->address }}<br>
+{{--                                        {{ $contact->address }}--}}
+                                        {{transliterateEn($contact->address)}}
+                                        <br>
                                     @endif
 
                                     @if($contact->email)

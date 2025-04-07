@@ -35,7 +35,7 @@
                     <div class="lernen_banner_title">
                         <h3>{{__('page.start_test')}}</h3>
                         <br>
-                        <h1>{{ $appointment->training->name }}</h1>
+                        <h1>{{ $appointment->training->title }}</h1>
 
                         <div class="lernen_breadcrumb">
                             <div class="breadcrumbs">

@@ -140,7 +140,7 @@
                                 <h2>{{__('page.our_partners')}}</h2>
                                 <div class="bar"></div>
                                 {{-- <p>We can help you create positive and permanent changes in your life. Let’s Create Something new and awesome Togeather. --}}
-                                </p>
+{{--                                </p>--}}
                             </div>
                         </div>
                     </div>

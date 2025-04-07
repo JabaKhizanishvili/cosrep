@@ -147,26 +147,35 @@
                                                 $isOpen = request('open') == 1 || (empty(request('future')) && empty(request('done')) && empty(request('all')));
                                             @endphp
 
-                                            <li class="nav-item" role="presentation">
-                                                <a class="nav-link tabItem {{ $isFuture ? 'active' : '' }}"
-                                                   href="{{ Request::url() }}?future=1#events">{{__('page.future')}}</a>
-                                            </li>
+{{--                                            <li class="nav-item" role="presentation">--}}
+{{--                                                <a class="nav-link tabItem {{ $isFuture ? 'active' : '' }}"--}}
+{{--                                                   href="{{ Request::url() }}?future=1#events">{{__('page.future')}}</a>--}}
+{{--                                            </li>--}}
 
-                                            <li class="nav-item" role="presentation"><a
-                                                    class="nav-link tabItem {{ $isDone ? 'active' : '' }}"
-                                                    href="{{ Request::url() }}?done=1#events">{{__('page.finished')}}</a>
-                                            </li>
+{{--                                            <li class="nav-item" role="presentation"><a--}}
+{{--                                                    class="nav-link tabItem {{ $isDone ? 'active' : '' }}"--}}
+{{--                                                    href="{{ Request::url() }}?done=1#events">{{__('page.finished')}}</a>--}}
+{{--                                            </li>--}}
+
+{{--                                            <li class="nav-item" role="presentation">--}}
+{{--                                                <a class="nav-link tabItem {{ $isAll ? 'active' : '' }}"--}}
+{{--                                                   href="{{ Request::url() }}?all=1#events">--}}
+{{--                                                    {{__('page.all')}}--}}
+{{--                                                </a>--}}
+{{--                                            </li>--}}
+
+{{--                                            <li class="nav-item" role="presentation">--}}
+{{--                                                <a class="nav-link tabItem {{ $isOpen ? 'active' : '' }}"--}}
+{{--                                                   href="{{ Request::url() }}?open=1#events">--}}
+{{--                                                    {{__('page.current')}}--}}
+{{--                                                </a>--}}
+{{--                                            </li>--}}
 
                                             <li class="nav-item" role="presentation">
-                                                <a class="nav-link tabItem {{ $isAll ? 'active' : '' }}"
-                                                   href="{{ Request::url() }}?all=1#events">
-                                                    {{__('page.all')}}
-                                                </a>
-                                            </li>
-
-                                            <li class="nav-item" role="presentation">
-                                                <a class="nav-link tabItem {{ $isOpen ? 'active' : '' }}"
-                                                   href="{{ Request::url() }}?open=1#events">
+                                                <a class="nav-link tabItem active"
+{{--                                                   href="{{ Request::url() }}?open=1#events"--}}
+                                                   href="{{ Request::url() }}"
+                                                >
                                                     {{__('page.current')}}
                                                 </a>
                                             </li>
