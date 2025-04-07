@@ -7,6 +7,11 @@
 
 
 @section('css')
+    <style>
+        .custom-singleservice p{
+            font-size: 1rem;
+        }
+    </style>
 
 <!-- END PAGE LEVEL PLUGINS/CUSTOM STYLES -->
 @endsection
@@ -57,9 +62,10 @@
                             </div>
                         </div>
 
-                        <p class="mt-5">
-                            {!! $services->text !!}
-                        </p>
+                        <div class="mt-5 custom-singleservice" style="color: #0b0b0b;}">
+{{--                            {!! $services->text !!}--}}
+                            {!! Purifier::clean($services->text) !!}
+                        </div>
 
 
                     </div>
