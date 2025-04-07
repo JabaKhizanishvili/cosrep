@@ -15,14 +15,14 @@
             margin-left: calc(-50vw + 50%); /* ეს გაასწორებს მშობლის გასწვრივ, რომ გასცდეს */
         }
 
-        h2 {
+        .slide-content h2 {
             margin: 0;
             font-size: 2rem;
             cursor: pointer;
             color: whitesmoke;
         }
 
-        p {
+        .slide-content p {
             font-size: 1rem;
             margin-top: 10px;
             cursor: pointer;
