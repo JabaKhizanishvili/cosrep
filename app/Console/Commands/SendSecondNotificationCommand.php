@@ -59,13 +59,14 @@ class SendSecondNotificationCommand extends Command
                 try {
                     $chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%&*_";
                     $pwd = substr(str_shuffle($chars), 0, 8);
-                    if (empty($customer->customer->password)) {
+//                    if (empty($customer->customer->password)) {
                         $password = Hash::make($pwd);
                         $customer->customer->password = $password;
                         $customer->customer->save();
-                    } else {
-                        $pwd = '';
-                    }
+//                    }
+//                    else {
+//                        $pwd = '';
+//                    }
 
                     Mail::to($customer->customer->email)->send(new SecondNotificationMail($appointment, $customer->customer, $pwd));
                     $customer->notified = AppointmentCustomer::NOTIFIED_ONE;

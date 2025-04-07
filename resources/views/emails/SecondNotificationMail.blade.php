@@ -6,7 +6,7 @@
 
 
 @if($lang == 'ge')
-    # ძვირფასო {{ $name }}
+     ძვირფასო {{ $name }}
 
     <p>ტრენინგი დაიწყება: <strong>{{ $start_date }}</strong></p>
 
@@ -32,14 +32,12 @@
         @endif
     </ul>
 
-    <ul>
-        <li>პლატფორმაზე წვდომის ხანგრძლივობა: <strong>{{ $duration }} საათი</strong></li>
-    </ul>
+
 
     პატივისცემით,<br>
     <a href="{{ config('meta.front_url') }}">{{ config('app.url_short') }}</a>
 @else
-    # Dear {{ $name }}
+     Dear {{ $name }}
 
     <p>The training will start on: <strong>{{ $start_date }}</strong></p>
 
@@ -61,9 +59,7 @@
         @endif
     </ul>
 
-    <ul>
-        <li>Platform access duration: <strong>{{ $duration }} hours</strong></li>
-    </ul>
+
 
     Best regards,<br>
     <a href="{{ config('meta.front_url') }}">{{ config('app.url_short') }}</a>
