@@ -63,8 +63,8 @@
                         </div>
 
                         <div class="mt-5 custom-singleservice" style="color: #0b0b0b;}">
-{{--                            {!! $services->text !!}--}}
-                            {!! Purifier::clean($services->text) !!}
+                            {!! $services->text !!}
+{{--                            {!! Purifier::clean($services->text) !!}--}}
                         </div>
 
 
