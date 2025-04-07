@@ -44,15 +44,20 @@
 
     <link rel="stylesheet" href="{{ front_styles('css/style.min.css') }}?v=7">
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+{{--    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">--}}
+    <link href="https://db.onlinewebfonts.com/c/e8265e33dfba2c2751ec163c68553e74?family=Gilroy+GEO+Heavy" rel="stylesheet">
+    <link href="https://db.onlinewebfonts.com/c/03064356c75fa5724311add92fe92b0f?family=Gilroy-Black" rel="stylesheet">
 
-    @if(app()->getLocale() == 'en')
-        <style>
-            body {
-                font-family: 'Inter', sans-serif;
-            }
-        </style>
-    @endif
+    <style>
+        body {
+            font-family:
+                @if(app()->getLocale() == 'en')
+                  'Gilroy GEO', Sans-serif;
+                @else
+                  'Gilroy GEO', 'Gilroy';
+                @endif
+        }
+    </style>
 
     <style>
         #footer i::before {
