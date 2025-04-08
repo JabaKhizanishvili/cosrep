@@ -12,17 +12,17 @@
 
 @section('content')
 
-    <div id="countDown-section">
-        <div id="countdownHeadline">{{__('page.finish_left')}}:</div>
+{{--    <div id="countDown-section">--}}
+{{--        <div id="countdownHeadline">{{__('page.finish_left')}}:</div>--}}
 
-        <div id="countdown">
-            <ul>
-                <li><span id="hours"></span>{{__('page.hours')}}</li>
-                <li><span id="minutes"></span>{{__('page.minutes')}}</li>
-                <li><span id="seconds"></span>{{__('page.seconds')}}</li>
-            </ul>
-        </div>
-    </div>
+{{--        <div id="countdown">--}}
+{{--            <ul>--}}
+{{--                <li><span id="hours"></span>{{__('page.hours')}}</li>--}}
+{{--                <li><span id="minutes"></span>{{__('page.minutes')}}</li>--}}
+{{--                <li><span id="seconds"></span>{{__('page.seconds')}}</li>--}}
+{{--            </ul>--}}
+{{--        </div>--}}
+{{--    </div>--}}
 
     <main>
         <!-- breadcrumb banner content area start -->
@@ -221,25 +221,25 @@
                 day = hour * 24;
 
 
-            const ddd = "{{ $appointment->end_date }}"
-            const countDown = new Date(ddd).getTime(),
-                x = setInterval(function () {
+            {{--const ddd = "{{ $appointment->end_date }}"--}}
+            {{--const countDown = new Date(ddd).getTime(),--}}
+            {{--    x = setInterval(function () {--}}
 
-                    const now = new Date().getTime(),
-                        distance = countDown - now;
+            {{--        const now = new Date().getTime(),--}}
+            {{--            distance = countDown - now;--}}
 
-                    document.getElementById("hours").innerText = Math.floor((distance % (day)) / (hour)),
-                        document.getElementById("minutes").innerText = Math.floor((distance % (hour)) / (minute)),
-                        document.getElementById("seconds").innerText = Math.floor((distance % (minute)) / second);
+            {{--        document.getElementById("hours").innerText = Math.floor((distance % (day)) / (hour)),--}}
+            {{--            document.getElementById("minutes").innerText = Math.floor((distance % (hour)) / (minute)),--}}
+            {{--            document.getElementById("seconds").innerText = Math.floor((distance % (minute)) / second);--}}
 
-                    //do something later when date is reached
-                    if (distance < 0) {
-                        document.getElementById("countdownHeadline").innerText = "დრო ამიწურა!";
-                        document.getElementById("countdown").style.display = "none";
-                        clearInterval(x);
-                    }
-                    //seconds
-                }, 0)
+            {{--        //do something later when date is reached--}}
+            {{--        if (distance < 0) {--}}
+            {{--            document.getElementById("countdownHeadline").innerText = "დრო ამიწურა!";--}}
+            {{--            document.getElementById("countdown").style.display = "none";--}}
+            {{--            clearInterval(x);--}}
+            {{--        }--}}
+            {{--        //seconds--}}
+            {{--    }, 0)--}}
         }());
 
 
