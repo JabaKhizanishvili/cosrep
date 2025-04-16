@@ -23,7 +23,7 @@
         /*    content: unset !important;*/
         /*}*/
 
-        .ck-content li {
+        .ck-content ul li {
             list-style-type: disc !important;
             list-style-position: inside !important;
             display: list-item !important;
