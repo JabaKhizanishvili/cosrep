@@ -42,7 +42,6 @@ Offices
 
 @endsection
 
-
 @section('content')
 <div class="row layout-top-spacing">
     <div class="col-lg-12 col-md-12 layout-spacing">
@@ -117,17 +116,29 @@ Offices
                                 <div class="form-group col-md-1">
                                     <a class="btn btn-dark" href="{{ Request::url() }}">Clear</a>
                                 </div>
+
+
                             </div>
                         </div>
 
                     </div>
                 </form>
+
+                <form method="POST" action="{{ route('admin.offices.massDelete') }}" id="massDeleteForm">
+                    @csrf
+                    <button type="submit" class="btn btn-danger mb-3" onclick="return confirm('დარწმუნებული ხარ რომ გინდა წაშლა?')">Delete Selected</button>
+                    <!-- აქ ჩამოდის checkbox-ები -->
+                    <table class="table table-bordered">
+                        <!-- table goes here -->
+                    </table>
+
             </div>
             <div class="widget-content widget-content-area">
                 <div class="table-responsive">
                     <table class="table table-bordered mb-4">
                         <thead>
                             <tr>
+                                <th><input type="checkbox" id="select-all"> Select all</th>
                                 <th>ID</th>
                                 <th>Name</th>
                                 <th>organization</th>
@@ -140,6 +151,7 @@ Offices
                         <div>
                             @foreach ($objects as $object)
                                 <tr class="recordTr">
+                                    <td><input type="checkbox" class="record-checkbox" name="ids[]" value="{{ $object->id }}"></td>
                                     <td>{{ $object->id }}</td>
                                     <td>{{ $object->name }}</td>
                                     <td>{{ $object->organization->name }}</td>
@@ -164,6 +176,7 @@ Offices
                                 </tr>
                             @endforeach
                         </div>
+                        </form>
                         </tbody>
                         <tfoot>
                             <tr>
@@ -235,6 +248,10 @@ Offices
 
     document.addEventListener("DOMContentLoaded", function() {
 
+        document.getElementById('select-all').addEventListener('change', function () {
+            const checkboxes = document.querySelectorAll('.record-checkbox');
+            checkboxes.forEach(cb => cb.checked = this.checked);
+        });
         $(".basic").select2({
 
         });

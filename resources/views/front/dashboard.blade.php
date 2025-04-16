@@ -224,7 +224,7 @@
                                                     </div>
 
 
-                                                    @if(empty($appointment->pivot->finished_at))
+                                                    @if(empty($appointment->pivot->finished_at ))
                                                         <div class="btn-section">
                                                             @if($appointment->isOpen())
                                                                 <a href="{{ route('front.startTrainingView', $appointment) }}"
@@ -234,13 +234,22 @@
                                                             @endif
                                                         </div>
                                                     @else
+                                                        @if($appointment->pivot->customer_id == '1723')
+                                                            @if($appointment->isOpen())
+                                                                <a href="{{ route('front.startTrainingView', $appointment) }}"
+                                                                   class="btn btn-success text-white pt-1 pb-1 startTrainingBtn">{{__('page.start_training')}}</a>
+                                                            @else
+                                                                <br>
+                                                            @endif
+                                                        @else
+                                                            <div class="btn-section">
+                                                                <a href="{{ route('front.testDetails', $appointment) }}"
+                                                                   class="button-light"><i
+                                                                        class="fas fa-arrow-right"></i>{{__('page.test_details')}}
+                                                                </a>
+                                                            </div>
+                                                        @endif
 
-                                                        <div class="btn-section">
-                                                            <a href="{{ route('front.testDetails', $appointment) }}"
-                                                               class="button-light"><i
-                                                                    class="fas fa-arrow-right"></i>{{__('page.test_details')}}
-                                                            </a>
-                                                        </div>
 
                                                     @endif
                                                 </div>

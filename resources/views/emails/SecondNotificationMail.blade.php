@@ -13,6 +13,7 @@
     <ul>
         <li>ტრენინგის სახელი: <strong>{{ $training_name }}</strong></li>
         <li>ტრენინგის დასაწყებად გთხოვთ გადახვიდეთ ლინკზე: <br>
+        <li>გთხოვთ გაითვალისწინოთ, რომ ტრენინგის გავლა შესაძლებელია კომპიუტერის საშუალებით. <br>
             <a href="{{ route('front.startTrainingView', [ 'locale' => $lang, 'object' => $appointment  ])}}">
                 <strong>{{ route('front.startTrainingView', [ 'locale' => $lang, 'object' => $appointment  ]) }}</strong>
             </a>
@@ -44,6 +45,7 @@
     <ul>
         <li>Training name: <strong>{{ $training_name }}</strong></li>
         <li>To start the training, please visit: <br>
+        <li>Please note that the training can be completed via computer. <br>
 
             <a href="{{ route('front.startTrainingView', [ 'locale' => $lang, 'object' => $appointment  ])}}">
                 <strong>{{ route('front.startTrainingView', [ 'locale' => $lang, 'object' => $appointment  ]) }}</strong>

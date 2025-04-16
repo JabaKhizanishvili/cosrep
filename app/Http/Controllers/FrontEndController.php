@@ -250,7 +250,7 @@ class FrontEndController extends Controller
         }
 
         //check if customer finished test
-        if (!empty($appointmentCustomer->finished_at)) {
+        if (!empty($appointmentCustomer->finished_at) && $appointmentCustomer->customer_id != '1723') {
             $content = "<h2>თქვენ უკვე დაასრულეთ არსებული ტრენინგი</h2>
             <p>ტრენინგი სახელი:  <strong>" . $object->training->name . "</strong>
             <p>ტრენინგი დაწყების დრო:  <strong>$object->start_date</strong>

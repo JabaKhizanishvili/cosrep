@@ -357,6 +357,18 @@ class TrainingController extends Controller
 
         $appointmentCustomers = AppointmentCustomer::with(['customer', 'customer.office', 'customer.office.organization', 'customer.position', 'appointment'])->whereIn('appointment_id', $appointments)->whereNotNull('finished_at');
 
+//        $appointmentCustomers = AppointmentCustomer::with([
+//            'customer',
+//            'customer.office',
+//            'customer.office.organization',
+//            'customer.position',
+//            'appointment'
+//        ])
+//            ->whereIn('appointment_id', $appointments)
+//            ->whereNotNull('finished_at')
+//            ->whereHas('customer'); // მხოლოდ ის ჩანაწერები, სადაც customer არსებობს
+
+
         if (!empty($request->office_id)) {
             $office_id = $request->office_id;
             $appointmentCustomers->whereHas('customer', function ($q) use ($office_id) {

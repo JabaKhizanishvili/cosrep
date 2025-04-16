@@ -68,6 +68,15 @@ class Appointment extends Model
         return !empty($this->pivot->finished_at) ? true : false;
     }
 
+
+//    public function isFinishedByCustomer()
+//    {
+////        dd($this->pivot->customer_id);
+//        return (isset($this->pivot->customer_id) && $this->pivot->customer_id == 1723)
+//            ? false
+//            : (!empty($this->pivot->finished_at)? true : false);
+//    }
+
     public function isFuture()
     {
         $start_date = date("Y-m-d H:i:s", strtotime($this->start_date));

@@ -150,6 +150,14 @@ Customers
 
                     </div>
                 </form>
+{{--                <form method="POST" action="{{ route('admin.customers.massDelete') }}" id="massDeleteForm">--}}
+{{--                    @csrf--}}
+                    <button type="submit" id="deleteSelectedBtn" class="btn btn-danger mb-3" onclick="return confirm('დარწმუნებული ხარ რომ გინდა წაშლა?')">Delete Selected</button>
+                    <!-- აქ ჩამოდის checkbox-ები -->
+{{--                    <table class="table table-bordered">--}}
+                        <!-- table goes here -->
+{{--                    </table>--}}
+{{--                </form>--}}
             </div>
 
             <div class="widget-content widget-content-area">
@@ -157,6 +165,7 @@ Customers
                     <table class="table table-bordered mb-4">
                         <thead>
                             <tr>
+                                <th><input type="checkbox" id="select-all"> Select all</th>
                                 <th>ID</th>
                                 <th>Personal Number</th>
                                 <th>Name</th>
@@ -172,6 +181,7 @@ Customers
                         <div>
                             @foreach ($objects as $object)
                             <tr class="recordTr" style="background: rgba({{ $object->color }}, 0.2)">
+                                <td><input type="checkbox" class="record-checkbox" name="ids[]" value="{{ $object->id }}"></td>
                                     <td>{{ $object->id }}</td>
                                     <td>{{ $object->username }}</td>
                                     <td>{{ limit_words($object->name, 15) }}</td>
@@ -183,7 +193,8 @@ Customers
                                     <form action="{{ route('admin.customers.updateGroup', $object) }}" method="post">
                                         @csrf
                                         @method('put')
-                                        <input type="integer" name="group_id" value="{{ $object->group_number }}" style="border: none; width:70px;">
+                                        <input type="integer" name="grou
+                                        p_id" value="{{ $object->group_number }}" style="border: none; width:70px;">
                                         <input type="submit" name="" id="" class="btn-sm border-0 btn-info" value="update">
                                     </form>
 
@@ -304,6 +315,52 @@ Customers
 
                 });
             }
+
+        document.getElementById('select-all').addEventListener('change', function () {
+            const checkboxes = document.querySelectorAll('.record-checkbox');
+            checkboxes.forEach(cb => cb.checked = this.checked);
+        });
+
+        document.getElementById('select-all').addEventListener('click', function () {
+            const checked = this.checked;
+            document.querySelectorAll('.record-checkbox').forEach(cb => cb.checked = checked);
+        });
+
+        document.getElementById('deleteSelectedBtn').addEventListener('click', function () {
+            const selectedCheckboxes = document.querySelectorAll('.record-checkbox:checked');
+            if (selectedCheckboxes.length === 0) {
+                alert('ჯერ მონიშნე მაინც რას შლი :)');
+                return;
+            }
+
+            if (!confirm('დარწმუნებული ხარ რომ გინდა წაშლა?')) {
+                return;
+            }
+
+            const ids = Array.from(selectedCheckboxes).map(cb => cb.value);
+
+            fetch("{{ route('admin.customers.massDelete') }}", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                },
+                body: JSON.stringify({ ids })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert(data.message);
+                        location.reload();
+                    } else {
+                        alert(data.message || 'დაფიქსირდა შეცდომა.');
+                    }
+                })
+                .catch(err => {
+                    console.error(err);
+                    alert('დაფიქსირდა შეცდომა.');
+                });
+        });
 
 
 

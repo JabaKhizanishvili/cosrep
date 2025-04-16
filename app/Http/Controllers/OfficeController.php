@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Customer;
 use App\Models\Office;
 use App\Models\Organization;
 use Illuminate\Http\Request;
@@ -118,6 +119,30 @@ class OfficeController extends Controller
         return redirect(route('admin.offices.index', ['page' => $request->page]))->with('success', 'Record Updated successfully');
     }
 
+
+    public function massDelete(Request $request,Office $object)
+    {
+        $ids = $request->input('ids');
+        if ($ids && count($ids)) {
+            $officesWithCustomers = Office::withCount('customers')
+                ->whereIn('id', $ids)
+                ->get()
+                ->filter(function ($office) {
+                    return $office->customers_count > 0;
+                });
+
+            if ($officesWithCustomers->count() > 0) {
+                $officeIds = $officesWithCustomers->pluck('id')->toArray();
+                $officeIdsString = implode(', ', $officeIds);
+
+                return redirect()->back()->with('error', 'ვერ წაიშალა, რადგან შემდეგ ოფისებს ჰყავთ კლიენტები: ' . $officeIdsString);
+            }
+            Office::whereIn('id', $ids)->delete();
+            return redirect()->back()->with('success', 'ჩანაწერები წაშლილია.');
+        }
+
+        return redirect()->back()->with('error', 'არაფერი არ არის მონიშნული.');
+    }
     /**
      * Remove the specified resource from storage.
      *

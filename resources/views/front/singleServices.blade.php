@@ -10,6 +10,28 @@
     <style>
         .custom-singleservice p{
             font-size: 1rem;
+
+        }
+
+        .ck-content ul {
+            list-style-type: disc !important;
+            padding-left: 1vh;
+            display: block !important;
+        }
+
+        /*.ck-content li::before {*/
+        /*    content: unset !important;*/
+        /*}*/
+
+        .ck-content li {
+            list-style-type: disc !important;
+            list-style-position: inside !important;
+            display: list-item !important;
+        }
+
+        .ck-content ol {
+            list-style-type: decimal;
+            padding-left: 20px;
         }
     </style>
 
@@ -62,7 +84,9 @@
                             </div>
                         </div>
 
-                        <div class="mt-5 custom-singleservice" style="color: #0b0b0b;}">
+{{--                        <div class="mt-5 custom-singleservice ck-content" style="color: #0b0b0b;}">--}}
+                            <div class="mt-5 custom-singleservice ck-content" style="color: #0b0b0b;">
+
                             {!! $services->text !!}
 {{--                            {!! Purifier::clean($services->text) !!}--}}
                         </div>

@@ -107,6 +107,7 @@ Route::prefix('admin')->middleware(['auth:web', 'verified'])->group(function () 
     Route::get('offices/{object}/edit', [OfficeController::class, 'edit'])->name('admin.offices.edit');
     Route::put('offices/{object}/edit', [OfficeController::class, 'update'])->name('admin.offices.update');
     Route::delete('offices/{object}', [OfficeController::class, 'destroy'])->name('admin.offices.destroy');
+    Route::post('offices/mass-delete', [OfficeController::class, 'massDelete'])->name('admin.offices.massDelete');
 
 
     //customers Routes
@@ -120,6 +121,7 @@ Route::prefix('admin')->middleware(['auth:web', 'verified'])->group(function () 
     Route::get('customers/importView', [CustomerController::class, 'importView'])->name('admin.customers.importView');
     Route::post('customers/import', [CustomerController::class, 'import'])->name('admin.customers.import');
     Route::put('customers/{object}/updateGroup', [CustomerController::class, 'updateGroup'])->name('admin.customers.updateGroup');
+    Route::post('customers/mass-delete', [CustomerController::class, 'massDelete'])->name('admin.customers.massDelete');
 
 
     //Categories Routes

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AppointmentCustomer;
+use http\Env\Response;
 use Throwable;
 use App\Models\Office;
 use App\Models\Customer;
@@ -65,7 +67,7 @@ class CustomerController extends Controller
 
         $groups = Customer::all()->unique('group_number')->pluck('group_number');
 
-        $objects = $objects->orderBy('group_number', 'desc')->paginate(10);
+        $objects = $objects->orderBy('group_number', 'desc')->paginate(30);
 
         $organizations = Organization::orderBy('name', 'asc')->get();
 
@@ -168,10 +170,62 @@ class CustomerController extends Controller
      * @param  \App\Models\Customer  $customer
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Customer $customer)
+    public function destroy(Customer $object)
     {
-        //
+//        $object->delete();
+//        return  redirect(back()->with('success', 'Record Deleted successfully'));
+        if (count($object->appointments) > 0) {
+            $ids = $object->appointments->pluck('id')->toArray();
+            $ids = implode(', ', $ids);
+
+            return redirect()->back()->with('error', 'You can not delete This record because it belongs To other appointments.  appoints Ids:' . $ids);
+        }
+        $object->delete();
+
+        return redirect()->back()->with('success', 'Record Deleted successfully');
+
+
     }
+
+//    public function massDelete(Request $request,Customer $object)
+//    {
+//        dd($request->input());
+//        $ids = $request->input('ids');
+//        if ($ids && count($ids)) {
+//
+//            Customer::whereIn('id', $ids)->delete();
+//            return redirect()->back()->with('success', 'ჩანაწერები წაშლილია.');
+//        }
+//
+//        return redirect()->back()->with('error', 'არაფერი არ არის მონიშნული.');
+//    }
+
+    public function massDelete(Request $request)
+    {
+        $ids = $request->input('ids');
+
+        if (!$ids || !is_array($ids) || count($ids) === 0) {
+            return response()->json([
+                'success' => false,
+                'message' => 'არაფერი არ არის მონიშნული.'
+            ], 400);
+        }
+
+        try {
+            Customer::whereIn('id', $ids)->delete();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'ჩანაწერები წარმატებით წაიშალა.'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'შეცდომა წაშლისას: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
 
     public function getOffices(Request $request)
     {
