@@ -41,7 +41,7 @@
 
         .slide-content p {
             min-height: 4vw;
-            text-align: justify;
+            /*text-align: justify;*/
             text-justify: inter-word;
             display: -webkit-box;
             -webkit-line-clamp: 3; /* 3 ხაზის შეზღუდვა */
