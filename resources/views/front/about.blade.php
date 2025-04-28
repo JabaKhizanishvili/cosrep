@@ -9,6 +9,12 @@
 @section('css')
 
     <!-- END PAGE LEVEL PLUGINS/CUSTOM STYLES -->
+
+    <style>
+        .textmakeblack p{
+            color: black !important;
+        }
+    </style>
 @endsection
 
 @section('content')
@@ -43,19 +49,22 @@
             <!-- .container -->
             <div class="container">
                 <div class="row">
-                    <div class="col-md-6">
-                        <div class="dreidbgleft">
+{{--                    <div class="col-md-6">--}}
+{{--                        <div class="dreidbgleft">--}}
+{{--                            <img src="{{ aboutImage($about->image) }}" alt="Buy this Course">--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
+                    <div class="col-md-12">
+                        <div class="img" style="text-align: center">
                             <img src="{{ aboutImage($about->image) }}" alt="Buy this Course">
                         </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="section-title section-text-left text-left">
+                        <div class=""  style="margin-top: 5vh">
                             <div>
-                                <h3>{{ $about->title }}</h3>
+                                <h3 style="text-align: center">{{ $about->title }}</h3>
                                 <div class="bar"></div>
-                                <p>
+                                <span class="textmakeblack" style="color: black">
                                     {!! $about->text !!}
-                                </p>
+                                </span>
 
                                 <div class="row black-text">
 
@@ -149,11 +158,11 @@
                                 <div class="white-box-large">
                                     <div class="section-title">
                                         <div>
-                                            <h3>{{ $section_one->title }}</h3>
+                                            <h3 style="color: black">{{ $section_one->title }}</h3>
                                             <div class="bar"></div>
                                         </div>
                                     </div>
-                                    {!! $section_one->text !!}
+                                     <span style="color: black">{!! $section_one->text !!}</span>
                                     @if(!empty($section_one->stats))
                                         <ul class="themeioan_ul_icon">
                                             @php
@@ -161,7 +170,7 @@
                                             @endphp
                                             @if(is_array($section_one_stats))
                                                 @foreach ($section_one_stats as $section_one_stat)
-                                                    <li><i class="fas fa-check-circle"></i> {{ $section_one_stat }}</li>
+                                                    <li style="color: black"><i class="fas fa-check-circle"></i> {{ $section_one_stat }}</li>
                                                 @endforeach
                                             @endif
                                         </ul>

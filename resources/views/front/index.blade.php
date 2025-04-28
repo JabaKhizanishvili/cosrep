@@ -211,7 +211,7 @@
                                             <div class="bar"></div>
                                         </div>
                                     </div>
-                                    {!! $section_one->text !!}
+                                    <span style="color:black">{!! $section_one->text !!}</span>
                                     @if(!empty($section_one->stats))
                                         <ul class="themeioan_ul_icon">
                                             @php
@@ -219,7 +219,7 @@
                                             @endphp
                                             @if(is_array($section_one_stats))
                                                 @foreach ($section_one_stats as $section_one_stat)
-                                                    <li><i class="fas fa-check-circle"></i> {{ $section_one_stat }}</li>
+                                                    <li style="color:black"><i class="fas fa-check-circle"></i> {{ $section_one_stat }}</li>
                                                 @endforeach
                                             @endif
                                         </ul>
