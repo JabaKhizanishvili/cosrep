@@ -70,53 +70,53 @@
             <br>
 
 
-            <div class="container">
-                <div class="row">
+{{--            <div class="container">--}}
+{{--                <div class="row">--}}
 
 
-                    <div class="col-lg-12 text-center">
-                        <div class="feature_contact_item fc_bg2">
-                            <div class="opac">
-                                <h3>{{__('page.trainer')}}</h3>
+{{--                    <div class="col-lg-12 text-center">--}}
+{{--                        <div class="feature_contact_item fc_bg2">--}}
+{{--                            <div class="opac">--}}
+{{--                                <h3>{{__('page.trainer')}}</h3>--}}
 
-                                <img src="{{ trainerImage($training->trainer->image) }}" alt=""
-                                     style="width:200px; height;200px; object-fit:contain">
-                                <h4 class="mt-4 text-white">{{ transliterateEn($training->trainer->name) }}</h4>
-                                <p>
-                                <div class="custom_contact">
-                                    @if($training->trainer->facebook)
-                                        <a href="{{ $training->trainer->facebook }}" target="_blank"><i
-                                                class="fab fa-facebook" aria-hidden="true"></i></a>
-                                    @endif
+{{--                                <img src="{{ trainerImage($training->trainer->image) }}" alt=""--}}
+{{--                                     style="width:200px; height;200px; object-fit:contain">--}}
+{{--                                <h4 class="mt-4 text-white">{{ transliterateEn($training->trainer->name) }}</h4>--}}
+{{--                                <p>--}}
+{{--                                <div class="custom_contact">--}}
+{{--                                    @if($training->trainer->facebook)--}}
+{{--                                        <a href="{{ $training->trainer->facebook }}" target="_blank"><i--}}
+{{--                                                class="fab fa-facebook" aria-hidden="true"></i></a>--}}
+{{--                                    @endif--}}
 
-                                    @if($training->trainer->linkedin)
-                                        <a href="{{ $training->trainer->linkedin }}" target="_blank"><i
-                                                class="fab fa-linkedin" aria-hidden="true"></i></a>
-                                    @endif
+{{--                                    @if($training->trainer->linkedin)--}}
+{{--                                        <a href="{{ $training->trainer->linkedin }}" target="_blank"><i--}}
+{{--                                                class="fab fa-linkedin" aria-hidden="true"></i></a>--}}
+{{--                                    @endif--}}
 
-                                    @if($training->trainer->twitter)
-                                        <a href="{{ $training->trainer->twitter }}" target="_blank"><i
-                                                class="fab fa-twitter" aria-hidden="true"></i></a>
-                                    @endif
+{{--                                    @if($training->trainer->twitter)--}}
+{{--                                        <a href="{{ $training->trainer->twitter }}" target="_blank"><i--}}
+{{--                                                class="fab fa-twitter" aria-hidden="true"></i></a>--}}
+{{--                                    @endif--}}
 
-                                    @if($training->trainer->instagram)
-                                        <a href="{{ $training->trainer->instagram }}" target="_blank"><i
-                                                class="fab fa-instagram" aria-hidden="true"></i></a>
-                                    @endif
+{{--                                    @if($training->trainer->instagram)--}}
+{{--                                        <a href="{{ $training->trainer->instagram }}" target="_blank"><i--}}
+{{--                                                class="fab fa-instagram" aria-hidden="true"></i></a>--}}
+{{--                                    @endif--}}
 
-                                    @if($training->trainer->email)
-                                        <a href="mailto:{{ $training->trainer->email }}" target="_blank"><i
-                                                class="fa fa-envelope" aria-hidden="true"></i></a>
-                                    @endif
-                                </div>
-                                </p>
-                            </div>
-                        </div>
-                    </div>
+{{--                                    @if($training->trainer->email)--}}
+{{--                                        <a href="mailto:{{ $training->trainer->email }}" target="_blank"><i--}}
+{{--                                                class="fa fa-envelope" aria-hidden="true"></i></a>--}}
+{{--                                    @endif--}}
+{{--                                </div>--}}
+{{--                                </p>--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
 
-                </div>
-                <!-- .row end -->
-            </div>
+{{--                </div>--}}
+{{--                <!-- .row end -->--}}
+{{--            </div>--}}
 
 
         </div>
