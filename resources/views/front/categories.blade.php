@@ -102,7 +102,8 @@
 {{--                                            <a style="text-decoration: none;" href="{{ route('front.categoryTrainings', rawurlencode($category->name)) }}">--}}
                                                 <div class="card h-100 shadow-sm">
 
-                                                        <img src="{{ categoryImageThumb($subcategory->image) }}"
+{{--                                                        <img src="{{  categoryImageThumb($subcategory->image) }}"--}}
+                                                        <img src="{{  trainingImageThumb($subcategory->image) }}"
                                                              class="card-img-top" style="height: 200px; object-fit: cover;">
 
                                                     <div class="card-body">
