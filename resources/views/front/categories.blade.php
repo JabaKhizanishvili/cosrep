@@ -70,22 +70,28 @@
             <div class="container">
                 <div class="accordion" id="categoryAccordion">
                     @foreach ($categories as $index => $category)
-                        <div class="accordion-item border-0 mb-3">
+                        <div class="themeioan_services accordion-item border-0 mb-3">
                             <div
-                                style="min-height: 150px;"
-                                class="card cursor-pointer"
+                                style="min-height: 150px; object-fit: none"
+                                class="blog-photo cursor-pointer"
                                 data-bs-toggle="collapse"
                                 data-bs-target="#collapse{{ $index }}"
                                 aria-expanded="{{ $index === 0 ? 'true' : 'false' }}"
                                 aria-controls="collapse{{ $index }}"
                                 style="border-radius: 12px; overflow: hidden;"
                             >
-                                <img src="{{ categoryImageThumb($category->image) }}" alt=""
+                                <img class="card-img-top" src="{{ categoryImageThumb($category->image) }}" alt=""
                                      style="width: 100%; object-fit: cover;">
-                                <div class="card-body bg-light">
-                                    <h5 class="card-title mb-0">
-                                        {{ $category->title }} ({{ $category->front_trainings_count }})
-                                    </h5>
+{{--                                <div class="card-body bg-light">--}}
+{{--                                    <h5 class="card-title mb-0">--}}
+{{--                                        {{ $category->title }} ({{ $category->front_trainings_count }})--}}
+{{--                                    </h5>--}}
+{{--                                </div>--}}
+                                <div class="blog-content" style="min-height: 207px">
+                                  <h5 class="title"><a
+                                  href="{{ route('front.categoryTrainings', rawurlencode($category->name)) }}">{{ limit_words($category->title, 100) }}
+                                  ({{ $category->front_trainings_count }})</a>
+                                  </h5>
                                 </div>
                             </div>
 
