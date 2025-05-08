@@ -99,13 +99,39 @@
                                 @enderror
                             </div>
 
-                            <div class="mt-1 mb-5 ">
-                                <a style="float: right; text-decoration:underline"
-                                   href="{{ route('forget.password.get') }}">{{__('auth.reset_password')}}</a>
+{{--                            <div class="container">--}}
+
+{{--                            <div class="mt-1 mb-5 flex justify-content-start bg-danger">--}}
+{{--                                <a style="text-decoration:underline"--}}
+{{--                                   href="{{ route('forget.password.get') }}">{{__('auth.register')}}</a>--}}
+{{--                                <a style="float: right; text-decoration:underline"--}}
+{{--                                   href="{{ route('forget.password.get') }}">{{__('auth.reset_password')}}</a>--}}
+{{--                            </div>--}}
+
+{{--                            </div>--}}
+
+                            <div class="mx-auto my-4">
+                                <div class="flex items-center justify-between rounded">
+                                    <a href="{{ route('auth.register_user') }}" class="text-primary hover:underline mr-2" style="">
+                                        {{ __('auth.register') }}
+                                    </a>
+
+                                    <a href="{{ route('forget.password.get') }}" class="hover:underline" style="text-decoration: underline">
+                                        {{ __('auth.reset_password') }}
+                                    </a>
+                                </div>
                             </div>
+
+
+
                             <input class="color-two button" type="submit"
                                    value="{{__('auth.login')}}"/>
                         </form>
+                            <a href="{{ route('external.social.redirect', 'google') }}" class="btn mt-2">
+                                {{--                                <i class="fab fa-google"></i>--}}
+                                <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" style="width: 3vh" class="mr-2">
+                                Google-ით შესვლა
+                            </a>
                     </div>
                 </div>
             </div>

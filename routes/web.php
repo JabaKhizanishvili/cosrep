@@ -24,6 +24,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\OrganizationController;
 use App\Http\Controllers\ForgotPasswordController;
+use App\Http\Controllers\ExternalAuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -272,13 +273,28 @@ Route::prefix('{locale?}')
         Route::post('reset-password', [ForgotPasswordController::class, 'submitResetPasswordForm'])->name('reset.password.post');
 
 
-        Route::middleware(['auth:customer'])->group(function () {
+        //register for external users
+
+        Route::get('register', [FrontEndController::class, 'Register'])->name('auth.register_user');
+        Route::post('register', [FrontEndController::class, 'Register_user'])->name('auth.register_user_');
+
+       //end for exrernnal users routes
+
+        // Socialite
+        Route::get('auth/google', [ExternalAuthController::class, 'redirectToProvider'])->name('external.social.redirect');
+//        Route::get('auth/{provider}/callback', [ExternalAuthController::class, 'handleProviderCallback'])->name('external.social.callback');
+        Route::get('auth/google/callback', [ExternalAuthController::class, 'callback'])->name('external.social.callback');
+
+        Route::get('auth/linkedin', [ExternalAuthController::class, 'linkedinRedirect'])->name('redirectToLinkedIn');
+        Route::get('auth/linkedin/callback', [ExternalAuthController::class, 'linkedinCallback'])->name('handleLinkedInCallback');
+
+        Route::middleware(['auth:customer,external'])->group(function () {
 
             Route::get('start-training/{object}', [FrontEndController::class, 'startTrainingView'])
                 ->name('front.startTrainingView');
 
             Route::get('start-test/{object}', [FrontEndController::class, 'startTestView'])->name('front.startTestView');
-            Route::post('end-test/{object}', [FrontEndController::class, 'endTest'])->name('front.EndTest');
+            Route::post('end-test/{object}', [FrontEndControllerara::class, 'endTest'])->name('front.EndTest');
 
             Route::post('/trainer-message/{object}', [FrontEndController::class, 'sendTrainerMessage'])->name(('front.sendTrainerMessage'));
 
@@ -288,9 +304,24 @@ Route::prefix('{locale?}')
             Route::get('test-details/{object}', [FrontEndController::class, 'testDetails'])->name('front.testDetails');
             Route::post('/logout', function () {
                 Auth::guard('customer')->logout();
+                Auth::guard('external')->logout();
                 return redirect()->route('front.login');
             })->name('front.logout');
+
         });
+
+
+
+//        Route::middleware(['auth:external'])->group(function () {
+//            // იგივე როუტები external-ისთვის
+//            Route::post('/logout', function () {
+//                if (Auth::guard('external')->check()) {
+//                    Auth::guard('external')->logout();
+//                }
+//
+//                return redirect()->route('front.login');
+//            })->name('front.logout');
+//        });
 
 
     });

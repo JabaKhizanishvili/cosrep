@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+use App\Models\ExternalUser;
 
 class ForgotPasswordController extends Controller
 {
@@ -39,30 +40,41 @@ class ForgotPasswordController extends Controller
             'username' => 'required|max:20|min:5',
         ]);
 
-        //get customer based on username
+        // მოძებნე მომხმარებელი ორივე ცხრილში
         $customer = Customer::where('username', $request->username)->first();
-        if (!$customer) {
+        $external = ExternalUser::where('username', $request->username)->first();
+
+        if (!$customer && !$external) {
             return back()->with('error', 'მომხმარებელი ვერ მოიძებნა');
         }
+
+        // აირჩიე რომელის ტოკენს ვქმნით და რომელ ცხრილში ვწერთ
         $token = Str::random(64);
 
-        DB::table('customers_reset_passwords')->updateOrInsert(
-            [
-                'username' => $request->username,
-            ],
-            [
-                'token' => $token,
-                'created_at' => Carbon::now()
-            ]
-        );
+        if ($customer) {
+            DB::table('customers_reset_passwords')->updateOrInsert(
+                ['username' => $customer->username],
+                ['token' => $token, 'created_at' => now()]
+            );
 
-        try {
+            try {
+                Mail::to($customer->email)->send(new ForgetPasswordMail($token, 'customer'));
+            } catch (Throwable $e) {
+                report($e);
+                return back()->with('error', 'დაფიქსირდა შეცდომა, გთხოვთ სცადოთ ახლიდან');
+            }
+        } else {
+            DB::table('external_users_reset_passwords')->updateOrInsert(
+                ['username' => $external->username],
+                ['token' => $token, 'created_at' => now()]
+            );
 
-            Mail::to($customer->email)->send(new ForgetPasswordMail($token));
-        } catch (Throwable $e) {
-
-            return back()->with('error', 'დაფიქსირდა შეცდომა, გთხოვთ სცადოთ ახლიდან');
-            report($e);
+            try {
+                Mail::to($external->email)->send(new ForgetPasswordMail($token, 'external'));
+            } catch (Throwable $e) {
+                report($e);
+                return back()->with('error', 'დაფიქსირდა შეცდომა, გთხოვთ სცადოთ ახლიდან');
+            }
         }
 
         return back()->with('success', 'პაროლის აღსადგენი ლინკი გამოგზავნილია ელექტრონულ ფოსტაზე.');
@@ -85,37 +97,106 @@ class ForgotPasswordController extends Controller
      *
      * @return response()
      */
+//    public function submitResetPasswordForm(Request $request)
+//    {
+//        $request->validate([
+//            'username' => 'required|exists:customers,username',
+//            'password' => 'required|string|min:6|confirmed',
+//            'password_confirmation' => 'required'
+//        ]);
+//
+//        $updatePassword = DB::table('customers_reset_passwords')
+//            ->where([
+//                'username' => $request->username,
+//                'token' => $request->token
+//            ])
+//            ->first();
+//
+//        if (!$updatePassword) {
+//            return back()->withInput()->with('error', 'პაროლის აღდგენის ლინკს არავალიდურია, გთხოვთ ახლიდან სცადოთ პაროლის აღდგენა');
+//        }
+//        //check if token expired
+//        if (tokenExpired($updatePassword->created_at, 120)) {
+//            $updatePassword->delete();
+//
+//            return back()->with('error', 'პაროლის აღდგენის ლინკს არავალიდურია, გთხოვთ ახლიდან სცადოთ პაროლის აღდგენა');
+//        }
+//
+//
+//        $customer = Customer::where('username', $request->username)
+//            ->update(['password' => Hash::make($request->password)]);
+//
+//        DB::table('customers_reset_passwords')->where(['username' => $request->username])->delete();
+//
+//        return redirect(route('front.login'))->with('success', 'პაროლი წარმატებით შეიცვალა, გთხოვთ გაიაროთ ავტორიზაცია');
+//    }
+
     public function submitResetPasswordForm(Request $request)
     {
         $request->validate([
-            'username' => 'required|exists:customers,username',
+            'username' => 'required',
             'password' => 'required|string|min:6|confirmed',
-            'password_confirmation' => 'required'
+            'password_confirmation' => 'required',
+            'type' => 'required|in:customer,external',
+            'token' => 'required'
         ]);
 
-        $updatePassword = DB::table('customers_reset_passwords')
+        $table = $request->type === 'external'
+            ? 'external_users_reset_passwords'
+            : 'customers_reset_passwords';
+
+        $userModel = $request->type === 'external'
+            ? ExternalUser::class
+            : Customer::class;
+
+        $updatePassword = DB::table($table)
             ->where([
                 'username' => $request->username,
-                'token' => $request->token
+                'token' => $request->token,
             ])
             ->first();
 
         if (!$updatePassword) {
-            return back()->withInput()->with('error', 'პაროლის აღდგენის ლინკს არავალიდურია, გთხოვთ ახლიდან სცადოთ პაროლის აღდგენა');
+            return back()->withInput()->with('error', 'პაროლის აღდგენის ლინკი არავალიდურია, გთხოვთ სცადოთ თავიდან.');
         }
-        //check if token expired
+
+        // Expiration check — 120 წუთი
         if (tokenExpired($updatePassword->created_at, 120)) {
-            $updatePassword->delete();
+            DB::table($table)->where('username', $request->username)->delete();
 
-            return back()->with('error', 'პაროლის აღდგენის ლინკს არავალიდურია, გთხოვთ ახლიდან სცადოთ პაროლის აღდგენა');
+            return back()->with('error', 'პაროლის აღდგენის ლინკი ვადაგასულია, სცადეთ თავიდან.');
         }
 
-
-        $customer = Customer::where('username', $request->username)
+        $userModel::where('username', $request->username)
             ->update(['password' => Hash::make($request->password)]);
 
-        DB::table('customers_reset_passwords')->where(['username' => $request->username])->delete();
+        DB::table($table)->where(['username' => $request->username])->delete();
 
-        return redirect(route('front.login'))->with('success', 'პაროლი წარმატებით შეიცვალა, გთხოვთ გაიაროთ ავტორიზაცია');
+        return redirect(route('front.login'))->with('success', 'პაროლი წარმატებით შეიცვალა.');
     }
+
+
+
+    //register
+//    public function Register(Request $request)
+//    {
+//        $request->validate([
+//            'name' => 'required|string|max:255',
+//            'email' => 'required|string|email|unique:external_users',
+//            'username' => 'required|string|unique:external_users',
+//            'password' => 'required|string|min:6|confirmed',
+//        ]);
+//
+//        $user = ExternalUser::create([
+//            'name' => $request->name,
+//            'email' => $request->email,
+//            'username' => $request->username,
+//            'password' => bcrypt($request->password),
+//        ]);
+//
+//        Auth::guard('external')->login($user);
+//
+//        return redirect()->route('external.dashboard');
+//    }
+
 }

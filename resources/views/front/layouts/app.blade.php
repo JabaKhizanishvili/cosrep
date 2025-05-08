@@ -117,9 +117,17 @@
                 @endif
                 <div class="col-lg-7 text-right">
                     <div class="custom-page-top">
-                        @if(auth()->guard(\App\Services\AuthType::TYPE_CUSTOMER)->check())
+                        @if(auth()->guard(\App\Services\AuthType::TYPE_CUSTOMER)->check() )
                             <a href="{{route('front.changePasswordView')}}">{{__('page.hello')}}
                                 , {{ transliterateEn(auth()->guard(\App\Services\AuthType::TYPE_CUSTOMER)->user()->name) }}</a>
+                            {{-- <a href="{{ route('front.dashboard') }}" class="{{ $page->slug == '/dashboard' ? 'active' : '' }}">დეშბორდი</a> --}}
+                            <form action="{{ route('front.logout') }}" method="POST" style="display: inline-block">
+                                @csrf
+                                <button class="unsetStyles" style="color: #fff">{{__('page.exit')}}</button>
+                            </form>
+                        @elseif(auth()->guard(\App\Services\AuthType::TYPE_EXTERNAL_CUSTOMER)->check())
+                            <a href="{{route('front.changePasswordView')}}">{{__('page.hello')}}
+                                , {{ transliterateEn(auth()->guard(\App\Services\AuthType::TYPE_EXTERNAL_CUSTOMER)->user()->name) }}</a>
                             {{-- <a href="{{ route('front.dashboard') }}" class="{{ $page->slug == '/dashboard' ? 'active' : '' }}">დეშბორდი</a> --}}
                             <form action="{{ route('front.logout') }}" method="POST" style="display: inline-block">
                                 @csrf
@@ -208,7 +216,9 @@
 
                 @endif
 
-                @if(auth()->guard(\App\Services\AuthType::TYPE_CUSTOMER)->check())
+                @if(auth()->guard(\App\Services\AuthType::TYPE_CUSTOMER)->check() ||
+                auth()->guard(\App\Services\AuthType::TYPE_EXTERNAL_CUSTOMER)->check()
+                )
                     <div class="header-cta">
                         <a href="{{ route('front.dashboard') }}"
                            class="btn btn-1c {{ $page->slug == '/dashboard' ? 'btn-1c-active' : '' }}">{{__('page.mytraining')}}</a>

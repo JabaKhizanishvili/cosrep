@@ -33,8 +33,14 @@
             <div class="container">
                 <div class="row">
                     <div class="lernen_banner_title">
-                        <h1>{{__('auth.reset_password')}}</h1>
+                        <h1>{{__('auth.register')}}</h1>
                         <div class="lernen_breadcrumb">
+                            {{-- <div class="breadcrumbs">
+                                        <span class="first-item">
+                                        <a href="index.html">Homepage</a></span>
+                                <span class="separator">&gt;</span>
+                                <span class="last-item">{{ $page->name }}</span>
+                            </div> --}}
                         </div>
                     </div>
                 </div>
@@ -46,24 +52,21 @@
         <div id="contact" class="wrap-bg">
             <div class="container">
                 <div class="row">
-                    <div class="col-md-12 col-lg-6">
-                        <div class="dreidbgleft">
-                            <img src="{{ front_styles('images/reset.jpeg') }}" alt="Buy this Course">
-                        </div>
-                    </div>
-                    <div class="col-md-12 col-lg-6">
+                    <div class="col-md-12 col-lg-6 flex mx-auto">
                         @if(session('error'))
                             <div class="text-danger" role="alert">
                                 {{ session('error') }}
                             </div>
                         @endif
-                        <form class="themeioan-form-contact form" action="{{ route('reset.password.post') }}"
-                              method="POST">
+
+                        @if(session('success'))
+                            <div class="text-success" role="alert">
+                                {{ session('success') }}
+                            </div>
+                        @endif
+                        <form class="themeioan-form-contact form" method="post" action="{{ route('auth.register_user_') }}">
                             @csrf
                             <!-- Change Placeholder and Title -->
-                            {{--                        <input type="hidden" name="token" value="{{ $token }}">--}}
-                            <input type="hidden" name="token" value="{{ request()->route('token') }}">
-                            <input type="hidden" name="type" value="{{ request('type', 'customer') }}">
 
                             <div class="mt-5">
                                 <input class="input-text required-field email-field" type="text" name="username"
@@ -76,9 +79,32 @@
                                 @enderror
                             </div>
 
-                            <div class="mt-1 password-wrapper">
-                                <input class="input-text required-field email-field" type="password" name="password"
-                                       id="password" placeholder="{{__('auth.password')}}" title="ელ-ფოსტა" value=""/>
+                            <div class="mt-2">
+                                <input class="input-text required-field email-field" type="email" name="email"
+                                       id="contactEmail" placeholder="{{__('auth.email')}}" title="Email"
+                                       value="{{ old('email') }}"/>
+                                @error('email')
+                                <div class="error-msg">
+                                    {{ $message }}
+                                </div>
+                                @enderror
+                            </div>
+
+                            <div class="mt-2">
+                                <input class="input-text required-field email-field" type="text" name="name"
+                                       id="contactName" placeholder="{{__('auth.fullname')}}" title="{{__('auth.fullname')}}"
+                                       value="{{ old('name') }}"/>
+                                @error('name')
+                                <div class="error-msg">
+                                    {{ $message }}
+                                </div>
+                                @enderror
+                            </div>
+
+                            <div class="mt-2 mb-1 password-wrapper">
+                                <input class="input-text required-field" type="password" name="password" id="password"
+                                       placeholder="{{__('auth.password')}}" title="password"
+                                       value="{{ old('password') }}"/>
                                 <span class="toggle-password" id="eye-icon" onclick="togglePassword(this)"
                                       data-target="password">
                                 <i class="bi bi-eye-fill"></i>
@@ -106,9 +132,35 @@
                                 @enderror
                             </div>
 
-                            <input class="color-two button" type="submit"
-                                   value="{{__('auth.reset_password')}}"/>
+                            {{--                            <div class="container">--}}
+
+                            {{--                            <div class="mt-1 mb-5 flex justify-content-start bg-danger">--}}
+                            {{--                                <a style="text-decoration:underline"--}}
+                            {{--                                   href="{{ route('forget.password.get') }}">{{__('auth.register')}}</a>--}}
+                            {{--                                <a style="float: right; text-decoration:underline"--}}
+                            {{--                                   href="{{ route('forget.password.get') }}">{{__('auth.reset_password')}}</a>--}}
+                            {{--                            </div>--}}
+
+                            {{--                            </div>--}}
+
+
+
+
+                            <input class="mt-4 color-two button" type="submit"
+                                   value="{{__('auth.register')}}"/>
                         </form>
+
+                            <a href="{{ route('external.social.redirect', 'google') }}" class="btn mt-2">
+{{--                                <i class="fab fa-google"></i>--}}
+                                <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" style="width: 3vh" class="mr-2">
+                                 Google-ით შესვლა
+                            </a>
+
+
+                            {{--                            <a href="{{ route('redirectToLinkedIn') }}" class="btn btn-primary">--}}
+{{--                                <i class="fab fa-linkedin"></i> LinkedIn-ით შესვლა--}}
+{{--                            </a>--}}
+
                     </div>
                 </div>
             </div>
@@ -119,8 +171,8 @@
 
 @endsection
 
-
 @section('js')
+    {{--    <script src="{{ front_styles("js/tab.js") }}?v=1256"></script>--}}
     <script>
 
         function togglePassword(element) {
@@ -140,5 +192,5 @@
         }
 
     </script>
-    {{--    <script src='{{ front_styles("js/tab.js") }}'></script>--}}
+
 @endsection

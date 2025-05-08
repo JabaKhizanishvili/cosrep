@@ -27,11 +27,15 @@ use App\Providers\RouteServiceProvider;
 use App\Http\Requests\ContactEmailRequest;
 use App\Http\Requests\sendTrainerMessageRequest;
 use Illuminate\Support\Facades\Hash;
+use App\Models\ExternalUser;
+use Illuminate\Auth\Events\Registered;
+
 
 class FrontEndController extends Controller
 {
     public function index()
     {
+//       dd(Auth::guard('external')->user());
 //        $page = Page::where('slug', '/')->firstOrFail();
         $page = Page::getCachedPageBySlug('/');
         $sliders = Slider::active()->orderBy('position', 'asc')->get();
@@ -159,16 +163,73 @@ class FrontEndController extends Controller
         return view('front.login', compact('page'));
     }
 
+    public function Register(Request $request)
+    {
+        $page = Page::where('slug', '/login')->firstOrFail();
+        return view('front.externalRegister', compact('page'));
+    }
+
+    public function Register_user(Request $request)
+    {
+        $request->validate([
+            'username' => 'required|unique:external_users,username',
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:external_users,email',
+            'password' => 'required|string|min:6|confirmed',
+        ]);
+
+        $user = ExternalUser::create([
+            'username' => $request->username,
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+        ]);
+
+        event(new Registered($user));
+        Auth::guard('external')->login($user);
+        return redirect()->intended('/');
+
+    }
+
+//    public function login(LoginRequest $request)
+//    {
+//
+//        $credentials = $request->only('username', 'password');
+//        if (Auth::guard(AuthType::TYPE_CUSTOMER)->attempt($credentials)) {
+////            return redirect(RouteServiceProvider::CUSTOMER_HOME);
+//            return redirect(route('front.dashboard'));
+//        }
+//
+//        if (Auth::guard(AuthType::TYPE_EXTERNAL_CUSTOMER)->attempt($credentials)) {
+////            return redirect(RouteServiceProvider::CUSTOMER_HOME);
+//            return redirect(route('front.dashboard'));
+//        }
+//
+//        return redirect()->back()->with('error', 'Username ან Password არასწორია');
+//    }
+
     public function login(LoginRequest $request)
     {
+        $credentials = $request->validated(); // ვიყენებთ validated() მონაცემებს Request-დან
 
-        $credentials = $request->only('username', 'password');
+        // ვცდილობთ ჯერ customer-ით შესვლას
         if (Auth::guard(AuthType::TYPE_CUSTOMER)->attempt($credentials)) {
-//            return redirect(RouteServiceProvider::CUSTOMER_HOME);
-            return redirect(route('front.dashboard'));
+        $request->session()->regenerate(); // უსაფრთხოებისთვის
+            return redirect()->intended(route('front.dashboard'));
         }
 
-        return redirect()->back()->with('error', 'Username ან Password არასწორია');
+        // ვცდილობთ external-ით შესვლას
+        if (Auth::guard(AuthType::TYPE_EXTERNAL_CUSTOMER)->attempt($credentials)) {
+            $request->session()->regenerate();
+            return redirect()->intended(route('front.dashboard'));
+        }
+
+        // თუ ვერ შევიდა ორივე გარდით
+        return back()
+            ->withInput($request->only('username')) // დავაბრუნოთ username
+            ->withErrors([
+                'username' => 'მოცემული მონაცემები არ შეესაბამება ჩვენს ჩანაწერებს',
+            ]);
     }
 
 //    change password
@@ -181,58 +242,87 @@ class FrontEndController extends Controller
 
     public function changePassword(Request $request)
     {
-
-//       $request->validate([
-//           'old_password' => ['required'],
-//           'new_password' => ['required', 'min:8', 'confirmed'],
-//       ], [
-//           'old_password.required' => 'გთხოვთ შეიყვანოთ ძველი პაროლი.',
-//           'new_password.required' => 'გთხოვთ შეიყვანოთ ახალი პაროლი.',
-//           'new_password.min' => 'პაროლი უნდა შეიცავდეს მინიმუმ 8 სიმბოლოს.',
-//           'new_password.confirmed' => 'ახალი პაროლი და მისი დადასტურება არ ემთხვევა.',
-//       ]);
-
         $request->validate([
             'old_password' => ['required'],
             'new_password' => ['required', 'min:8', 'confirmed'],
         ]);
-
         $customer = auth()->guard(AuthType::TYPE_CUSTOMER)->user();
-
         if (!Hash::check($request->old_password, $customer->password)) {
             return back()->with('error', __('auth.incorrect_password'));
         }
-
         $customer->password = Hash::make($request->new_password);
         $customer->save();
-
         return back()->with('success', __('auth.password_updated'));
+
     }
+
+//    public function dashboard(Request $request)
+//    {
+////        $page = Page::where('slug', '/dashboard')->firstOrFail();
+//        $page = Page::getCachedPageBySlug('/dashboard');
+//
+//        $customer = auth()->guard(AuthType::TYPE_CUSTOMER)->user();
+//        $appointments = $customer->appointments();
+//
+//        if (!empty($request->done) && $request->done == 1) {
+//            $appointments->done();
+//        } elseif (!empty($request->future) && $request->future == 1) {
+//            $appointments->future();
+//        } elseif (!empty($request->open) && $request->open == 1) {
+//            $appointments->open();
+//        } elseif (!empty($request->all) && $request->all == 1) {
+//            $appointments->all();
+//        } else {
+//            $appointments->open();
+//        }
+//        $appointments = $appointments->paginate(10);
+//
+//
+//        return view('front.dashboard', compact('customer', 'page', 'appointments'));
+//    }
+
 
     public function dashboard(Request $request)
     {
-//        $page = Page::where('slug', '/dashboard')->firstOrFail();
         $page = Page::getCachedPageBySlug('/dashboard');
 
-        $customer = auth()->guard(AuthType::TYPE_CUSTOMER)->user();
-        $appointments = $customer->appointments();
+        if (auth()->guard(AuthType::TYPE_CUSTOMER)->check()) {
+            $user = auth()->guard(AuthType::TYPE_CUSTOMER)->user();
+            $appointments = $user->appointments();
 
-        if (!empty($request->done) && $request->done == 1) {
-            $appointments->done();
-        } elseif (!empty($request->future) && $request->future == 1) {
-            $appointments->future();
-        } elseif (!empty($request->open) && $request->open == 1) {
-            $appointments->open();
-        } elseif (!empty($request->all) && $request->all == 1) {
-            $appointments->all();
-        } else {
-            $appointments->open();
+            if (!empty($request->done) && $request->done == 1) {
+                $appointments->done();
+            } elseif (!empty($request->future) && $request->future == 1) {
+                $appointments->future();
+            } elseif (!empty($request->open) && $request->open == 1) {
+                $appointments->open();
+            } elseif (!empty($request->all) && $request->all == 1) {
+                $appointments->all();
+            } else {
+                $appointments->open();
+            }
+
+            $appointments = $appointments->paginate(10);
+
+            return view('front.dashboard', [
+                'customer' => $user,
+                'page' => $page,
+                'appointments' => $appointments,
+            ]);
+
+        } elseif (auth()->guard(AuthType::TYPE_EXTERNAL_CUSTOMER)->check()) {
+            $user = auth()->guard(AuthType::TYPE_EXTERNAL_CUSTOMER)->user();
+            // შეგიძლია აქაც გქონდეს რაიმე ინფო რაც გინდა external user-ზე
+            return view('front.external_dashboard', [
+                'user' => $user,
+                'page' => $page,
+            ]);
         }
-        $appointments = $appointments->paginate(10);
 
-
-        return view('front.dashboard', compact('customer', 'page', 'appointments'));
+        // თუ არც ერთი არაა ავტორიზებული
+        return redirect()->route('login')->withErrors('Unauthorized');
     }
+
 
 
     public function startTrainingView($locale, Appointment $object)

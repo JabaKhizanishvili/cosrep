@@ -29,5 +29,7 @@ return [
     'password_updated' => 'Password Updated!',
     'incorrect_password' => 'Incorrect Password.',
     'login' => 'Login',
+    'register' => 'Register',
+    'fullname' => 'Full Name',
 
 ];

@@ -29,7 +29,10 @@ class RedirectIfAuthenticated
             if (Auth::guard($guard)->check()) {
                 //for customer redirect
                 if ($guard == AuthType::TYPE_CUSTOMER && Auth::guard($guard)->check()) {
+                    return redirect(RouteServiceProvider::CUSTOMER_HOME);
+                }
 
+                if($guards == AuthType::TYPE_EXTERNAL_CUSTOMER && Auth::guard($guard)->check()){
                     return redirect(RouteServiceProvider::CUSTOMER_HOME);
                 }
 

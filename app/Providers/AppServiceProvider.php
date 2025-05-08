@@ -39,6 +39,7 @@ class AppServiceProvider extends ServiceProvider
             'front.terms',
             'front.policy',
             'front.dashboard',
+            'front.external_dashboard',
             'front.startTraining',
             'front.startTest',
             'front.testDetails',
@@ -48,6 +49,7 @@ class AppServiceProvider extends ServiceProvider
             'front.forgetPasswordLink',
             'front.changePasswordView',
             'front.singleServices',
+            'front.externalRegister',
 
         ], function ($view) {
 
