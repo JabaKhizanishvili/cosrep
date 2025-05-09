@@ -31,5 +31,6 @@ return [
     'login' => 'Login',
     'register' => 'Register',
     'fullname' => 'Full Name',
+    'gmailauth' => 'Or try different Auth Method',
 
 ];

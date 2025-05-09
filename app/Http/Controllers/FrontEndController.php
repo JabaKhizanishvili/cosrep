@@ -548,4 +548,41 @@ class FrontEndController extends Controller
     }
 
 
+    public function chooseType($locale,$trainingId)
+    {
+        $page = Page::where('slug', '/trainings')->firstOrFail();
+        $training = Training::active()->where('id', $trainingId)->firstOrFail();
+        $category = Category::where('id', $training->category_id)->firstOrFail();
+        return view('front.choose_type', compact('page','training', 'category'));
+    }
+
+
+    public function processType(Request $request, $trainingId)
+    {
+        dd($request->all());
+        $request->validate([
+            'type' => 'required|in:online,offline'
+        ]);
+
+        $training = Training::findOrFail($trainingId);
+        $user = auth()->guard('external')->user(); // გარე მომხმარებელი
+
+        if ($request->type === 'offline') {
+            TrainingOrder::create([
+                'external_user_id' => $user->id,
+                'training_id' => $training->id,
+                'type' => 'offline',
+//                'status' => 'paid', // თუ ფიზიკურს ვთვლით გადახდილად
+//                'paid_at' => now(),
+            ]);
+
+            return redirect()->route('external.dashboard')->with('success', 'ტრენინგი წარმატებით დაემატა');
+        }
+
+        // თუ ონლაინ აირჩია — გადამისამართება გადახდის გვერდზე
+        return redirect()->route('payment.page', $training->id);
+    }
+
+
+
 }

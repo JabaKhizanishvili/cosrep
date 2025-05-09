@@ -111,13 +111,18 @@
                                                         <img src="{{  trainingImageThumb($subcategory->image) }}"
                                                              class="card-img-top" style="height: 200px; object-fit: cover;">
 
-                                                    <div class="card-body">
+                                                    <div class="card-body" style="min-height: 180px;">
                                                         <h5 class="card-title">
                                                             <h5  class="card-title" href="{{ route('front.categoryTrainings', rawurlencode($subcategory->name)) }}">
                                                                 {{ $subcategory->title }}
                                                             </h5>
                                                         </h5>
                                                     </div>
+                                                    @auth('external')
+                                                    <a href="{{ route('training.purchase', $subcategory->id) }}" class="btn btn-primary">
+                                                        ყიდვა
+                                                    </a>
+                                                    @endauth
                                                 </div>
                                             </a>
                                             </div>

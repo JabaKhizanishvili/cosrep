@@ -130,7 +130,7 @@
                             <a href="{{ route('external.social.redirect', 'google') }}" class="btn mt-2">
                                 {{--                                <i class="fab fa-google"></i>--}}
                                 <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" style="width: 3vh" class="mr-2">
-                                Google-ით შესვლა
+                                {{__('auth.gmailauth')}}
                             </a>
                     </div>
                 </div>

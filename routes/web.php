@@ -302,11 +302,39 @@ Route::prefix('{locale?}')
             Route::get('change_password', [FrontEndController::class, 'changePasswordView'])->name('front.changePasswordView');
             Route::post('change_password', [FrontEndController::class, 'changePassword'])->name('front.changePassword');
             Route::get('test-details/{object}', [FrontEndController::class, 'testDetails'])->name('front.testDetails');
+//            Route::post('/logout', function () {
+//                Auth::guard('customer')->logout();
+//                Auth::guard('external')->logout();
+//                return redirect()->route('front.login');
+//            })->name('front.logout');
+
             Route::post('/logout', function () {
-                Auth::guard('customer')->logout();
-                Auth::guard('external')->logout();
+                if (Auth::guard('customer')->check()) {
+                    Auth::guard('customer')->logout();
+                }
+
+                if (Auth::guard('external')->check()) {
+                    Auth::guard('external')->logout();
+                }
+
+                if (Auth::guard('web')->check()) {
+                    Auth::guard('web')->logout();
+                }
+
+                session()->invalidate();
+                session()->regenerateToken();
+
                 return redirect()->route('front.login');
             })->name('front.logout');
+
+
+        });
+
+
+        Route::middleware(['auth:external'])->group(function () {
+
+            Route::get('/trainings/{training}/purchase', [FrontEndController::class, 'chooseType'])->name('training.purchase');
+            Route::post('/trainings/{training}/purchase', [FrontEndController::class, 'processType'])->name('training.purchase.submit');
 
         });
 
@@ -322,6 +350,26 @@ Route::prefix('{locale?}')
 //                return redirect()->route('front.login');
 //            })->name('front.logout');
 //        });
+
+        Route::post('/logout', function () {
+            if (Auth::guard('customer')->check()) {
+                Auth::guard('customer')->logout();
+            }
+
+            if (Auth::guard('external')->check()) {
+                Auth::guard('external')->logout();
+            }
+
+            if (Auth::guard('web')->check()) {
+                Auth::guard('web')->logout();
+            }
+
+            session()->invalidate();
+            session()->regenerateToken();
+
+            return redirect()->route('front.login');
+        })->name('front.logout');
+
 
 
     });

@@ -38,6 +38,7 @@ class AppServiceProvider extends ServiceProvider
             'front.singleTraining',
             'front.terms',
             'front.policy',
+            'front.choose_type',
             'front.dashboard',
             'front.external_dashboard',
             'front.startTraining',
