@@ -123,7 +123,7 @@
                                     <input type="radio" name="type" value="online" required hidden>
                                     <div class="card border-success h-100 selectable-card">
                                         <div class="card-body text-center">
-                                            <h5 class="card-title">💻 {{__('page.training_type2')}}}</h5>
+                                            <h5 class="card-title">💻 {{__('page.training_type2')}}</h5>
                                             <p class="card-text"> {{__('page.training_type2_text')}}</p>
                                         </div>
                                     </div>
