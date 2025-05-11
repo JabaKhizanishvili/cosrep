@@ -91,6 +91,16 @@
         .f-widget-title h4:before {
             background-color: #fff !important;
         }
+
+        @media (max-width: 767.98px) {
+            .cookie-text {
+                display: -webkit-box;
+                -webkit-line-clamp: 3; /* ხაზების რაოდენობა */
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+        }
     </style>
 
     @yield('css')
@@ -353,7 +363,7 @@
             <div class="col-2 text-center">
             </div>
         </div>
-        <p>{{ $cookie->text }}
+        <p class="cookie-text">{{ $cookie->text }}
         </p>
         <button type="button" class="btn w-100 accept-cookies">{{__('page.agree')}}</button>
     </div>

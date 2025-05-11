@@ -27,6 +27,8 @@ class CreateTrainingOrdersTable extends Migration
             $table->integer('final_point')->nullable();
             $table->dateTime('started_at')->nullable();
             $table->dateTime('finished_at')->nullable();
+            $table->string('phone')->nullable();
+            $table->string('id_number')->nullable();
             $table->string('certificate')->nullable(); // ფაილის ბმული
             $table->timestamps();
             $table->foreign('external_user_id')->references('id')->on('external_users')->onDelete('cascade');

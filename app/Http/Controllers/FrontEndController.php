@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\TrainingOrder;
 use Throwable;
 use App\Models\Blog;
 use App\Models\Page;
@@ -312,10 +313,21 @@ class FrontEndController extends Controller
 
         } elseif (auth()->guard(AuthType::TYPE_EXTERNAL_CUSTOMER)->check()) {
             $user = auth()->guard(AuthType::TYPE_EXTERNAL_CUSTOMER)->user();
-            // შეგიძლია აქაც გქონდეს რაიმე ინფო რაც გინდა external user-ზე
+            $query = TrainingOrder::with('customer', 'training')
+                ->where('external_user_id', Auth::id());
+
+            if ($request->type == 'online') {
+                $query->where('type', 'online');
+            } elseif ($request->type == 'offline') {
+                $query->where('type', 'offline');
+            }
+
+            $trainings = $query->paginate(10);
+
             return view('front.external_dashboard', [
                 'user' => $user,
                 'page' => $page,
+                'trainings' => $trainings,
             ]);
         }
 
@@ -556,10 +568,17 @@ class FrontEndController extends Controller
         return view('front.choose_type', compact('page','training', 'category'));
     }
 
-
-    public function processType(Request $request, $trainingId)
+    public function showPhysicalForm($locale, $trainingId)
     {
-        dd($request->all());
+        $page = Page::where('slug', '/trainings')->firstOrFail();
+        $training = Training::active()->where('id', $trainingId)->firstOrFail();
+        $category = Category::where('id', $training->category_id)->firstOrFail();
+        return view('front.choose_type_step1', compact('page','training', 'category'));
+
+    }
+
+    public function processType($locale,Request $request, $trainingId)
+    {
         $request->validate([
             'type' => 'required|in:online,offline'
         ]);
@@ -568,19 +587,59 @@ class FrontEndController extends Controller
         $user = auth()->guard('external')->user(); // გარე მომხმარებელი
 
         if ($request->type === 'offline') {
-            TrainingOrder::create([
-                'external_user_id' => $user->id,
-                'training_id' => $training->id,
-                'type' => 'offline',
-//                'status' => 'paid', // თუ ფიზიკურს ვთვლით გადახდილად
-//                'paid_at' => now(),
-            ]);
+            return redirect()->route('front.physical.form', ['locale' => app()->getLocale(), 'trainingId' => $training->id]);
+//            TrainingOrder::create([
+//                'external_user_id' => $user->id,
+//                'training_id' => $training->id,
+//                'type' => 'offline',
+////                'status' => 'paid', // თუ ფიზიკურს ვთვლით გადახდილად
+////                'paid_at' => now(),
+//            ]);
 
-            return redirect()->route('external.dashboard')->with('success', 'ტრენინგი წარმატებით დაემატა');
+//            return redirect()->route('external.dashboard')->with('success', 'ტრენინგი წარმატებით დაემატა');
+        }else{
+            return redirect()->back();
         }
 
         // თუ ონლაინ აირჩია — გადამისამართება გადახდის გვერდზე
         return redirect()->route('payment.page', $training->id);
+    }
+
+
+    public function submitPhysical(Request $request)
+    {
+        $request->validate([
+            'training_id' => 'required|exists:trainings,id',
+            'phone' => 'required|string|max:20',
+            'personal_number' => 'required|string|max:11',
+        ]);
+
+        $user = auth()->guard('external')->user();
+
+        // Check if active order already exists
+        $existingOrder = TrainingOrder::where('external_user_id', $user->id)
+            ->where('training_id', $request->training_id)
+            ->where('status', '!=', 'expired')
+            ->first(); // Use first() instead of get() for single record check
+
+        if ($existingOrder) {
+            return redirect()->back()
+                ->withInput()
+                ->with('error', 'თქვენ უკვე დარეგისტრირებული ხართ ამ ტრენინგზე!');
+        }
+
+        // Create new order
+        TrainingOrder::create([
+            'external_user_id' => $user->id,
+            'training_id' => $request->training_id,
+            'type' => 'offline',
+            'phone' => $request->phone,
+            'id_number' => $request->personal_number,
+            'status' => 'pending',
+        ]);
+
+        return redirect()->route('front.dashboard')
+            ->with('success', 'ტრენინგი წარმატებით დაემატა');
     }
 
 

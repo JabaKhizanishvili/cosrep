@@ -18,10 +18,11 @@
 
         /* არჩევისას card-ზე ეფექტი */
         input[type="radio"]:checked + .card {
-            border-color: #28a745 !important;
+            border-color: #030277 !important;
             /*background-color: #28a745;*/
             /*color: white;*/
-            box-shadow: 0 0 10px rgba(40, 167, 69, 0.5);
+            box-shadow: 0 0 10px rgba(3, 2, 119, 0.5);
+            /*box-shadow: 0 0 10px #030277;*/
         }
 
         /* მონიშნულზე შიდა ტექსტის ფერის კონტროლი */
@@ -109,8 +110,8 @@
                                     <input type="radio" name="type" value="offline" required hidden>
                                     <div class="card border-primary h-100 selectable-card">
                                         <div class="card-body text-center">
-                                            <h5 class="card-title">📍 ფიზიკური ტრენინგი</h5>
-                                            <p class="card-text">ტრენინგი ტარდება ადგილობრივ სივრცეში. გადახდა არ არის საჭირო.</p>
+                                            <h5 class="card-title">📍 {{__('page.training_type1')}}</h5>
+                                            <p class="card-text">{{__('page.training_type1_text')}}</p>
                                         </div>
                                     </div>
                                 </label>
@@ -122,16 +123,21 @@
                                     <input type="radio" name="type" value="online" required hidden>
                                     <div class="card border-success h-100 selectable-card">
                                         <div class="card-body text-center">
-                                            <h5 class="card-title">💻 ონლაინ ტრენინგი</h5>
-                                            <p class="card-text">ტრენინგს გაივლი ონლაინ რეჟიმში. გადახდა საჭირო იქნება.</p>
+                                            <h5 class="card-title">💻 {{__('page.training_type2')}}}</h5>
+                                            <p class="card-text"> {{__('page.training_type2_text')}}</p>
                                         </div>
                                     </div>
                                 </label>
                             </div>
                         </div>
 
-                        <div class="text-center mt-4">
-                            <button type="submit" class="btn btn-success px-5">გაგრძელება</button>
+{{--                        <div class="text-center mt-4">--}}
+{{--                            <button type="submit" class="btn btn-success px-5">გაგრძელება</button>--}}
+{{--                        </div>--}}
+                        <div class="container text-center">
+{{--                          <input type="hidden" name="training_id" value="{{$training->id}}">--}}
+                        <input class="color-two button mb-4 w-50" style="font-size: 12px" type="submit"
+                               value="{{__('page.next')}}"/>
                         </div>
                     </form>
                 </div>

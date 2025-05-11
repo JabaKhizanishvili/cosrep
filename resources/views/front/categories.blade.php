@@ -119,9 +119,17 @@
                                                         </h5>
                                                     </div>
                                                     @auth('external')
-                                                    <a href="{{ route('training.purchase', $subcategory->id) }}" class="btn btn-primary">
-                                                        ყიდვა
-                                                    </a>
+{{--                                                    <a href="{{ route('training.purchase', $subcategory->id) }}" class="color-two button">--}}
+{{--                                                        ყიდვა--}}
+{{--                                                    </a>--}}
+
+                                                        <form method="GET" class="" action="{{ route('training.purchase', $subcategory->id) }}">
+{{--                                                            @csrf--}}
+                                                        <input class="color-two button mb-4 w-100" type="submit"
+                                                               value="{{__('page.purchase')}}"/>
+                                                        </form>
+
+
                                                     @endauth
                                                 </div>
                                             </a>

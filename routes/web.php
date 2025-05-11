@@ -25,6 +25,7 @@ use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\OrganizationController;
 use App\Http\Controllers\ForgotPasswordController;
 use App\Http\Controllers\ExternalAuthController;
+use App\Http\Controllers\OrderController;
 
 /*
 |--------------------------------------------------------------------------
@@ -169,6 +170,18 @@ Route::prefix('admin')->middleware(['auth:web', 'verified'])->group(function () 
     Route::delete('trainings/{object}', [TrainingController::class, 'destroy'])->name('admin.trainings.destroy');
     Route::get('trainings/{object}/customers', [TrainingController::class, 'trainingCustomers'])->name('admin.trainings.customers');
 
+    //orders Routes
+    Route::get('orders', [OrderController::class, 'index'])->name('admin.orders.index');
+    Route::get('training-orders/{order}/edit', [OrderController::class, 'admin.training-orders.edit'])
+        ->name('admin.training-orders.edit');
+
+    Route::put('training-orders/{order}', [OrderController::class, 'admin.training-orders.update'])
+        ->name('admin.training-orders.update');
+
+    Route::delete('training-orders/{order}', [OrderController::class, 'destroy'])
+        ->name('admin.training-orders.destroy');
+    Route::post('orders/mass-delete', [OrderController::class, 'massDelete'])->name('admin.training-orders.mass-delete');
+
 
     Route::get('trainings/{object}/testView', [TrainingController::class, 'testView'])->name('admin.trainings.testView');
     Route::post('trainings/{object}/addQuestion', [TrainingController::class, 'addQuestion'])->name('admin.trainings.addQuestion');
@@ -258,7 +271,7 @@ Route::prefix('{locale?}')
         Route::get('/blogs', [FrontEndController::class, 'blogs'])->name(('front.blogs'));
         Route::get('/blogs/{name}', [FrontEndController::class, 'singleBlog'])->name(('front.singleBlog'));
         Route::get('/training/{name}', [FrontEndController::class, 'singleTraining'])->name(('front.singleTraining'));
-        Route::get('/login', [FrontEndController::class, 'loginView'])->name(('front.loginView'));
+        Route::get('/login', [FrontEndController::class, 'loginView'])->name(('front.loginView'))->middleware('guest.customer_or_external');
         Route::post('/login', [FrontEndController::class, 'login'])->name(('front.login'));
         Route::get('/terms-of-service', [FrontEndController::class, 'termsOfService'])->name(('front.terms'));
         Route::get('/privacy-policy', [FrontEndController::class, 'privacyPolicy'])->name(('front.privacy'));
@@ -335,6 +348,8 @@ Route::prefix('{locale?}')
 
             Route::get('/trainings/{training}/purchase', [FrontEndController::class, 'chooseType'])->name('training.purchase');
             Route::post('/trainings/{training}/purchase', [FrontEndController::class, 'processType'])->name('training.purchase.submit');
+            Route::get('/training/physical-form/{trainingId}', [FrontEndController::class, 'showPhysicalForm'])->name('front.physical.form');
+            Route::post('/physical-training', [FrontEndController::class, 'submitPhysical'])->name('front.submitPhysicalTraining');
 
         });
 

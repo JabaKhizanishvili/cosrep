@@ -59,5 +59,11 @@ return [
     'start_test_text1' => 'You must answer All questions!',
     'point' => 'Point',
     'your_answer' => 'Your answer',
+    'purchase' =>  'Purchase',
+    'next' => 'Next',
+    'training_type1' => 'Training in physical space',
+    'training_type1_text' => 'The training takes place in a physical space. Payment on the website is not required.',
+    'training_type2' => 'Online',
+    'training_type2_text' => 'The training is conducted online. Payment on the website will be required.',
 
 ];

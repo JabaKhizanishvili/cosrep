@@ -135,22 +135,77 @@
                     <div class="col-md-12 col-lg-12">
                         <div id="accordion" style="margin-bottom: 50px">
                             <div class="tabs-to-dropdown">
-
                                 <div class="nav-wrapper tabHeader d-flex align-items-center justify-content-between">
 
+                                    <ul class="nav nav-pills d-md-flex" id="pills-tab" role="tablist">
+                                        <ul class="nav nav-pills d-md-flex" id="pills-tab" role="tablist">
+                                            @php
+                                                $currentType = request('type', 'offline');
+                                            @endphp
 
+
+{{--                                            <li class="nav-item" role="presentation">--}}
+{{--                                                <a class="nav-link tabItem active"--}}
+{{--                                                   --}}{{--                                                   href="{{ Request::url() }}?open=1#events"--}}
+{{--                                                   href="{{ Request::url() }}"--}}
+{{--                                                >--}}
+{{--                                                    {{__('page.current')}}--}}
+{{--                                                </a>--}}
+{{--                                            </li>--}}
+                                            <li class="nav-item" role="presentation">
+                                                <a class="nav-link tabItem {{ $currentType == 'offline' ? 'active' : '' }}"
+                                                   href="{{ Request::url() }}?type=offline">{{__('page.training_type1')}}</a>
+                                            </li>
+                                            <li class="nav-item" role="presentation">
+                                                <a class="nav-link tabItem {{ $currentType == 'online' ? 'active' : '' }}"
+                                                   href="{{ Request::url() }}?type=online">{{__('page.training_type2')}}</a>
+                                            </li>
+                                        </ul>
                                 </div>
+
                             </div>
                         </div>
+
                     </div>
+
                 </div>
                 <!-- .row -->
-                <div class="row">
+                <div class="container row">
+                    @foreach($trainings as $key => $value)
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-4 course-single mb25">
 
+                    <div class="themeioan_event">
+                        <div class="event-photo">
+{{--                            <div class="date">--}}
+{{--                                <h4>--}}
+{{--                                    <span>{{ date('d', strtotime($value->training->start_date)) }}</span> {{ montName(date('m', strtotime($value->training->start_date))) }}--}}
+{{--                                    , {{ date('Y', strtotime($value->training->start_date)) }}</h4>--}}
+{{--                            </div>--}}
+                            <img src="{{ trainingImageThumb($value->training->image) }}"
+                                 alt="">
+                        </div>
+
+                        <div class="event-content" style="min-height: 200px">
+                            <h5 class="title">{{ limit_words(strip_tags($value->training->title), 100) }}
+                            </h5>
+                            <div class="course-viewer">
+{{--                                <ul>--}}
+{{--                                    <li>--}}
+{{--                                        <i class="fas fa-clock"></i> {{ date('H:i', strtotime($value->training->start_date)) }}--}}
+{{--                                        - {{ date('H:i', strtotime($value->end_date)) }}--}}
+{{--                                    </li>--}}
+{{--                                </ul>--}}
+{{--                                {!! $value->getStatus() !!}--}}
+                            </div>
+                        </div>
+{{--                        <h2>{{$value->training->name}}</h2>--}}
+                    </div>
+                    </div>
+                    @endforeach
 
 
                 </div>
-{{--                {{ $appointments->appends($_GET)->links('vendor.pagination.bootstrap-4') }}--}}
+                {{ $trainings->appends($_GET)->links('vendor.pagination.bootstrap-4') }}
                 <!-- .row end -->
             </div>
         </div>
