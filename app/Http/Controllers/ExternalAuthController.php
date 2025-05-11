@@ -12,9 +12,8 @@ class ExternalAuthController extends Controller
 {
     public function redirectToProvider()
     {
-//        return Socialite::driver('google')->redirect();
-        $user = Socialite::driver('google')->stateless()->user();
-
+        return Socialite::driver('google')->redirect();
+        
     }
 
 //    public function handleProviderCallback()
