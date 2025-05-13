@@ -41,7 +41,8 @@
 
     <main>
         <!-- breadcrumb banner content area start -->
-        <div class="lernen_banner large bg-services">
+        <div class="lernen_banner large bg-services"
+             style="background: linear-gradient(rgba(0, 0, 0, .3), rgba(0, 0, 0, .1)), url({{ categoryImage($category->image) }});">
             <div class="container">
                 <div class="row">
                     <div class="lernen_banner_title">

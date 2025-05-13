@@ -67,6 +67,14 @@ class TrainingOrder extends Model
         ];
     }
 
+    public function isDone()
+    {
+        $end_date = date("Y-m-d H:i:s", strtotime($this->end_date));
+        $current = date("Y-m-d H:i:s");
+
+        return $end_date < $current ? true : false;
+    }
+
     public function isOpen()
     {
         $start_date = date("Y-m-d H:i:s", strtotime($this->paid_at));

@@ -175,7 +175,11 @@
                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-4 course-single mb25">
 
                     <div class="themeioan_event">
-                        <div class="event-photo">
+                        <div class="event-photo
+                         @if($value->type == 'online')
+                         {{ $value->final_point >= $value->point_to_pass ? 'testStatusSuccess' : 'testStatusFail' }}
+                         @endif
+                         " >
                             <div class="date">
                                 <h4>
                                     <span>{{ date('d', strtotime($value->paid_at)) }}</span> {{ montName(date('m', strtotime($value->paid_at))) }}
