@@ -176,11 +176,11 @@
 
                     <div class="themeioan_event">
                         <div class="event-photo">
-{{--                            <div class="date">--}}
-{{--                                <h4>--}}
-{{--                                    <span>{{ date('d', strtotime($value->training->start_date)) }}</span> {{ montName(date('m', strtotime($value->training->start_date))) }}--}}
-{{--                                    , {{ date('Y', strtotime($value->training->start_date)) }}</h4>--}}
-{{--                            </div>--}}
+                            <div class="date">
+                                <h4>
+                                    <span>{{ date('d', strtotime($value->paid_at)) }}</span> {{ montName(date('m', strtotime($value->paid_at))) }}
+                                    , {{ date('Y', strtotime($value->paid_at)) }}</h4>
+                            </div>
                             <img src="{{ trainingImageThumb($value->training->image) }}"
                                  alt="">
                         </div>
@@ -188,17 +188,43 @@
                         <div class="event-content" style="min-height: 200px">
                             <h5 class="title">{{ limit_words(strip_tags($value->training->title), 100) }}
                             </h5>
+
                             <div class="course-viewer">
-{{--                                <ul>--}}
-{{--                                    <li>--}}
-{{--                                        <i class="fas fa-clock"></i> {{ date('H:i', strtotime($value->training->start_date)) }}--}}
-{{--                                        - {{ date('H:i', strtotime($value->end_date)) }}--}}
-{{--                                    </li>--}}
-{{--                                </ul>--}}
-{{--                                {!! $value->getStatus() !!}--}}
+                                <ul>
+                                    <li>
+                                        <i class="fas fa-calendar"></i>
+                                        {{ formatTranslatedDate($value->payed_at) }}
+                                        -
+                                        {{ formatTranslatedDate($value->access_expires_at) }}
+                                    </li>
+                                </ul>
+                                {{-- {!! $value->getStatus() !!} --}}
                             </div>
+
+                            @if(empty($value->finished_at ))
+                                <div class="btn-section">
+                                    @if($value->isOpen())
+                                        @if(auth()->guard(\App\Services\AuthType::TYPE_EXTERNAL_CUSTOMER)->check())
+                                            <a href="{{ route('front.startExternalTrainingView', $value) }}"
+                                               class="btn btn-success text-white pt-1 pb-1 startTrainingBtn">{{__('page.start_training')}}</a>
+                                        @else
+                                            <a href="{{ route('front.startTrainingView', $value) }}"
+                                               class="btn btn-success text-white pt-1 pb-1 startTrainingBtn">{{__('page.start_training')}}</a>
+                                        @endif
+
+                                    @else
+                                        <br>
+                                    @endif
+                                </div>
+                            @else
+                                    <div class="btn-section">
+                                        <a href="{{ route('front.testDetailsForExternal', $value) }}"
+                                           class="button-light"><i
+                                                class="fas fa-arrow-right"></i>{{__('page.test_details')}}
+                                        </a>
+                                    </div>
+                            @endif
                         </div>
-{{--                        <h2>{{$value->training->name}}</h2>--}}
                     </div>
                     </div>
                     @endforeach

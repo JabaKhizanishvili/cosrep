@@ -17,6 +17,8 @@ class TrainingOrder extends Model
         'answers',
         'id_number',
         'phone',
+        'access_expires_at',
+        'paid_at',
     ];
 
     public function customer()
@@ -44,11 +46,33 @@ class TrainingOrder extends Model
         ];
     }
 
+    public function isFinishedByCustomer()
+    {
+        return !empty($this->pivot->finished_at) ? true : false;
+    }
+
+    public function passed()
+    {
+        if (empty($this->final_point)) {
+            return false;
+        }
+        return $this->final_point >= $this->point_to_pass ? true : false;
+    }
+
     public static function getTypeOptions()
     {
         return [
             'online' => 'Online',
             'offline' => 'Offline',
         ];
+    }
+
+    public function isOpen()
+    {
+        $start_date = date("Y-m-d H:i:s", strtotime($this->paid_at));
+        $end_date = date("Y-m-d H:i:s", strtotime($this->access_expires_at));
+        $current = date("Y-m-d H:i:s");
+
+        return $start_date <= $current && $end_date > $current ? true : false;
     }
 }

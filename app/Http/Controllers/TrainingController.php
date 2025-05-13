@@ -100,6 +100,8 @@ class TrainingController extends Controller
         $object->category_id = $request->category_id;
         $object->trainer_id = $request->trainer_id;
         $object->point_to_pass = $request->point_to_pass;
+        $object->access_external_user = $request->access_external_user;
+        $object->price = $request->price;
 
 
         if (is_array($request->names) && is_array($request->urls)) {
@@ -176,6 +178,8 @@ class TrainingController extends Controller
         $object->category_id = $request->category_id;
         $object->trainer_id = $request->trainer_id;
         $object->point_to_pass = $request->point_to_pass;
+        $object->access_external_user = $request->access_external_user;
+        $object->price = $request->price;
 
         if ($request->status == 1) {
             $object->status = 1;

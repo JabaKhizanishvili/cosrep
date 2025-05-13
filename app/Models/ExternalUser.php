@@ -18,4 +18,9 @@ class ExternalUser extends Authenticatable
         'linkedin_id'
     ];
 
+    public function orders()
+    {
+        return $this->belongsToMany(TrainingOrder::class, 'training_orders', 'external_user_id' )->with('training')->withPivot('finished_at', 'point_to_pass', 'final_point')->orderBy('start_date', 'desc');
+    }
+
 }

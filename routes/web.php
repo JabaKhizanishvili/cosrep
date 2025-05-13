@@ -306,8 +306,13 @@ Route::prefix('{locale?}')
             Route::get('start-training/{object}', [FrontEndController::class, 'startTrainingView'])
                 ->name('front.startTrainingView');
 
+            Route::get('startTraining/{object}', [FrontEndController::class, 'startExternalTrainingView'])
+                ->name('front.startExternalTrainingView');
+
             Route::get('start-test/{object}', [FrontEndController::class, 'startTestView'])->name('front.startTestView');
-            Route::post('end-test/{object}', [FrontEndControllerara::class, 'endTest'])->name('front.EndTest');
+            Route::get('startTest/{object}', [FrontEndController::class, 'startExternalTestView'])->name('front.startExternalTestView');
+            Route::post('end-test/{object}', [FrontEndController::class, 'endTest'])->name('front.EndTest');
+            Route::post('endTest/{object}', [FrontEndController::class, 'endTestForExternal'])->name('front.EndTestExternal');
 
             Route::post('/trainer-message/{object}', [FrontEndController::class, 'sendTrainerMessage'])->name(('front.sendTrainerMessage'));
 
@@ -315,6 +320,7 @@ Route::prefix('{locale?}')
             Route::get('change_password', [FrontEndController::class, 'changePasswordView'])->name('front.changePasswordView');
             Route::post('change_password', [FrontEndController::class, 'changePassword'])->name('front.changePassword');
             Route::get('test-details/{object}', [FrontEndController::class, 'testDetails'])->name('front.testDetails');
+            Route::get('testDetails/{object}', [FrontEndController::class, 'testDetailsForExternal'])->name('front.testDetailsForExternal');
 //            Route::post('/logout', function () {
 //                Auth::guard('customer')->logout();
 //                Auth::guard('external')->logout();

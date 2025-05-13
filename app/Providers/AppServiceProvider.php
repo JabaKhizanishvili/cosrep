@@ -52,6 +52,7 @@ class AppServiceProvider extends ServiceProvider
             'front.changePasswordView',
             'front.singleServices',
             'front.externalRegister',
+            'front.ExternalstartTraining',
 
         ], function ($view) {
 

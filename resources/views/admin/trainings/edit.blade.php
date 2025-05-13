@@ -126,6 +126,34 @@
                                     @enderror
                                 </div>
 
+                                  <div class="form-group col-md-6">
+                                    <label for="inputEmail4">Price</label>
+                                    <input type="number" class="form-control @error('name') invalideInput @enderror"
+                                           id="point_to_pass" placeholder="price" name="price"
+                                           value="{{$object->price}}" required>
+                                    @error('price')
+                                    <div class="customValidate">
+                                        {{ $message }}
+                                    </div>
+                                    @enderror
+                                </div>
+
+                                <div class="form-group col-md-6">
+                                    <label for="inputEmail4">Show for External (Active / Inactive)</label>
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                                        <label class="switch s-icons s-outline  s-outline-success  mb-4 mr-2">
+                                            <input type="checkbox" id="status" name="access_external_user"
+                                                   {{ $object->access_external_user == 1 ? 'checked' : '' }} value="1">
+                                            <span class="slider"></span>
+                                        </label>
+                                        @error('access_external_user')
+                                        <div class="customValidate">
+                                            {{ $message }}
+                                        </div>
+                                        @enderror
+                                    </div>
+                                </div>
+
                             </div>
 
                             <div class="form-row mb-4">

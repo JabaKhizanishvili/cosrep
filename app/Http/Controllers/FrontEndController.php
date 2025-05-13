@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\TrainingOrder;
 use Throwable;
 use App\Models\Blog;
@@ -313,12 +314,15 @@ class FrontEndController extends Controller
 
         } elseif (auth()->guard(AuthType::TYPE_EXTERNAL_CUSTOMER)->check()) {
             $user = auth()->guard(AuthType::TYPE_EXTERNAL_CUSTOMER)->user();
+//            $appointments = $user->orders();
             $query = TrainingOrder::with('customer', 'training')
                 ->where('external_user_id', Auth::id());
 
             if ($request->type == 'online') {
                 $query->where('type', 'online');
             } elseif ($request->type == 'offline') {
+                $query->where('type', 'offline');
+            }else{
                 $query->where('type', 'offline');
             }
 
@@ -328,6 +332,7 @@ class FrontEndController extends Controller
                 'user' => $user,
                 'page' => $page,
                 'trainings' => $trainings,
+//                'appointments' => $appointments,
             ]);
         }
 
@@ -381,6 +386,50 @@ class FrontEndController extends Controller
         return view('front.startTraining', compact('customer', 'page', 'appointment'));
     }
 
+
+    public function startExternalTrainingView($locale, TrainingOrder $object)
+    {
+        $page = Page::where('slug', '/dashboard')->firstOrFail();
+        $customer = auth()->guard(AuthType::TYPE_EXTERNAL_CUSTOMER)->user();
+        //check if customer can process current appointment
+        $appointmentCustomer = TrainingOrder::where('training_id', $object->training_id)->where('external_user_id', $customer->id)->first();
+
+        if (empty($appointmentCustomer)) {
+            $content = "<h2>თქვენ არ ხართ რეგისტრირებული არსებულ ტრენინგზე</h2>";
+
+            return view('front.inactive', compact('page', 'content'));
+        }
+
+        //check if customer finished test
+        if (!empty($appointmentCustomer->finished_at) && $appointmentCustomer->customer_id != '1723') {
+            $content = "<h2>თქვენ უკვე დაასრულეთ არსებული ტრენინგი</h2>
+            <p>ტრენინგი სახელი:  <strong>" . $object->training->name . "</strong>
+            <p>ტრენინგი დაწყების დრო:  <strong>$object->start_date</strong>
+            <p>ტრენინგი დასრულების დრო:  <strong>$object->end_date</strong>
+            <p>შედეგის სანახავად გთხოვთ ესტუმროთ ლინკს: <a style='color:#0097e6' target='_blank' href='" . route('front.testDetails', $object) . "'><strong>" . route('front.testDetails', $object) . "</strong></a></p>
+            ";
+
+            return view('front.inactive', compact('page', 'content'));
+        }
+
+        //check if training appointment is open
+        if (!$object->isOpen()) {
+
+            $content = "<h2>ტრენინგი არ არის აქტიური</h2>
+            <p>ტრენინგი სახელი:  <strong>" . $object->training->name . "</strong>
+            <p>ტრენინგი დაწყების დრო:  <strong>$object->start_date</strong>
+            <p>ტრენინგი დასრულების დრო:  <strong>$object->end_date</strong>";
+
+            return view('front.inactive', compact('page', 'content'));
+        }
+
+        $appointment = $object;
+
+        $page = Page::where('slug', '/dashboard')->firstOrFail();
+
+        return view('front.ExternalstartTraining', compact('customer', 'page', 'appointment'));
+    }
+
     public function startTestView($locale, Appointment $object)
     {
         $page = Page::where('slug', '/dashboard')->firstOrFail();
@@ -422,6 +471,51 @@ class FrontEndController extends Controller
 
         return view('front.startTest', compact('customer', 'page', 'appointment'));
     }
+
+    public function startExternalTestView($locale, TrainingOrder $object )
+    {
+        $page = Page::where('slug', '/dashboard')->firstOrFail();
+
+        $customer = auth()->guard(AuthType::TYPE_EXTERNAL_CUSTOMER)->user();
+        //check if customer can process current appointment
+        $appointmentCustomer = TrainingOrder::where('training_id', $object->training_id)->where('external_user_id', $customer->id)->first();
+
+        if (empty($appointmentCustomer)) {
+            $content = "<h2>თქვენ არ ხართ რეგისტრირებული არსებულ ტრენინგზე</h2>";
+
+            return view('front.inactive', compact('page', 'content'));
+        }
+
+        //check if customer finished test
+        if (!empty($appointmentCustomer->finished_at)) {
+            $content = "<h2>თქვენ უკვე დაასრულეთ არსებული ტრენინგი</h2>
+            <p>ტრენინგი სახელი:  <strong>" . $object->training->name . "</strong>
+            <p>ტრენინგი დაწყების დრო:  <strong>$object->start_date</strong>
+            <p>ტრენინგი დასრულების დრო:  <strong>$object->end_date</strong>
+            <p>შედეგის სანახავად გთხოვთ ესტუმროთ ლინკს: <a style='color:#0097e6' target='_blank' href='" . route('front.testDetails', $object) . "'><strong>" . route('front.testDetails', $object) . "</strong></a></p>
+            ";
+
+            return view('front.inactive', compact('page', 'content'));
+        }
+
+        //check if training appointment is open
+        if (!$object->isOpen()) {
+
+            $content = "<h2>ტრენინგი არ არის აქტიური</h2>
+            <p>ტრენინგი სახელი:  <strong>" . $object->training->name . "</strong>
+            <p>ტრენინგი დაწყების დრო:  <strong>$object->start_date</strong>
+            <p>ტრენინგი დასრულების დრო:  <strong>$object->end_date</strong>";
+
+            return view('front.inactive', compact('page', 'content'));
+        }
+
+        $appointment = $object;
+
+        return view('front.startTest', compact('customer', 'page', 'appointment'));
+
+    }
+
+
 
     public function endTest($locale, EndTestRequest $request, Appointment $object)
     {
@@ -503,6 +597,87 @@ class FrontEndController extends Controller
         // return $answers_count;
     }
 
+
+    public function endTestForExternal($locale, EndTestRequest $request, TrainingOrder $object)
+    {
+        $page = Page::where('slug', '/dashboard')->firstOrFail();
+        $customer = auth()->guard(AuthType::TYPE_EXTERNAL_CUSTOMER)->user();
+        //check if customer can process current appointment
+        $appointmentCustomer = TrainingOrder::where('training_id', $object->training_id)->where('external_user_id', $customer->id)->first();
+
+        if (empty($appointmentCustomer)) {
+            $content = "<h2>თქვენ არ ხართ რეგისტრირებული არსებულ ტრენინგზე</h2>";
+
+            return view('front.inactive', compact('page', 'content'));
+        }
+
+        //check if customer finished test
+        if (!empty($appointmentCustomer->finished_at)) {
+            $content = "<h2>თქვენ უკვე დაასრულეთ არსებული ტრენინგი</h2>
+            <p>ტრენინგი სახელი:  <strong>" . $object->training->name . "</strong>
+            <p>ტრენინგი დაწყების დრო:  <strong>$object->start_date</strong>
+            <p>ტრენინგი დასრულების დრო:  <strong>$object->end_date</strong>
+            <p>შედეგის სანახავად გთხოვთ ესტუმროთ ლინკს: <a style='color:#0097e6' target='_blank' href='" . route('front.testDetails', $object) . "'><strong>" . route('front.testDetails', $object) . "</strong></a></p>
+            ";
+
+            return view('front.inactive', compact('page', 'content'));
+        }
+
+        //check if training appointment is open
+        if (!$object->isOpen()) {
+
+            $content = "<h2>ტრენინგი არ არის აქტიური</h2>
+            <p>ტრენინგი სახელი:  <strong>" . $object->training->name . "</strong>
+            <p>ტრენინგი დაწყების დრო:  <strong>$object->start_date</strong>
+            <p>ტრენინგი დასრულების დრო:  <strong>$object->end_date</strong>";
+
+            return view('front.inactive', compact('page', 'content'));
+        }
+
+        $final_point = 0;
+
+        //testing appointment
+//        if ($object->id === 1) {
+//            return redirect()->back()->with('error', 'სატესტო ვერსიაში ტესტს ვერ დაასრულებთ');
+//        }
+        //get training questions
+        $questions = $object->training->tests;
+        $customer_answered = [];
+        foreach ($questions as $question) {
+            if (!$request->has("answer_$question->id")) {
+                return redirect()->back()->with('error', 'დაფიქსირდა შეცდომა გთხოვთ სცადოთ ახლიდან')->withInput();
+            }
+
+            $answered = abs((int)$request->get("answer_$question->id"));
+
+            //check if answer exists in our table
+            $answers = is_array($question->answers) ? $question->answers : json_decode($question->answers);
+            $answers_count = count($answers);
+            if ($answered > $answers_count - 1) {
+                return redirect()->back()->with('error', 'დაფიქსირდა შეცდომა გთხოვთ სცადოთ ახლიდან')->withInput();
+            }
+            $correct_answer = $question->correct;
+            if ($answered == $correct_answer) {
+                $final_point++;
+            }
+            $customer_answered[] = $answered;
+        }
+
+        $appointmentCustomer->test = json_encode($questions);
+        $appointmentCustomer->answers = json_encode($customer_answered);
+        $appointmentCustomer->final_point = $final_point;
+        $appointmentCustomer->point_to_pass = $object->training->point_to_pass;
+
+        $appointmentCustomer->finished_at = now();
+        $appointmentCustomer->save();
+
+
+        return redirect()->route('front.testDetailsForExternal', $object);
+
+
+        // return $answers_count;
+    }
+
     public function testDetails($locale, Appointment $object)
     {
         $customer = auth()->guard(AuthType::TYPE_CUSTOMER)->user();
@@ -521,6 +696,29 @@ class FrontEndController extends Controller
         }
 
         $appointment = $object;
+
+
+        return view('front.testDetails', compact('customer', 'page', 'appointment', 'appointmentCustomer'));
+    }
+
+
+    public function testDetailsForExternal($locale, TrainingOrder $object)
+    {
+        $customer = auth()->guard(AuthType::TYPE_EXTERNAL_CUSTOMER)->user();
+        $appointmentCustomer = TrainingOrder::where('training_id', $object->training_id)->where('external_user_id', $customer->id)->firstOrFail();
+        $page = Page::where('slug', '/dashboard')->firstOrFail();
+        //check if customer finished test
+        if (empty($appointmentCustomer->finished_at)) {
+            //check if customer finished test
+            $content = "<h2>ტრენინგი არ არის დასრულებული</h2>
+        <p>ტრენინგი სახელი:  <strong>" . $object->training->name . "</strong>
+        <p>ტრენინგი დაწყების დრო:  <strong>$object->start_date</strong>
+        <p>ტრენინგი დასრულების დრო:  <strong>$object->end_date</strong>";
+
+            return view('front.inactive', compact('page', 'content'));
+        }
+
+    $appointment = $object;
 
 
         return view('front.testDetails', compact('customer', 'page', 'appointment', 'appointmentCustomer'));
@@ -588,17 +786,33 @@ class FrontEndController extends Controller
 
         if ($request->type === 'offline') {
             return redirect()->route('front.physical.form', ['locale' => app()->getLocale(), 'trainingId' => $training->id]);
-//            TrainingOrder::create([
-//                'external_user_id' => $user->id,
-//                'training_id' => $training->id,
-//                'type' => 'offline',
-////                'status' => 'paid', // თუ ფიზიკურს ვთვლით გადახდილად
-////                'paid_at' => now(),
-//            ]);
-
 //            return redirect()->route('external.dashboard')->with('success', 'ტრენინგი წარმატებით დაემატა');
         }else{
-            return redirect()->back();
+            $existingOrder = TrainingOrder::where('external_user_id', $user->id)
+                ->where('training_id', $request->training_id)
+                ->where('status', '!=', 'expired')
+                ->where('type', '=', 'online')
+                ->first();
+
+
+
+            if ($existingOrder) {
+                return redirect()->back()
+                    ->withInput()
+                    ->with('error', 'თქვენ უკვე დარეგისტრირებული ხართ ამ ტრენინგზე!');
+            }
+
+            TrainingOrder::create([
+                'external_user_id' => $user->id,
+                'training_id' => $request->training_id,
+                'type' => 'online',
+                'status' => 'paid',
+                'paid_at' => Carbon::now(),
+                'access_expires_at' => Carbon::now()->addDays(config('meta.external_expire_training_day')),
+            ]);
+
+            return redirect()->route('front.dashboard', ['type' => 'online'])->with('success', 'ტრენინგი წარმატებით დაემატა');
+
         }
 
         // თუ ონლაინ აირჩია — გადამისამართება გადახდის გვერდზე
@@ -620,7 +834,8 @@ class FrontEndController extends Controller
         $existingOrder = TrainingOrder::where('external_user_id', $user->id)
             ->where('training_id', $request->training_id)
             ->where('status', '!=', 'expired')
-            ->first(); // Use first() instead of get() for single record check
+            ->where('type', '=', 'offline')
+            ->first();
 
         if ($existingOrder) {
             return redirect()->back()

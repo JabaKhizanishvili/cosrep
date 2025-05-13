@@ -61,7 +61,11 @@
         <div id="features" class="wrap-bg wrap-bg-dark services">
 
 
+            @if(auth()->guard(\App\Services\AuthType::TYPE_EXTERNAL_CUSTOMER)->check())
+            <form action="{{ route('front.EndTestExternal', $appointment) }}" id="endTestForm" method="POST">
+            @else
             <form action="{{ route('front.EndTest', $appointment) }}" id="endTestForm" method="POST">
+            @endif
                 @csrf
                 <!-- .container -->
                 <div class="container">

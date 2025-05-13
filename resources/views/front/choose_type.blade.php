@@ -65,7 +65,6 @@
             </div>
         </div>
         <!-- end breadcrumb banner content area start -->
-
         <!-- services image area start -->
         <div id="services_image" class="wrap-bg">
             <div class="container">
@@ -135,9 +134,13 @@
 {{--                            <button type="submit" class="btn btn-success px-5">გაგრძელება</button>--}}
 {{--                        </div>--}}
                         <div class="container text-center">
-{{--                          <input type="hidden" name="training_id" value="{{$training->id}}">--}}
+                          <input type="hidden" name="training_id" value="{{$training->id}}">
                         <input class="color-two button mb-4 w-50" style="font-size: 12px" type="submit"
                                value="{{__('page.next')}}"/>
+
+                            @if(session('error'))
+                                <p class="text-danger">{{ session('error') }}</p>
+                            @endif
                         </div>
                     </form>
                 </div>

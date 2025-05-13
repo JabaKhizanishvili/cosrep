@@ -135,18 +135,18 @@ function montName($month)
 {
     if (app()->getLocale() == config('app.fallback_locale')) {
         $data = [
-            '01' => 'იან',
-            '02' => 'თებ',
-            '03' => 'მარ',
-            '04' => 'აპრ',
-            '05' => 'მაი',
-            '06' => 'ივნ',
-            '07' => 'ივლ',
-            '08' => 'აგვ',
-            '09' => 'სექ',
-            '10' => 'ოქტ',
-            '11' => 'ნოემ',
-            '12' => 'დეკ',
+            '01' => 'იანვარი',
+            '02' => 'თებერვალი',
+            '03' => 'მარტი',
+            '04' => 'აპრილი',
+            '05' => 'მაისი',
+            '06' => 'ივნისი',
+            '07' => 'ივლისი',
+            '08' => 'აგვისტო',
+            '09' => 'სექტემბერი',
+            '10' => 'ოქტომბერი',
+            '11' => 'ნოემერი',
+            '12' => 'დეკემბერი',
         ];
     } else {
         $data = [
@@ -167,6 +167,16 @@ function montName($month)
     return $data[$month] ?? ' ';
 }
 
+function formatTranslatedDate($date)
+{
+    // თვეში მხოლოდ თარგმნილი სახელი
+    $month = \Carbon\Carbon::parse($date)->format('m'); // 01, 02, 03...
+    $day = \Carbon\Carbon::parse($date)->format('d'); // დღე
+    $year = \Carbon\Carbon::parse($date)->format('Y'); // წელი
+
+    // თვეს ვუთარგმნით
+    return montName($month) . ' ' . $day . ', ' . $year;
+}
 function sectionImage($object)
 {
     if (!File::exists(storage_path('app/public/sections/' . $object))) {
