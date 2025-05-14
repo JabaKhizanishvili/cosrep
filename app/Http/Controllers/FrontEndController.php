@@ -734,7 +734,10 @@ class FrontEndController extends Controller
     public function testDetailsForExternal($locale, TrainingOrder $object)
     {
         $customer = auth()->guard(AuthType::TYPE_EXTERNAL_CUSTOMER)->user();
-        $appointmentCustomer = TrainingOrder::where('training_id', $object->training_id)->where('external_user_id', $customer->id)->firstOrFail();
+        $appointmentCustomer = TrainingOrder::where('training_id', $object->training_id)
+        ->where('external_user_id', $customer->id)
+        ->where('type', 'online')
+            ->firstOrFail();
         $page = Page::where('slug', '/dashboard')->firstOrFail();
         //check if customer finished test
         if (empty($appointmentCustomer->finished_at)) {
