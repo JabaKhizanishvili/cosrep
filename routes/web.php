@@ -314,6 +314,8 @@ Route::prefix('{locale?}')
             Route::post('end-test/{object}', [FrontEndController::class, 'endTest'])->name('front.EndTest');
             Route::post('endTest/{object}', [FrontEndController::class, 'endTestForExternal'])->name('front.EndTestExternal');
 
+            Route::get('certificates/download/{object}', [FrontEndController::class, 'download'])->name('front.downloadCertificate');
+
             Route::post('/trainer-message/{object}', [FrontEndController::class, 'sendTrainerMessage'])->name(('front.sendTrainerMessage'));
 
             Route::get('dashboard', [FrontEndController::class, 'dashboard'])->name('front.dashboard');

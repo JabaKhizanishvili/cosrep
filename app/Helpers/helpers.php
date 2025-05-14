@@ -2,6 +2,9 @@
 
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
+use App\Models\Certificate;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 function admin_styles($path)
 {
@@ -271,6 +274,27 @@ function tokenExpired($updatedAt, $minute)
 }
 
 
+function GenerateCertificate($user,$training,$date,$signature)
+{
+    $pdf = PDF::loadView('certificates.template', [
+        'user' => $user,
+        'trainingName' => $training,
+        'signature' => $signature,
+        'date' => $date,
+    ]);
+
+//    $fileName = 'certificates/' . $user->id . '_' . now()->timestamp . '.pdf';
+//    Storage::disk('public')->put($fileName, $pdf->output());
+    $fileName = 'certificates/' . uniqid($user->id . '_') . '.pdf';
+    Storage::disk('public')->put($fileName, $pdf->output());
+//    return $fileName;
+    return Certificate::create([
+        'external_user_id' => $user->id,
+        'training_id' => $training->id,
+        'file_path' => $fileName,
+        'generated_at' => now(),
+    ]);
+}
 function transliterateGeToEn($text)
 {
     $map = [
@@ -295,4 +319,5 @@ function transliterateEn($fullName)
     return $fullName;
 
 }
+
 

@@ -31,7 +31,7 @@ use App\Http\Requests\sendTrainerMessageRequest;
 use Illuminate\Support\Facades\Hash;
 use App\Models\ExternalUser;
 use Illuminate\Auth\Events\Registered;
-
+use App\Models\Certificate;
 
 class FrontEndController extends Controller
 {
@@ -326,6 +326,7 @@ class FrontEndController extends Controller
                 $query->where('type', 'offline');
             }
 
+            $certificates = $user->certificates()->with('training')->get();
             $trainings = $query->paginate(10);
 
             return view('front.external_dashboard', [
@@ -333,6 +334,7 @@ class FrontEndController extends Controller
                 'page' => $page,
                 'trainings' => $trainings,
 //                'appointments' => $appointments,
+                'certificates' =>  $certificates,
             ]);
         }
 
@@ -392,7 +394,10 @@ class FrontEndController extends Controller
         $page = Page::where('slug', '/dashboard')->firstOrFail();
         $customer = auth()->guard(AuthType::TYPE_EXTERNAL_CUSTOMER)->user();
         //check if customer can process current appointment
-        $appointmentCustomer = TrainingOrder::where('training_id', $object->training_id)->where('external_user_id', $customer->id)->first();
+        $appointmentCustomer = TrainingOrder::where('training_id', $object->training_id)
+            ->where('external_user_id', $customer->id)
+            ->where('type', 'online')
+            ->first();
 
         if (empty($appointmentCustomer)) {
             $content = "<h2>თქვენ არ ხართ რეგისტრირებული არსებულ ტრენინგზე</h2>";
@@ -478,14 +483,17 @@ class FrontEndController extends Controller
 
         $customer = auth()->guard(AuthType::TYPE_EXTERNAL_CUSTOMER)->user();
         //check if customer can process current appointment
-        $appointmentCustomer = TrainingOrder::where('training_id', $object->training_id)->where('external_user_id', $customer->id)->first();
+        $appointmentCustomer = TrainingOrder::where('training_id', $object->training_id)
+            ->where('external_user_id', $customer->id)
+            ->where('type', 'online')
+            ->first();
+
 
         if (empty($appointmentCustomer)) {
             $content = "<h2>თქვენ არ ხართ რეგისტრირებული არსებულ ტრენინგზე</h2>";
 
             return view('front.inactive', compact('page', 'content'));
         }
-
         //check if customer finished test
         if (!empty($appointmentCustomer->finished_at)) {
             $content = "<h2>თქვენ უკვე დაასრულეთ არსებული ტრენინგი</h2>
@@ -603,7 +611,12 @@ class FrontEndController extends Controller
         $page = Page::where('slug', '/dashboard')->firstOrFail();
         $customer = auth()->guard(AuthType::TYPE_EXTERNAL_CUSTOMER)->user();
         //check if customer can process current appointment
-        $appointmentCustomer = TrainingOrder::where('training_id', $object->training_id)->where('external_user_id', $customer->id)->first();
+        $appointmentCustomer = TrainingOrder::with('training','training.trainer')
+            ->where('training_id', $object->training_id)
+            ->where('external_user_id', $customer->id)
+            ->where('type', 'online')
+            ->first();
+        $signature = $appointmentCustomer->training->trainer->signature;
 
         if (empty($appointmentCustomer)) {
             $content = "<h2>თქვენ არ ხართ რეგისტრირებული არსებულ ტრენინგზე</h2>";
@@ -662,7 +675,6 @@ class FrontEndController extends Controller
             }
             $customer_answered[] = $answered;
         }
-
         $appointmentCustomer->test = json_encode($questions);
         $appointmentCustomer->answers = json_encode($customer_answered);
         $appointmentCustomer->final_point = $final_point;
@@ -672,10 +684,27 @@ class FrontEndController extends Controller
         $appointmentCustomer->save();
 
 
+        if($appointmentCustomer->final_point >= $appointmentCustomer->point_to_pass){
+            $certificate = GenerateCertificate($customer, $object->training,now(),$signature);
+            return redirect()->route('front.dashboard' ,['type' => 'online'])->with('success', 'სერტიფიკატი გენერირებულია!');
+        }
+
         return redirect()->route('front.testDetailsForExternal', $object);
-
-
         // return $answers_count;
+    }
+
+    public function download($locale,$id)
+    {
+        $certificate = Certificate::findOrFail($id);
+        $filePath = storage_path('app/public/' . $certificate->file_path);
+
+        if (!file_exists($filePath)) {
+            abort(404);
+        }
+
+        $certificate->update(['downloaded_at' => now()]);
+
+        return response()->download($filePath);
     }
 
     public function testDetails($locale, Appointment $object)

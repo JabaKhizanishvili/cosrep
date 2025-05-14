@@ -114,6 +114,62 @@
 
         <!-- contact area start -->
         <div id="events" class="wrap-bg">
+            @if(!empty($certificates))
+                <div class="container">
+                    <div class="row justify-content-center text-center">
+                        <div class="col-lg-8">
+                            <div class="section-title with-p">
+                                <h2>
+                                    {{__('page.certificates')}}
+
+                                </h2>
+                                <div class="bar"></div>
+                                {{-- <p>We can help you create positive and permanent changes in your life. Let’s Create Something new and awesome Togeather. --}}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="container row mx-auto mb-5">
+                    @foreach($certificates as $key => $certificate)
+
+                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-4 course-single mb25">
+
+                            <div class="themeioan_event">
+                                <div class="event-photo" >
+                                    <iframe src="{{ asset('storage/certificates/' . basename($certificate->file_path)) }}" class="w-100" style="min-height: 250px" >
+                                        This browser does not support PDFs. Please download the PDF to view it: <a href="{{ asset('storage/certificates/' . basename($certificate->file_path)) }}">Download PDF</a>
+                                    </iframe>
+                                </div>
+
+                                <div class="event-content" style="min-height: 200px">
+                                    <h5 class="title">{{ limit_words(strip_tags($certificate->training->title), 100) }}
+                                    </h5>
+
+                                    <div class="course-viewer">
+                                        <ul>
+                                        </ul>
+                                        {{-- {!! $value->getStatus() !!} --}}
+                                    </div>
+
+
+                                        <div class="btn-section">
+{{--                                            <a href="{{ route('front.testDetailsForExternal', $certificate) }}"--}}
+{{--                                               class="button-light"><i--}}
+{{--                                                    class="fas fa-arrow-right"></i>{{__('page.test_details')}}--}}
+{{--                                            </a>--}}
+                                            <a href="{{ route('front.downloadCertificate', $certificate->id) }}"
+                                                                               class="btn btn-light">
+                                                                                <i class="fas fa-download mr-1"></i> გადმოწერა
+                                                                            </a>
+                                        </div>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+            @endif
+
 
             <div class="container">
 
@@ -177,7 +233,9 @@
                     <div class="themeioan_event">
                         <div class="event-photo
                          @if($value->type == 'online')
-                         {{ $value->final_point >= $value->point_to_pass ? 'testStatusSuccess' : 'testStatusFail' }}
+                            @if(!empty($value->finished_at))
+                             {{ $value->final_point >= $value->point_to_pass ? 'testStatusSuccess' : 'testStatusFail' }}
+                            @endif
                          @endif
                          " >
                             <div class="date">
