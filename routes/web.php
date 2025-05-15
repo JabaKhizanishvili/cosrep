@@ -358,6 +358,7 @@ Route::prefix('{locale?}')
             Route::post('/trainings/{training}/purchase', [FrontEndController::class, 'processType'])->name('training.purchase.submit');
             Route::get('/training/physical-form/{trainingId}', [FrontEndController::class, 'showPhysicalForm'])->name('front.physical.form');
             Route::post('/physical-training', [FrontEndController::class, 'submitPhysical'])->name('front.submitPhysicalTraining');
+            Route::post('external-user-name-change',[FrontEndController::class, 'externalNameChange'])->name('front.external-user-name-change');
 
         });
 

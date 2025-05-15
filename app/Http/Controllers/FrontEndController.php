@@ -909,5 +909,18 @@ class FrontEndController extends Controller
     }
 
 
+    public function externalNameChange(Request $request)
+    {
+        $user = auth()->guard(AuthType::TYPE_EXTERNAL_CUSTOMER);
+        if($user->check()){
+            $request->input('name');
+            $updated = ExternalUser::where('id',$user->id())->update(['name'=>$request->input('name')]);
+            if($updated){
+                return redirect()->back();
+            }
+        }
+    }
+
+
 
 }

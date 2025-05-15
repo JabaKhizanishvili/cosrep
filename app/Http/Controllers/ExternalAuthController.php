@@ -122,7 +122,14 @@ class ExternalAuthController extends Controller
                 Auth::guard('customer')->login($customer);
             } else {
                 // თუ არ არის customers-ში, მაშინ external_users-ში
-                $externalUser = ExternalUser::updateOrCreate(
+//                $externalUser = ExternalUser::updateOrCreate(
+//                    ['email' => $user->email],
+//                    [
+//                        'name' => $user->name,
+//                        'password' => bcrypt(Str::random(16)),
+//                    ]
+//                );
+                $externalUser = ExternalUser::firstOrCreate(
                     ['email' => $user->email],
                     [
                         'name' => $user->name,

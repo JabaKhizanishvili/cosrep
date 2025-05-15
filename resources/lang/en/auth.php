@@ -32,5 +32,6 @@ return [
     'register' => 'Register',
     'fullname' => 'Full Name',
     'gmailauth' => 'Or try different Auth Method',
+    'change' => 'Change Name',
 
 ];

@@ -112,6 +112,36 @@
         <!-- end breadcrumb banner content area start -->
 
 
+{{--                    <form action="{{route('front.external-user-name-change')}}" method="POST">--}}
+
+{{--        <div id="events" class="wrap-bg row justify-content-center">--}}
+{{--            <div class="container col-md-3">--}}
+{{--                <div class="input-group mb-3">--}}
+{{--                        @csrf--}}
+{{--                    <input type="text"--}}
+{{--                           class="form-control"--}}
+{{--                           placeholder="{{ __('auth.fullname') }}"--}}
+{{--                           aria-label="Fullname"--}}
+{{--                           name="name"--}}
+{{--                           id="contactName"--}}
+{{--                           value="{{ auth()->guard(\App\Services\AuthType::TYPE_EXTERNAL_CUSTOMER)->user()->name }}">--}}
+
+{{--                    <button class="btn-custom" type="submit">--}}
+{{--                    <button class="btn btn-icon nameChangeBtn" type="submit">--}}
+{{--                        {{ __('auth.change') }}--}}
+{{--                    </button>--}}
+{{--                    </form>--}}
+{{--                </div>--}}
+
+{{--                @error('name')--}}
+{{--                <div class="text-danger">--}}
+{{--                    {{ $message }}--}}
+{{--                </div>--}}
+{{--                @enderror--}}
+{{--            </div>--}}
+{{--        </div>--}}
+
+
         <!-- contact area start -->
         <div id="events" class="wrap-bg">
             @if(!empty($certificates))

@@ -21,6 +21,11 @@
             user-select: none;
 
         }
+
+        .nameChangeBtn:hover{
+            color:#fff;
+        }
+
     </style>
 @endsection
 
@@ -42,6 +47,36 @@
         </div>
         <!-- end breadcrumb banner content area start -->
 
+        @if(auth()->guard(\App\Services\AuthType::TYPE_EXTERNAL_CUSTOMER)->check())
+        <form action="{{route('front.external-user-name-change')}}" method="POST">
+
+            <div id="events" class="wrap-bg row justify-content-center">
+                <div class="container col-md-3">
+                    <div class="input-group mb-3">
+                        @csrf
+                        <input type="text"
+                               class="form-control"
+                               placeholder="{{ __('auth.fullname') }}"
+                               aria-label="Fullname"
+                               name="name"
+                               id="contactName"
+                               value="{{ auth()->guard(\App\Services\AuthType::TYPE_EXTERNAL_CUSTOMER)->user()->name }}">
+
+                        {{--                    <button class="btn-custom" type="submit">--}}
+                        <button class="btn btn-icon nameChangeBtn" type="submit">
+                            {{ __('auth.change') }}
+                        </button>
+        </form>
+        </div>
+
+        @error('name')
+        <div class="text-danger">
+            {{ $message }}
+        </div>
+        @enderror
+        </div>
+        </div>
+        @endif
         <!-- contact area start -->
         <div id="contact" class="wrap-bg">
             <div class="container">
