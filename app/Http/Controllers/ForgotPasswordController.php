@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\AuthType;
 use Throwable;
 use Carbon\Carbon;
 use App\Models\Page;
@@ -56,9 +57,10 @@ class ForgotPasswordController extends Controller
                 ['username' => $customer->username],
                 ['token' => $token, 'created_at' => now()]
             );
+            $type = AuthType::TYPE_CUSTOMER;
 
             try {
-                Mail::to($customer->email)->send(new ForgetPasswordMail($token, 'customer'));
+                Mail::to($customer->email)->send(new ForgetPasswordMail($token, $type));
             } catch (Throwable $e) {
                 report($e);
                 return back()->with('error', 'დაფიქსირდა შეცდომა, გთხოვთ სცადოთ ახლიდან');
@@ -69,8 +71,9 @@ class ForgotPasswordController extends Controller
                 ['token' => $token, 'created_at' => now()]
             );
 
+            $type = AuthType::TYPE_EXTERNAL_CUSTOMER;
             try {
-                Mail::to($external->email)->send(new ForgetPasswordMail($token, 'external'));
+                Mail::to($external->email)->send(new ForgetPasswordMail($token, $type));
             } catch (Throwable $e) {
                 report($e);
                 return back()->with('error', 'დაფიქსირდა შეცდომა, გთხოვთ სცადოთ ახლიდან');
@@ -85,7 +88,7 @@ class ForgotPasswordController extends Controller
      *
      * @return response()
      */
-    public function showResetPasswordForm($token)
+    public function showResetPasswordForm($token,$type)
     {
         $page = Page::where('slug', '/login')->firstOrFail();
 

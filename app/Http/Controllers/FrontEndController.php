@@ -172,7 +172,7 @@ class FrontEndController extends Controller
     public function Register_user(Request $request)
     {
         $request->validate([
-            'username' => 'required|unique:external_users,username',
+            'username' => 'required|min:5|unique:external_users,username',
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:external_users,email',
             'password' => 'required|string|min:6|confirmed',
@@ -246,13 +246,33 @@ class FrontEndController extends Controller
             'old_password' => ['required'],
             'new_password' => ['required', 'min:8', 'confirmed'],
         ]);
-        $customer = auth()->guard(AuthType::TYPE_CUSTOMER)->user();
-        if (!Hash::check($request->old_password, $customer->password)) {
-            return back()->with('error', __('auth.incorrect_password'));
+
+        if(auth()->guard(AuthType::TYPE_CUSTOMER)->check()) {
+            $customer = auth()->guard(AuthType::TYPE_CUSTOMER)->user();
+
+            if (!Hash::check($request->old_password, $customer->password)) {
+                return back()->with('error', __('auth.incorrect_password'));
+            }
+
+            $customer->password = Hash::make($request->new_password);
+            $customer->save();
+
+            return back()->with('success', __('auth.password_updated'));
         }
-        $customer->password = Hash::make($request->new_password);
-        $customer->save();
-        return back()->with('success', __('auth.password_updated'));
+        else if(auth()->guard(AuthType::TYPE_EXTERNAL_CUSTOMER)->check()) {
+            $customer = auth()->guard(AuthType::TYPE_EXTERNAL_CUSTOMER)->user();
+
+            if (!Hash::check($request->old_password, $customer->password)) {
+                return back()->with('error', __('auth.incorrect_password'));
+            }
+
+            $customer->password = Hash::make($request->new_password);
+            $customer->save();
+
+            return back()->with('success', __('auth.password_updated'));
+        }
+
+
 
     }
 

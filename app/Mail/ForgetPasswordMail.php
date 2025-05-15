@@ -16,9 +16,10 @@ class ForgetPasswordMail extends Mailable
      *
      * @return void
      */
-    public function __construct($token)
+    public function __construct($token, $type)
     {
         $this->token = $token;
+        $this->type = $type;
     }
 
     /**
@@ -30,6 +31,7 @@ class ForgetPasswordMail extends Mailable
     {
         return $this->subject("პაროლის აღდგენა")->markdown('emails.forgetPassword')->with([
             'token' => $this->token,
+            'type' => $this->type
         ]);
     }
 }
