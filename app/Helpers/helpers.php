@@ -280,21 +280,9 @@ function tokenExpired($updatedAt, $minute)
 
 function GenerateCertificate($user,$training,$date,$signature)
 {
-//    $pdf = PDF::loadView('certificates.template', [
-//        'user' => $user,
-//        'trainingName' => $training,
-//        'signature' => $signature,
-//        'date' => $date,
-//    ])->setPaper('A4', 'portrait');
-
-//    $fileName = 'certificates/' . $user->id . '_' . now()->timestamp . '.pdf';
-//    Storage::disk('public')->put($fileName, $pdf->output());
 
     $templatePath = storage_path('app/public/certificates/certificate.pdf');
-    $fontPath = public_path('front_styles/fonts/sylfaen.ttf');
-
     $pdf = new Fpdi();
-
 // 1. ტემპლეიტის დამატება
     $pdf->setSourceFile($templatePath);
     $templateId = $pdf->importPage(1);
@@ -302,23 +290,47 @@ function GenerateCertificate($user,$training,$date,$signature)
     $pdf->AddPage($size['orientation'], [$size['width'], $size['height']]);
     $pdf->useTemplate($templateId);
 
-    $fontname = TCPDF_FONTS::addTTFfont($fontPath, 'TrueTypeUnicode', '', 32);
-    $pdf->SetFont($fontname, '', 24);
+//    $fontname = TCPDF_FONTS::addTTFfont($fontPath, 'TrueTypeUnicode', '', 32);
+    $pdf->SetFont('dejavusans', 'B', 24);
+//    $pdf->SetFont($fontname, 'B', 26);
 
     $text = $user->name;
     $textWidth = $pdf->GetStringWidth($text);
     $pageWidth = $pdf->GetPageWidth();
     $x = ($pageWidth - $textWidth) / 2;
-    $y = 110;
+    $y = 105;
 
     $pdf->SetXY($x, $y);
     $pdf->Write(0, $text);
 
+    // ქართულ ტექსტს დავწერთ ზევით და გავცენტრირებთ
 
-//    // კურსის სახელი
-//    $pdf->SetXY(50, 110);
-//    $pdf->Write(0, $training->name);
-//
+    $pdf->SetFont('dejavusans', '', 12);
+
+    $pageWidth = $pdf->GetPageWidth();
+    $leftMargin = $pdf->getMargins()['left'];
+    $rightMargin = $pdf->getMargins()['right'];
+    $usableWidth = $pageWidth - $leftMargin - $rightMargin;
+
+// ორი ტექსტი ერთ ცხრილში, ხაზების გაყოფით
+    $text = "წარმატებით დაეუფლა ტრენინგს „{$training->name}“\nHAS SUCCESSFULLY COMPLETED TRAINING IN \"{$training->getTranslation('title', 'en')}\"";
+
+// ცენტრირება MultiCell-ით
+    $pdf->SetXY($leftMargin, 123); // ან სადაც გინდა ტექსტი იყოს
+    $pdf->MultiCell($usableWidth, 0, $text, 0, 'C');
+
+    // აქ ჩაწერე შენი ხელმოწერის სურათის რეალური გზ.
+
+
+// ხელმოწერის ჩასმა, მაგალითად x=20, y=250, სიგანე=40 (სიმაღლე ავტომატურად გამოთვლება)
+    $pdf->Image($signature, 35, 150, 30);
+
+// თარიღის გამოტანა ხელმოწერის მარჯვნივ, მაგალითად x=140, y=260
+    $pdf->SetFont('dejavusans', '', 12);
+    $pdf->SetXY(150, 173);
+    $pdf->Write(0, date('d-m-Y'));
+//    $pdf->Cell(0, 0,  date('d-m-Y'), 0, 1);
+
 //    // თარიღი
 //    $pdf->SetXY(50, 130);
 //    $pdf->Write(0, $date);

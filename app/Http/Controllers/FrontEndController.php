@@ -614,7 +614,8 @@ class FrontEndController extends Controller
             ->where('external_user_id', $customer->id)
             ->where('type', 'online')
             ->first();
-        $signature = $appointmentCustomer->training->trainer->signature;
+//        $signature = $appointmentCustomer->training->trainer->signature;
+        $signature = storage_path('app/public/signatures/'.$appointmentCustomer->training->trainer->signature);
 
         if (empty($appointmentCustomer)) {
             $content = "<h2>თქვენ არ ხართ რეგისტრირებული არსებულ ტრენინგზე</h2>";
