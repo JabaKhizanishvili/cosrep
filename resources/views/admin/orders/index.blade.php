@@ -172,7 +172,7 @@
                                         <td>
                                             {{ $object->status }}
                                         </td>
-                                        <td>{{ $object->test ?? 'N/A' }}</td>
+                                        <td>{{ $object->final_point ?? 'N/A' }}</td>
                                         <td>{{ $object->phone }}</td>
                                         <td>{{ $object->id_number }}</td>
                                         <td>{{ $object->created_at->format('Y-m-d H:i') }}</td>
