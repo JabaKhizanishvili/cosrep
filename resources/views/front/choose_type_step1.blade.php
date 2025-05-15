@@ -94,12 +94,22 @@
 
                                 <div class="mb-3">
                                     <label for="phone" class="form-label">ტელეფონის ნომერი</label>
-                                    <input type="text" name="phone" id="phone" class="form-control" placeholder="მაგ: 599123456" required>
+                                    <input type="text" name="phone" id="phone" class="form-control @error('phone') is-invalid @enderror" placeholder="მაგ: 599123456" required>
+                                    @error('phone')
+                                    <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
                                 </div>
 
                                 <div class="mb-4">
                                     <label for="personal_number" class="form-label">პირადი ნომერი</label>
-                                    <input type="text" name="personal_number" id="personal_number" class="form-control" placeholder="მაგ: 01001012345" required>
+                                    <input type="text" name="personal_number" id="personal_number" class="form-control @error('personal_number') is-invalid @enderror" placeholder="მაგ: 01001012345" required>
+                                    @error('personal_number')
+                                    <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
                                 </div>
 
                                 <div class="d-grid">
