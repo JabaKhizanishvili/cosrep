@@ -17,20 +17,23 @@
         }
 
         .sliderSize {
-            min-height: 400px; /* Default desktop */
-            background-size: cover;
-            background-position: center center;
+            background-size: 100% 100% !important;
         }
         @media (max-width: 768px) {
             .blog-detail-img img {
                 max-height: 40vh;
             }
+
             .relative{
                 min-height: auto;
             }
+
             .sliderSize {
-                /*min-height: 250px; !* Smaller height for phones *!*/
-                background-size: auto !important;
+                min-height: 65vh;
+                /*background-size: 100% 100% !important;*/
+                /*background-size: cover !important;*/
+                background-size: cover !important;
+                background-position: center center!important;
             }
         }
 
@@ -39,21 +42,6 @@
 @endsection
 
 @section('content')
-
-    <style>
-        .sliderSize {
-            background-size: 100% 100% !important;
-        }
-
-        @media (max-width: 768px) {
-            .sliderSize {
-                /*background-size: 100% 100% !important;*/
-                /*background-size: cover !important;*/
-                background-size: cover !important;
-                background-position: center center !important;
-            }
-        }
-    </style>
 
     <main>
 
