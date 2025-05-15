@@ -33,6 +33,13 @@
             list-style-type: decimal;
             padding-left: 20px;
         }
+
+        @media (max-width: 768px) {
+            .blog-detail-img img {
+                max-height: 40vh;
+            }
+        }
+
     </style>
 
 <!-- END PAGE LEVEL PLUGINS/CUSTOM STYLES -->
@@ -75,8 +82,15 @@
                 <!-- Content Left -->
                 <div class="col-md-12 col-lg-12">
                     <div class="blog-content">
+{{--                        <div class="blog-detail-img text-center">--}}
+{{--                            <img class="mb-4" style="height: 30vw; width: auto" src="{{ ServicesImage($services->image) }}" alt="{{ $services->name }}"/>--}}
+{{--                        </div>--}}
                         <div class="blog-detail-img text-center">
-                            <img class="mb-4" style="height: 30vw; width: auto" src="{{ ServicesImage($services->image) }}" alt="{{ $services->name }}"/>
+                            <img class="mb-0 mb-md-4 h-50 d-inline-block"
+                                 style="height: 30vw; width: auto"
+                                 src="{{ ServicesImage($services->image) }}"
+                                 alt="{{ $services->name }}"
+                            />
                         </div>
                         <div class="section-title text-center">
                             <div>
