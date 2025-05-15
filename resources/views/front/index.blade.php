@@ -11,6 +11,29 @@
         .themeioan_counter i {
             color: #fff;
         }
+
+        .relative{
+            min-height: 100vh;
+        }
+
+        .sliderSize {
+            min-height: 400px; /* Default desktop */
+            background-size: cover;
+            background-position: center center;
+        }
+        @media (max-width: 768px) {
+            .blog-detail-img img {
+                max-height: 40vh;
+            }
+            .relative{
+                min-height: auto;
+            }
+            .sliderSize {
+                /*min-height: 250px; !* Smaller height for phones *!*/
+                background-size: auto !important;
+            }
+        }
+
     </style>
     <!-- END PAGE LEVEL PLUGINS/CUSTOM STYLES -->
 @endsection
@@ -20,8 +43,15 @@
     <style>
         .sliderSize {
             background-size: 100% 100% !important;
+        }
 
-
+        @media (max-width: 768px) {
+            .sliderSize {
+                /*background-size: 100% 100% !important;*/
+                /*background-size: cover !important;*/
+                background-size: cover !important;
+                background-position: center center !important;
+            }
         }
     </style>
 
@@ -29,13 +59,15 @@
 
         @if(count($sliders) > 0)
             <!-- Slider Start -->
-            <div class="relative" style="min-height: 100vh">
+            <div class="relative"
+{{--                 style="min-height: 100vh"--}}
+            >
                 <div class="owl-navigation owl-carousel owl-theme">
                     <!-- slider item 1 -->
                     @foreach ($sliders as $slider)
                         <div class="item">
                             <div class="image-overly-dark-opacity header-content sliderSize" role="banner"
-                                 style="background: url({{ sliderImage($slider->image) }}) no-repeat;">
+                                 style="background: url({{ sliderImage($slider->image) }}) no-repeat; background-size: auto;">
                                 <div class="container opac">
                                     <div class="col-xs-12 col-sm-12 header-area">
                                         <div class="header-area-inner header-text"> <!-- single content header -->
