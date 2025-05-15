@@ -37,8 +37,6 @@ class FrontEndController extends Controller
 {
     public function index()
     {
-//       dd(Auth::guard('external')->user());
-//        $page = Page::where('slug', '/')->firstOrFail();
         $page = Page::getCachedPageBySlug('/');
         $sliders = Slider::active()->orderBy('position', 'asc')->get();
 //        $partners = Partner::orderBy('id', 'desc')->get();

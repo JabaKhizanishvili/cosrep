@@ -5,6 +5,10 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Certificate;
 use Barryvdh\DomPDF\Facade\Pdf;
+//use setasign\Fpdi\Fpdi;
+//use setasign\Fpdf\Fpdf;
+//use setasign\Fpdi\Tfpdf\Fpdi;
+use setasign\Fpdi\Tcpdf\Fpdi;
 
 function admin_styles($path)
 {
@@ -276,18 +280,57 @@ function tokenExpired($updatedAt, $minute)
 
 function GenerateCertificate($user,$training,$date,$signature)
 {
-    $pdf = PDF::loadView('certificates.template', [
-        'user' => $user,
-        'trainingName' => $training,
-        'signature' => $signature,
-        'date' => $date,
-    ]);
+//    $pdf = PDF::loadView('certificates.template', [
+//        'user' => $user,
+//        'trainingName' => $training,
+//        'signature' => $signature,
+//        'date' => $date,
+//    ])->setPaper('A4', 'portrait');
 
 //    $fileName = 'certificates/' . $user->id . '_' . now()->timestamp . '.pdf';
 //    Storage::disk('public')->put($fileName, $pdf->output());
+
+    $templatePath = storage_path('app/public/certificates/certificate.pdf');
+    $fontPath = public_path('front_styles/fonts/sylfaen.ttf');
+
+    $pdf = new Fpdi();
+
+// 1. ტემპლეიტის დამატება
+    $pdf->setSourceFile($templatePath);
+    $templateId = $pdf->importPage(1);
+    $size = $pdf->getTemplateSize($templateId);
+    $pdf->AddPage($size['orientation'], [$size['width'], $size['height']]);
+    $pdf->useTemplate($templateId);
+
+    $fontname = TCPDF_FONTS::addTTFfont($fontPath, 'TrueTypeUnicode', '', 32);
+    $pdf->SetFont($fontname, '', 24);
+
+    $text = $user->name;
+    $textWidth = $pdf->GetStringWidth($text);
+    $pageWidth = $pdf->GetPageWidth();
+    $x = ($pageWidth - $textWidth) / 2;
+    $y = 110;
+
+    $pdf->SetXY($x, $y);
+    $pdf->Write(0, $text);
+
+
+//    // კურსის სახელი
+//    $pdf->SetXY(50, 110);
+//    $pdf->Write(0, $training->name);
+//
+//    // თარიღი
+//    $pdf->SetXY(50, 130);
+//    $pdf->Write(0, $date);
+//
+//    // ხელმოწერა (თუ ტექსტური ან სხვა რამეა)
+//    if ($signature) {
+//        $pdf->SetXY(50, 150);
+//        $pdf->Write(0, $signature);
+//    }
+
     $fileName = 'certificates/' . uniqid($user->id . '_') . '.pdf';
-    Storage::disk('public')->put($fileName, $pdf->output());
-//    return $fileName;
+    Storage::disk('public')->put($fileName, $pdf->Output('','S'));
     return Certificate::create([
         'external_user_id' => $user->id,
         'training_id' => $training->id,

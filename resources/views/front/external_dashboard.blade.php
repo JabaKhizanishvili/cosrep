@@ -160,7 +160,7 @@
 {{--                                            </a>--}}
                                             <a href="{{ route('front.downloadCertificate', $certificate->id) }}"
                                                                                class="btn btn-light">
-                                                                                <i class="fas fa-download mr-1"></i> გადმოწერა
+                                                                                <i class="fas fa-download mr-1"></i> {{__('page.download')}}
                                                                             </a>
                                         </div>
                                 </div>
