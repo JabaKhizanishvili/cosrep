@@ -33,5 +33,6 @@ return [
     'fullname' => 'Full Name',
     'gmailauth' => 'Or try different Auth Method',
     'change' => 'Change Name',
+    'change_language' => 'Change Language',
 
 ];

@@ -118,18 +118,31 @@
                                                             </h5>
                                                         </h5>
                                                     </div>
-                                                    @auth('external')
+{{--                                                    @auth('external')--}}
 {{--                                                    <a href="{{ route('training.purchase', $subcategory->id) }}" class="color-two button">--}}
 {{--                                                        ყიდვა--}}
 {{--                                                    </a>--}}
 
-                                                        <form method="GET" class="" action="{{ route('training.purchase', $subcategory->id) }}">
+{{--                                                        <form method="GET" class="" action="{{ route('training.purchase', $subcategory->id) }}">--}}
 {{--                                                            @csrf--}}
-                                                        <input class="color-two button mb-4 w-100" type="submit"
-                                                               value="{{__('page.purchase')}}"/>
+{{--                                                        <input class="color-two button mb-4 w-100" type="submit"--}}
+{{--                                                               value="{{__('page.purchase')}}"/>--}}
+{{--                                                        </form>--}}
+
+
+{{--                                                    @endauth--}}
+                                                    @auth
+                                                        @if(auth()->user()->isExternal())
+                                                            <form method="GET" class="" action="{{ route('training.purchase', $subcategory->id) }}">
+                                                                <input class="color-two button mb-4 w-100" type="submit" value="{{__('page.purchase')}}"/>
+                                                            </form>
+                                                        @else
+                                                            <span></span>
+                                                        @endif
+                                                    @else
+                                                        <form method="GET" class="" action="{{ route('training.purchase', $subcategory->id) }}">
+                                                            <input class="color-two button mb-4 w-100" type="submit" value="{{__('page.purchase')}}"/>
                                                         </form>
-
-
                                                     @endauth
                                                 </div>
                                             </a>

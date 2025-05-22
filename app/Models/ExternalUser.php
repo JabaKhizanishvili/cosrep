@@ -28,4 +28,10 @@ class ExternalUser extends Authenticatable
         return $this->hasMany(Certificate::class,'external_user_id');
     }
 
+    public function isExternal()
+    {
+        return true;
+    }
+
+
 }

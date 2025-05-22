@@ -221,6 +221,18 @@
                             </a>
                         </li>
                     @endforeach
+                        @php
+                            $currentLocale = app()->getLocale();
+                            $newLocale = $currentLocale === 'en' ? 'ge' : 'en';
+                            $currentUrl = request()->getPathInfo();
+                            $newUrl = '/' . $newLocale . substr($currentUrl, 3); // ლოკალის შეცვლა URL-ში
+                        @endphp
+
+                        <div class="social_top_header pl-2 text-center m-2  d-block d-sm-none">
+                            <a href="{{ url($newUrl) }}">
+                                {{__('auth.change_language')}} {{ $newLocale === 'en' ? '🇬🇧' : '🇬🇪' }}
+                            </a>
+                        </div>
                 </ul>
                 @if($contact->website)
 
